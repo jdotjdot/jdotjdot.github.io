@@ -138,10 +138,11 @@
 
 
 <h3>Getting our default&nbsp;arguments</h3>
-<p>Next, we&#8217;d like to grab the default arguments and variable names from our to-be-decorated function.  We know already we can get the defaults from <code>function.func_defaults</code>, and we can grab the variable names from <code>funcion.func_code.co_varnames</code>.</p>
+<p>Next, we&#8217;d like to grab the default arguments and variable names from our to-be-decorated function.  We know already we can get the defaults from <code>function.func_defaults</code>, and we can grab the variable names from <code>function.func_code.co_varnames</code>.  We also will grab the number of arguments for the function from <code>function.func_code.co_argcount</code>.</p>
 <div class="highlight"><pre><span class="k">def</span> <span class="nf">enforce_defaults</span><span class="p">(</span><span class="n">function</span><span class="p">):</span>
     <span class="n">varnames</span> <span class="o">=</span> <span class="n">function</span><span class="o">.</span><span class="n">func_code</span><span class="o">.</span><span class="n">co_varnames</span>
     <span class="n">defaults</span> <span class="o">=</span> <span class="n">function</span><span class="o">.</span><span class="n">func_defaults</span>
+    <span class="n">argcount</span> <span class="o">=</span> <span class="n">function</span><span class="o">.</span><span class="n">func_code</span><span class="o">.</span><span class="n">co_argcount</span>
 
     <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">function</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -184,6 +185,7 @@
 <div class="highlight"><pre><span class="k">def</span> <span class="nf">enforce_defaults</span><span class="p">(</span><span class="n">function</span><span class="p">):</span>
     <span class="n">varnames</span> <span class="o">=</span> <span class="n">function</span><span class="o">.</span><span class="n">func_code</span><span class="o">.</span><span class="n">co_varnames</span>
     <span class="n">defaults</span> <span class="o">=</span> <span class="n">function</span><span class="o">.</span><span class="n">func_defaults</span>
+    <span class="n">argcount</span> <span class="o">=</span> <span class="n">function</span><span class="o">.</span><span class="n">func_code</span><span class="o">.</span><span class="n">co_argcount</span>
 
     <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="c"># &quot;holder&quot; is where we&#39;re storing our args</span>
@@ -197,15 +199,35 @@
 </pre></div>
 
 
+<h3>Other variables in the&nbsp;function?</h3>
+<p>Unfortunately, Python functions are going to store <strong>all</strong> of the function variables in <code>func_code.co_varnames</code>, including ones declared in-function.  For&nbsp;example:</p>
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="mi">4</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">test</span><span class="o">.</span><span class="n">func_code</span><span class="o">.</span><span class="n">co_varnames</span>
+<span class="p">(</span><span class="s">&#39;a&#39;</span><span class="p">,</span> <span class="s">&#39;b&#39;</span><span class="p">,</span> <span class="s">&#39;c&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">test</span><span class="o">.</span><span class="n">func_defaults</span>
+<span class="p">(</span><span class="mi">3</span><span class="p">,)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">test</span><span class="o">.</span><span class="n">func_code</span><span class="o">.</span><span class="n">co_argcount</span>
+<span class="mi">2</span>
+</pre></div>
+
+
+<p>To deal with that scenario, because the internally declared variables are stuck on at the end, we&#8217;ll have to make a slight modification to our <code>holder</code> variable.  Since we know from <code>argcount</code> how many arguments they are, we can go back to <code>varnames</code> and simply just chop off any extra appended variables before doing our trick with <code>[-len(defaults):]</code>.</p>
+<div class="highlight"><pre><span class="n">holder</span> <span class="o">=</span> <span class="n">dict</span><span class="p">(</span><span class="n">zip</span><span class="p">(</span><span class="n">varnames</span><span class="p">[</span><span class="o">:</span><span class="n">argcount</span><span class="p">][</span><span class="o">-</span><span class="n">len</span><span class="p">(</span><span class="n">defaults</span><span class="p">)</span><span class="o">:</span><span class="p">],</span> <span class="n">defaults</span><span class="p">))</span>
+</pre></div>
+
+
 <h3>Oh&nbsp;no!</h3>
 <p>Looks like what we&#8217;ve done isn&#8217;t helping at all!  If we stick a print statement in there to debug, you can see what&#8217;s&nbsp;happening:</p>
 <div class="highlight"><pre><span class="k">def</span> <span class="nf">enforce_defaults</span><span class="p">(</span><span class="n">function</span><span class="p">):</span>
     <span class="n">varnames</span> <span class="o">=</span> <span class="n">function</span><span class="o">.</span><span class="n">func_code</span><span class="o">.</span><span class="n">co_varnames</span>
     <span class="n">defaults</span> <span class="o">=</span> <span class="n">function</span><span class="o">.</span><span class="n">func_defaults</span>
+    <span class="n">argcount</span> <span class="o">=</span> <span class="n">function</span><span class="o">.</span><span class="n">func_code</span><span class="o">.</span><span class="n">co_argcount</span>
 
     <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="c"># &quot;holder&quot; is where we&#39;re storing our args</span>
-        <span class="n">holder</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">varnames</span><span class="p">[</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">defaults</span><span class="p">):],</span> <span class="n">defaults</span><span class="p">))</span>
+        <span class="n">holder</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">varnames</span><span class="p">[:</span><span class="n">argcount</span><span class="p">][</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">defaults</span><span class="p">):],</span> <span class="n">defaults</span><span class="p">))</span>
 
         <span class="k">print</span> <span class="n">holder</span>
 
@@ -236,10 +258,11 @@
   <span class="kn">import</span> <span class="nn">copy</span>
   <span class="n">varnames</span> <span class="o">=</span> <span class="n">function</span><span class="o">.</span><span class="n">func_code</span><span class="o">.</span><span class="n">co_varnames</span>
   <span class="n">defaults</span> <span class="o">=</span> <span class="n">function</span><span class="o">.</span><span class="n">func_defaults</span>
+  <span class="n">argcount</span> <span class="o">=</span> <span class="n">function</span><span class="o">.</span><span class="n">func_code</span><span class="o">.</span><span class="n">co_argcount</span>
 
   <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="n">inner_defaults</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">defaults</span><span class="p">)</span>
-    <span class="n">holder</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">varnames</span><span class="p">[</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">inner_defaults</span><span class="p">):],</span> <span class="n">inner_defaults</span><span class="p">))</span>
+    <span class="n">holder</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">varnames</span><span class="p">[:</span><span class="n">argcount</span><span class="p">][</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">inner_defaults</span><span class="p">):],</span> <span class="n">inner_defaults</span><span class="p">))</span>
 
     <span class="k">print</span> <span class="n">holder</span> <span class="c"># for debugging</span>
 
@@ -301,10 +324,11 @@
   <span class="kn">import</span> <span class="nn">copy</span>
   <span class="n">varnames</span> <span class="o">=</span> <span class="n">function</span><span class="o">.</span><span class="n">func_code</span><span class="o">.</span><span class="n">co_varnames</span>
   <span class="n">defaults</span> <span class="o">=</span> <span class="n">function</span><span class="o">.</span><span class="n">func_defaults</span>
+  <span class="n">argcount</span> <span class="o">=</span> <span class="n">function</span><span class="o">.</span><span class="n">func_code</span><span class="o">.</span><span class="n">co_argcount</span>
 
   <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="n">inner_defaults</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">defaults</span><span class="p">)</span>
-    <span class="n">holder</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">varnames</span><span class="p">[</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">inner_defaults</span><span class="p">):],</span> <span class="n">inner_defaults</span><span class="p">))</span>
+    <span class="n">holder</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">varnames</span><span class="p">[:</span><span class="n">argcount</span><span class="p">][</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">inner_defaults</span><span class="p">):],</span> <span class="n">inner_defaults</span><span class="p">))</span>
     <span class="n">holder</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">varnames</span><span class="p">,</span> <span class="n">args</span><span class="p">)))</span>
     <span class="n">holder</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
 

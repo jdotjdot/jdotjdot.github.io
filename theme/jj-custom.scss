@@ -1,0 +1,145 @@
+$body-text-font: Caslon, Garamond, Serif; // Original: "Open Sans"
+$header-font: Open Sans;
+
+h2.entry-title {
+    font-weight: bold;
+}
+
+.published {
+  font-weight: bold;
+}
+
+.author-name {
+  font-weight: bold;
+  color: #4b4b4b;
+}
+
+footer.post-info {
+  font-family: "Open Sans";
+}
+
+h3 {
+  font-weight: bold;
+
+}
+
+/*** stuff within entries only ***/
+div.entry-content {
+
+  /** fixing h1s to not be huge and sans-serif **/
+  h1 {
+    font-size: 2rem;
+    font-family: $header-font;
+  }
+
+  div.container.center {
+    text-align: center;
+  }
+
+  /* make uls in entries have bullets */
+  ul {
+    list-style-type: disc;
+    list-style-position: inside;
+
+    ul {
+      list-style-type: circle;
+
+      ul {
+        list-style-type: square;
+      }
+    }
+  }
+}
+
+#navigation {
+  position: relative;
+
+  ul.columns + ul.columns {
+    position: absolute;
+    top: 0;
+    right: 56px;
+    bottom: 0;
+  }
+
+  .rss-icon {
+    position: absolute;
+    padding-top: 5px;
+  }
+}
+
+/** hide RSS when small screen **/
+@media only screen and (max-width: 767px) {
+  ul.columns + ul.columns {
+    display: none;
+  }
+}
+
+.social-link-list li {
+  display: inline;
+  padding: 0 5px;
+}
+
+/** code blocks **/
+pre {
+  font-family: 'Consolas', 'Menlo', 'Deja Vu Sans Mono', 'Bitstream Vera Sans Mono', monospace;
+}
+
+code {
+  color: #484849;
+}
+
+
+
+/*** fonts ***/
+
+@font-face {
+    font-family: 'Caslon';
+    src: url('/theme/fonts/ACaslonPro-Regular.otf');
+}
+
+@font-face {
+    font-family: 'Caslon';
+    src: url('/theme/fonts/ACaslonPro-Italic.otf');
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Caslon';
+    src: url('/theme/fonts/ACaslonPro-Bold.otf');
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: 'Caslon';
+    src: url('/theme/fonts/ACaslonPro-BoldItalic.otf');
+    font-weight: bold;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Caslon SemiBold';
+    src: url('/theme/fonts/ACaslonPro-Semibold.otf');
+}
+
+@font-face {
+    font-famiy: 'Caslon SemiBold';
+    src: url('/theme/fonts/ACaslonPro-SemiboldItalic.otf');
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Consolas";
+    src: url('/theme/fonts/Consolas.ttf');
+}
+
+@font-face {
+    font-family: "Consolas";
+    src: url('/theme/fonts/CONSOLAB.TTF');
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: "Consolas";
+    src: url('/theme/fonts/CONSOLAI.ttf');
+    font-style: italic;
+}

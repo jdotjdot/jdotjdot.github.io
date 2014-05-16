@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>*JJ</title><link href="https://jdotjdot.github.io/" rel="alternate"></link><link href="https://jdotjdot.github.io/feeds/algorithms.atom.xml" rel="self"></link><id>https://jdotjdot.github.io/</id><updated>2014-02-13T00:00:00-05:00</updated><entry><title>Days 3-4: More algorithms, CTF, whoops</title><link href="https://jdotjdot.github.io/2014/02/day-3-more-algorithms/" rel="alternate"></link><updated>2014-02-13T00:00:00-05:00</updated><author><name>JJ</name></author><id>tag:https://jdotjdot.github.io,2014-02-13:2014/02/day-3-more-algorithms/</id><summary type="html">&lt;h3&gt;Algorithms&lt;/h3&gt;
+&lt;h4&gt;Selection&amp;nbsp;sort&lt;/h4&gt;
+&lt;p&gt;Just going through left to right, finding the new minimum of the unsorted items, and swapping it with the left most unsorted&amp;nbsp;item.&lt;/p&gt;
+&lt;h4&gt;Insertion&amp;nbsp;sort&lt;/h4&gt;
+&lt;p&gt;Going from left to right, and moving the leftmost unsorted item one item left at a time until we hit the beginning of the array or an item smaller than the one we&amp;#8217;re currently&amp;nbsp;moving.&lt;/p&gt;
+&lt;h4&gt;Shellsort&lt;/h4&gt;
+&lt;p&gt;Insertion sort, but making jumps of size &lt;code&gt;h&lt;/code&gt;.
+Interesting point that the professor made was that if you &lt;em&gt;h&lt;/em&gt;-sort an array and then &lt;em&gt;g&lt;/em&gt;-sort it, it still remains &lt;em&gt;h&lt;/em&gt;-sorted.  This was not something I had thought of offhand, but it makes perfect&amp;nbsp;sense.&lt;/p&gt;
+&lt;p&gt;Shellsort is generally pretty fast unless the array size is&amp;nbsp;huge.&lt;/p&gt;
+&lt;h3&gt;Hacking&lt;/h3&gt;
+&lt;p&gt;I started playing around with a really cool embedded security capture the flag game called &lt;a href="https://microcorruption.com/login"&gt;Microcorruption&lt;/a&gt;.  &amp;#8220;Capture the Flag&amp;#8221; games, when referring to computer security, are complex and involved games with series of levels where you have to find the (deliberately placed) vulnerability in the server or website, etc. at each level and find a secret file, codeword, or password hidden there.  Stripe has run a few of these relating to breaking into websites, so I&amp;#8217;m very excited about this one, which actually works with breaking into (virtual) hardware to break into pretend warehouses.  Very&amp;nbsp;exciting.&lt;/p&gt;
+&lt;p&gt;It would shock me if I find myself moving a bit more towards studying hardware and network security while I&amp;#8217;m&amp;nbsp;here.&lt;/p&gt;
+&lt;h3&gt;Blowing up my&amp;nbsp;computer&lt;/h3&gt;
+&lt;p&gt;Whoops.   Accidentally breaking Windows took up the latter half of the day.  Still working on fixing it, even though it&amp;#8217;s already the next day.  Might have to get a new&amp;nbsp;computer.&lt;/p&gt;</summary><category term="hackerschool"></category><category term="algorithms"></category><category term="sort"></category></entry></feed>

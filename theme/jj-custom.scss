@@ -53,12 +53,25 @@ div.entry-content {
 
 #navigation {
   position: relative;
+  // Move down from top a bit
+  top: 5px;
 
   ul.columns + ul.columns {
     position: absolute;
-    top: 0;
+//    top: 0;
     right: 56px;
     bottom: 0;
+  }
+
+  .logo-text {
+      font-family: Avenir;
+      font-size: 1.5em;
+      font-weight: bold;
+//      padding-top: 10px;
+
+     span {
+       vertical-align: -3px;
+     }
   }
 
   .rss-icon {

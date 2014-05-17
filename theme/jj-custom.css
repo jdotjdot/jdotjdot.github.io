@@ -56,26 +56,15 @@ div.entry-content ul ul ul {
 /* line 54 */
 #navigation {
   position: relative;
-  top: 5px;
-  margin-bottom: 5px;
 }
-/* line 60 */
+/* line 57 */
 #navigation ul.columns + ul.columns {
   position: absolute;
+  top: 0;
   right: 56px;
   bottom: 0;
 }
-/* line 67 */
-#navigation .logo-text {
-  font-family: Avenir;
-  font-size: 1.5em;
-  font-weight: bold;
-}
-/* line 73 */
-#navigation .logo-text span {
-  vertical-align: -3px;
-}
-/* line 78 */
+/* line 64 */
 #navigation .rss-icon {
   position: absolute;
   padding-top: 5px;
@@ -83,24 +72,24 @@ div.entry-content ul ul ul {
 
 /** hide RSS when small screen **/
 @media only screen and (max-width: 767px) {
-  /* line 86 */
+  /* line 72 */
   ul.columns + ul.columns {
     display: none;
   }
 }
-/* line 91 */
+/* line 77 */
 .social-link-list li {
   display: inline;
   padding: 0 5px;
 }
 
 /** code blocks **/
-/* line 97 */
+/* line 83 */
 pre {
   font-family: 'Consolas', 'Menlo', 'Deja Vu Sans Mono', 'Bitstream Vera Sans Mono', monospace;
 }
 
-/* line 101 */
+/* line 87 */
 code {
   color: #484849;
 }

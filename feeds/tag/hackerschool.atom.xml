@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>*JJ</title><link href="https://jdotjdot.github.io/" rel="alternate"></link><link href="https://jdotjdot.github.io/feeds/tag/hackerschool.atom.xml" rel="self"></link><id>https://jdotjdot.github.io/</id><updated>2014-05-22T23:16:55-04:00</updated><entry><title>Include the weather in your bash prompt!</title><link href="https://jdotjdot.github.io/2014/05/include-the-weather-in-your-bash-prompt/" rel="alternate"></link><updated>2014-05-22T23:16:55-04:00</updated><author><name>JJ</name></author><id>tag:https://jdotjdot.github.io,2014-05-22:2014/05/include-the-weather-in-your-bash-prompt/</id><summary type="html">&lt;p&gt;About a third of the way into Hacker School, I got myself entrenched in a rather unusual project&amp;#8212;trying to figure out how to get an automatically updated weather icon into my Bash prompt, doing it purely in Bash for practical (and aesthetic)&amp;nbsp;reasons.&lt;/p&gt;
+&lt;p&gt;I called it &lt;a href="https://github.com/jdotjdot/BashWeather"&gt;BashWeather&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="BashWeather screenshot" src="https://dl.dropboxusercontent.com/s/z4ut9ggm8y14izp/bashweather%20screenshot.png" /&gt;
+&lt;em&gt;Screenshot of sample terminal session with&amp;nbsp;BashWeather&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;The weather character palette includes the&amp;nbsp;following:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;☂☔︎☃☽☀︎
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;There are a number of configurable options, including the&amp;nbsp;following:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;How often to wait between weather&amp;nbsp;updates&lt;/li&gt;
+&lt;li&gt;The default character to be supplied in the event that the weather isn&amp;#8217;t&amp;nbsp;available&lt;/li&gt;
+&lt;li&gt;The method to use to determine where in the world the computer is located.  Options are to use &lt;span class="caps"&gt;IP&lt;/span&gt; address, to use the built-in Mac locator if available, or to supply the city and country in a string when calling the&amp;nbsp;script.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I learned quite a bit from this project about Bash functions, scoping, some of Bash&amp;#8217;s oddities (behavior of brackets, blobbing, needing to quote variables, etc.), and some of the nitty-gritty details of Bash variables.  Since a lot of global variables were required by the script to keep track of state, like how long it&amp;#8217;s been since the last check and whether or not internet is available, I was very careful to pollute the global namespace as little as possible, which was an interesting exercise given that Bash functions &lt;a href="http://www.linuxjournal.com/content/return-values-bash-functions"&gt;can&amp;#8217;t actually return values to the caller&lt;/a&gt; in the way you&amp;#8217;d traditionally think about&amp;nbsp;it.&lt;/p&gt;
+&lt;h3&gt;But&amp;#8230;&amp;nbsp;why?&lt;/h3&gt;
+&lt;p&gt;I couldn&amp;#8217;t think of anything to do at Hacker School for a bit, and I was about to head outside to get a cup of coffee to clear my head, and I noticed that it was raining and got very upset that I didn&amp;#8217;t have an umbrella with me.  I almost always forget to bring my umbrella, and I used to use an &lt;a href="http://www.ifttt.com"&gt;&lt;span class="caps"&gt;IFTTT&lt;/span&gt;&lt;/a&gt; recipe that sent me a Gchat whenever it started to rain.  Unfortunately, with the advent of Hangouts, it was eventually&amp;nbsp;deprecated.&lt;/p&gt;
+&lt;p&gt;I liked the Gchat recipe because it alerted me both on my computer and on my phone.  Considering how to replace it, I started thinking about what I look at more than anything else&amp;#8212;and realized the one and only answer there was my Bash prompt.  I&amp;#8217;m always looking at the command line, one way or another, or at least have it open&amp;#8212;and the decision was&amp;nbsp;made.&lt;/p&gt;
+&lt;p&gt;From then on, I would know the&amp;nbsp;weather.&lt;/p&gt;
+&lt;h3&gt;But would you really ever look at the weather in your&amp;nbsp;prompt?&lt;/h3&gt;
+&lt;p&gt;When I started telling people about it at Hacker School I did encounter a bit of skepticism, usually along the lines&amp;nbsp;of:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Why would you ever need the weather in your&amp;nbsp;prompt?&lt;/p&gt;
+&lt;p&gt;Come on, you&amp;#8217;re never actually going to use&amp;nbsp;that.&lt;/p&gt;
+&lt;p&gt;&amp;#8230;etc.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;I got this reaction from one person in particular, and we then sat down to start pairing on a quick question that we were trying to resolve&amp;#8212;I think possibly something to do with BashWeather&amp;nbsp;itself.&lt;/p&gt;
+&lt;p&gt;We&amp;#8217;d been working not even two minutes when we turned to the prompt and he saw the umbrella (☂) in the prompt and exclaimed, &amp;#8220;Oh no, is it raining? I didn&amp;#8217;t&amp;nbsp;realize!&amp;#8221;&lt;/p&gt;
+&lt;p&gt;&amp;#8230;and then he realized what had happened, and then I&amp;nbsp;grinned.&lt;/p&gt;
+&lt;h3&gt;And now, the&amp;nbsp;code&lt;/h3&gt;
+&lt;p&gt;The full script, with instructions, can be found at the &lt;a href="https://github.com/jdotjdot/BashWeather"&gt;Github repository&lt;/a&gt;.  It is currently fully functional, though still a work in&amp;nbsp;progress.&lt;/p&gt;</summary><category term="hackerschool"></category><category term="bash"></category><category term="weather"></category><category term="bashweather"></category></entry><entry><title>Days 3-4: More algorithms, CTF, whoops</title><link href="https://jdotjdot.github.io/2014/02/day-3-more-algorithms/" rel="alternate"></link><updated>2014-02-13T00:00:00-05:00</updated><author><name>JJ</name></author><id>tag:https://jdotjdot.github.io,2014-02-13:2014/02/day-3-more-algorithms/</id><summary type="html">&lt;h3&gt;Algorithms&lt;/h3&gt;
+&lt;h4&gt;Selection&amp;nbsp;sort&lt;/h4&gt;
+&lt;p&gt;Just going through left to right, finding the new minimum of the unsorted items, and swapping it with the left most unsorted&amp;nbsp;item.&lt;/p&gt;
+&lt;h4&gt;Insertion&amp;nbsp;sort&lt;/h4&gt;
+&lt;p&gt;Going from left to right, and moving the leftmost unsorted item one item left at a time until we hit the beginning of the array or an item smaller than the one we&amp;#8217;re currently&amp;nbsp;moving.&lt;/p&gt;
+&lt;h4&gt;Shellsort&lt;/h4&gt;
+&lt;p&gt;Insertion sort, but making jumps of size &lt;code&gt;h&lt;/code&gt;.
+Interesting point that the professor made was that if you &lt;em&gt;h&lt;/em&gt;-sort an array and then &lt;em&gt;g&lt;/em&gt;-sort it, it still remains &lt;em&gt;h&lt;/em&gt;-sorted.  This was not something I had thought of offhand, but it makes perfect&amp;nbsp;sense.&lt;/p&gt;
+&lt;p&gt;Shellsort is generally pretty fast unless the array size is&amp;nbsp;huge.&lt;/p&gt;
+&lt;h3&gt;Hacking&lt;/h3&gt;
+&lt;p&gt;I started playing around with a really cool embedded security capture the flag game called &lt;a href="https://microcorruption.com/login"&gt;Microcorruption&lt;/a&gt;.  &amp;#8220;Capture the Flag&amp;#8221; games, when referring to computer security, are complex and involved games with series of levels where you have to find the (deliberately placed) vulnerability in the server or website, etc. at each level and find a secret file, codeword, or password hidden there.  Stripe has run a few of these relating to breaking into websites, so I&amp;#8217;m very excited about this one, which actually works with breaking into (virtual) hardware to break into pretend warehouses.  Very&amp;nbsp;exciting.&lt;/p&gt;
+&lt;p&gt;It would shock me if I find myself moving a bit more towards studying hardware and network security while I&amp;#8217;m&amp;nbsp;here.&lt;/p&gt;
+&lt;h3&gt;Blowing up my&amp;nbsp;computer&lt;/h3&gt;
+&lt;p&gt;Whoops.   Accidentally breaking Windows took up the latter half of the day.  Still working on fixing it, even though it&amp;#8217;s already the next day.  Might have to get a new&amp;nbsp;computer.&lt;/p&gt;</summary><category term="hackerschool"></category><category term="algorithms"></category><category term="sort"></category></entry><entry><title>Day 2: Algorithms</title><link href="https://jdotjdot.github.io/2014/02/algorithms/" rel="alternate"></link><updated>2014-02-11T00:00:00-05:00</updated><author><name>JJ</name></author><id>tag:https://jdotjdot.github.io,2014-02-11:2014/02/algorithms/</id><summary type="html">&lt;p&gt;Today, I&amp;#8217;m working on the &lt;a href="https://class.coursera.org/algs4partI-004/lecture"&gt;Princeton Algorithms Coursera Course&lt;/a&gt;. &lt;/p&gt;
+&lt;p&gt;Main goal overall for today and the next few days is to focus on making sure I know the basics of algorithms, enough to make up for the fact I didn&amp;#8217;t formally study Computer&amp;nbsp;Science.&lt;/p&gt;
+&lt;h4&gt;Quick-union&lt;/h4&gt;
+&lt;p&gt;I quickly skipped past the first couple of lectures on unions to get to quick-union.  This strategy works with trees of nodes and more efficiently finds if two nodes are connected by finding each node&amp;#8217;s root and determining if they&amp;#8217;re the same root.  To connect nodes, you connect their roots.
+Unfortunately, it&amp;#8217;s still a pretty slow strategy, mainly because the trees can get very&amp;nbsp;tall.&lt;/p&gt;
+&lt;h4&gt;Weighted&amp;nbsp;quick-union&lt;/h4&gt;
+&lt;p&gt;This strategy is a modification of quick-sort so that the trees don&amp;#8217;t get too tall.  Basically, when we&amp;#8217;re connecting a tall tree with a shorter tree, we make sure to put the smaller tree as the child of the bigger tree.  When we&amp;#8217;re adding a node that&amp;#8217;s nested in a different tree, we add that node&amp;#8217;s entire tree as a child of the tree we&amp;#8217;re moving it to.
+By adding path compression, we flatten each tree out.  Not quite sure why we&amp;#8217;re doing this; professor says it&amp;#8217;s &amp;#8220;because we&amp;nbsp;can.&amp;#8221;&lt;/p&gt;
+&lt;p&gt;Some other topics I glossed over&amp;nbsp;today:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;O-time&lt;/li&gt;
+&lt;li&gt;Stacks&lt;/li&gt;
+&lt;li&gt;This included basic arithmetic expression evaluation, which is basically a small calculator interpreter, which I already did once for a Google Code Jam&amp;nbsp;problem&lt;/li&gt;
+&lt;li&gt;Arrays (These I know&amp;nbsp;well)&lt;/li&gt;
+&lt;li&gt;Queues (Already wrote a &lt;a href="https://github.com/jdotjdot/CouchQueue"&gt;queue&lt;/a&gt;&amp;#8212;not a pure one, but at least requiring an understanding of&amp;nbsp;theory)&lt;/li&gt;
+&lt;li&gt;Iterators&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;For the rest of the week, I&amp;#8217;m planning to finish what&amp;#8217;s available of the Algorithms course (Elementary Sorts), read chapter 3 of Introduction to Algorithms (data structures), and then try implementing a few data structures in C, finishing by working on some difficult Google Code Jam algorithms problems, before moving onto the next&amp;nbsp;project.&lt;/p&gt;</summary><category term="quick-union"></category><category term="hackerschool"></category></entry></feed>

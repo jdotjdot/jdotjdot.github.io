@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+        <title>Asynchronous programming with Arduino</title>
+        <meta charset="utf-8" />
+        <link href="https://jdotjdot.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="*JJ Full Atom Feed" />
+        <link href="https://jdotjdot.github.io/feeds/category/programming.atom.xml" type="application/atom+xml" rel="alternate" title="*JJ Categories Atom Feed" />
+
+
+        <!-- Mobile viewport optimized: j.mp/bplateviewport -->
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+
+
+            <link rel="stylesheet" type="text/css" href="https://jdotjdot.github.io/theme/gumby-custom.css?a6374bd9" />
+
+        <link rel="stylesheet" type="text/css" href="https://jdotjdot.github.io/theme/style.css" />
+        <link rel="stylesheet" type="text/css" href="https://jdotjdot.github.io/theme/pygment.css" />
+          <link rel="stylesheet" type="text/css" href="https://jdotjdot.github.io/theme/jj-custom.css?17d3d1cc" />
+
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+        <script src="https://jdotjdot.github.io/theme/js/libs/modernizr-2.6.2.min.js"></script>
+
+
+              <script>
+                (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+                ga('create', 'UA-47960248-1', 'blog.jdotjdot.com');
+                ga('require', 'displayfeatures');
+                ga('require', 'linkid', 'linkid.js');
+                ga('send', 'pageview');
+
+              </script>
+
+
+
+
+</head>
+
+<body id="index" class="home">
+
+
+    <div class="container">
+
+        <div class="row">
+
+
+            <div id="navigation" class="navbar row">
+              <a href="#" gumby-trigger="#navigation &gt; ul" class="toggle"><i class="icon-menu"></i></a>
+
+              <ul class="columns">
+                <!-- logo -->
+		<li><a class="logo-text" href="https://jdotjdot.github.io"><span>*JJ</span></a></li>
+
+
+
+                    <li><a href="/archives/">Archives</a></li>
+              </ul>
+
+
+                <!-- RSS/Atom feed -->
+                <ul class="columns">
+                    <li><a class="rss-icon" href="https://jdotjdot.github.io/feeds/category/programming.atom.xml"><i class="fa fa-rss fa-2x"></i></a></li>
+                </ul>
+            </div>
+
+<section id="content" class="body">
+
+   <div class="row">
+        <div class="eleven columns">
+
+
+            <header>
+              <h2 class="entry-title">
+                <a href="https://jdotjdot.github.io/2014/03/asynchronous-programming-with-spark-core/" rel="bookmark"
+                   title="Permalink to Asynchronous programming with Arduino">Asynchronous programming with&nbsp;Arduino</a></h2>
+           
+            </header>
+
+            <footer class="post-info">
+                Published <span class="published" title="2014-03-11T00:00:00">Tue 11 March 2014</span> by
+                <a class="url fn author-name" href="https://jdotjdot.github.io/author/jj.html">JJ</a>
+                <br>
+                <span>Tagged in: </span>
+                        <a class="tag" href="https://jdotjdot.github.io/tags/c">C</a>,                        <a class="tag" href="https://jdotjdot.github.io/tags/async">async</a>                <hr>
+            </footer>
+
+
+            <div class="entry-content">
+              <p>I&#8217;ve been working quite a bit this week and last week with <a href="http://www.arduino.cc/">Arduinos</a> and <a href="https://www.spark.io/">Spark Cores</a> (an Arduino-like device with WiFi and a cloud service built-in).   I&#8217;ve been working on a few projects, including many out of the Arduino starter book, hooking up a remote control car to WiFi, and hooking up the Hacker School door buzzer to our WiFi so that we can let people in  without pressing the door buzzer&#8212;or so that people can let themselves&nbsp;in.</p>
+<p>One of the issues I&#8217;ve run across that&#8217;s been interesting is how to run threaded or asynchronous commands.  This is important if we want the Arduino to do something, but we also need a time delay.  For example, if someone sends a command to the Arduino to open the door, we need to do the following two&nbsp;things:</p>
+<ol>
+<li>Open the door, wait 10 seconds, close the&nbsp;door</li>
+<li>Respond to the request and close the connection&#8212;e.g. with a <code>HTTP 200 OK</code> or something&nbsp;similar.</li>
+</ol>
+<p>The way my code was structured, I was sending the command to the door before responding to the client.  The problem is that the Arduino is running a single set of instructions, so the response to the client is delayed by waiting for the door to close.  For example, the steps occured in the following&nbsp;order:</p>
+<ol>
+<li>Arduino server recieves request to open the&nbsp;door</li>
+<li>Arduino opens&nbsp;door</li>
+<li>Arduino sits and waits for 10&nbsp;seconds</li>
+<li>Arduino closes&nbsp;door</li>
+<li><em>Then</em>, Arduino sends response&nbsp;message</li>
+</ol>
+<p>The client is then sitting there and waiting for 10 seconds to know what happened.  I didn&#8217;t want to have this happen, so there had to be a better way to do it&#8212;and I realized I could take advantage of the Arduino&#8217;s built-in looping&nbsp;structure.</p>
+<h3>First, some&nbsp;background</h3>
+<p>The Arduino requires its code to be set up in a specific manner, with two specific functions that it will always&nbsp;run.</p>
+<div class="highlight"><pre><span class="k">void</span> <span class="nx">setup</span><span class="p">()</span> <span class="p">{</span>
+   <span class="c1">// This function is called once upon start-up</span>
+   <span class="c1">//  to do any set-up required--e.g., initalizing</span>
+   <span class="c1">//  intput and output pins</span>
+<span class="p">}</span>
+
+<span class="k">void</span> <span class="nx">loop</span><span class="p">()</span> <span class="p">{</span>
+   <span class="cm">/* This function is called over and over again, many </span>
+<span class="cm">   times per second.</span>
+
+<span class="cm">   However, it only runs once at a time, so if you have a &quot;delay&quot; command in there, all activity will cease until the delay is over.</span>
+<span class="cm">   */</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<h3>What I&nbsp;did</h3>
+<p>I took advantage of how frequently <code>loop()</code> is called.  I set up a block at the top of <code>loop()</code> (or alternatively could be a different function that is called at the top of <code>loop()</code>) that would run the open door command when a state variable, declared at the beginning, was set to <code>true</code>, and then immediately turn it to false.<br />
+Rather than open the door immediately upon receiving the request, the Arduino would set this &#8220;openDoor&#8221; variable to <code>true</code> and would immediately respond to the client.  The next time the program looped around, it would see that <code>openDoor</code> says that the door needs to be open it&#8212;and so it would open it and have the delay, but it would do all this after the client had been responded&nbsp;to.</p>
+<p>Overall, the code looked something like&nbsp;this:</p>
+<div class="highlight"><pre><span class="n">boolean</span> <span class="n">asyncOpenDoor</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+
+<span class="kt">void</span> <span class="nf">openDoor</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// code to open the door</span>
+    <span class="c1">// below is pseudocode</span>
+
+    <span class="n">asyncOpenDoor</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span> <span class="c1">// so door isn&#39;t opened again</span>
+
+    <span class="n">openTheDoor</span><span class="p">();</span>
+    <span class="n">delay</span><span class="p">(</span><span class="mi">15000</span><span class="p">);</span> <span class="c1">// delay for 15 seconds</span>
+    <span class="n">closeTheDoor</span><span class="p">();</span>
+
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">setup</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">pinMode</span><span class="p">(</span><span class="n">doorOpener</span><span class="p">,</span> <span class="n">OUTPUT</span><span class="p">);</span>
+
+    <span class="c1">// code to set up the server</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">loop</span><span class="p">()</span> <span class="p">{</span>
+
+   <span class="k">if</span> <span class="p">(</span><span class="n">asyncOpenDoor</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">openDoor</span><span class="p">();</span>
+   <span class="p">}</span>
+
+   <span class="c1">// Code to receive incoming requests</span>
+
+   <span class="k">if</span> <span class="p">(</span><span class="n">requestSaysToOpenTheDoor</span><span class="p">)</span> <span class="p">{</span>
+      <span class="c1">// Valid door-opening request</span>
+
+      <span class="n">asyncOpenDoor</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+
+      <span class="c1">// respond to client</span>
+      <span class="n">client</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;HTTP 200 OK&quot;</span><span class="p">);</span>
+   <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="c1">// invalid door-opening request</span>
+
+      <span class="c1">// respond to client</span>
+      <span class="n">client</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;HTTP 401 Unauthorized&quot;</span><span class="p">);</span>
+   <span class="p">}</span>
+
+   <span class="c1">// kill the connection</span>
+   <span class="n">client</span><span class="p">.</span><span class="n">stop</span><span class="p">();</span>
+   <span class="n">client</span><span class="p">.</span><span class="n">flush</span><span class="p">();</span>
+
+<span class="p">}</span>
+</pre></div>
+            </div><!-- /.entry-content -->
+
+
+        </div><!-- /.eleven.columns -->
+        
+
+<div class="three columns">
+
+    <nav class="widget">
+        <h4>Social</h4>
+        <ul class="social-link-list">
+               <li><a href="https://github.com/jdotjdot">
+                <i class="social-icon fa fa-2x fa-github"></i>
+    </a></li>
+               <li><a href="http://stackoverflow.com/users/1351335/jdotjdot">
+                <i class="social-icon fa fa-2x fa-stack-overflow"></i>
+    </a></li>
+               <li><a href="https://twitter.com/JdotJdotF">
+                <i class="social-icon fa fa-2x fa-twitter"></i>
+    </a></li>
+        </ul>
+    </nav>
+
+<h4>Pages</h4>
+
+ <ul>
+      <li><a href="/archives/">Archives</a></li>
+  </ul>
+
+<h4>Categories</h4>
+<ul>
+		<li><a href="https://jdotjdot.github.io/category/programming">Programming</a></li>
+</ul>
+
+
+<h4>Tags</h4>
+	<ul>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/async">async</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/bash">bash</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/bashweather">bashweather</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/c">C</a></li>
+	    <li class="tag-1"><a href="https://jdotjdot.github.io/tags/hackerschool">hackerschool</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/quick-union">quick-union</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/weather">weather</a></li>
+</ul>
+
+
+
+</div> </div><!-- /.row -->
+
+
+</section>
+
+       </div><!-- /.row -->
+    </div><!-- /.container -->
+
+
+       <div class="container.nopad bg">
+
+
+        <footer id="credits" class="row">
+          <div class="seven columns left-center">
+
+                   <address id="about" class="vcard body">
+                    Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                    which takes great advantage of <a href="http://python.org">Python</a>.
+                    <br />
+                    Based on the <a target="_blank" href="http://gumbyframework.com">Gumby Framework</a>
+                    </address>
+          </div>
+
+
+          <div class="seven columns">
+            <div class="row">
+              <ul class="socbtns">
+
+
+
+
+
+              </ul>
+            </div>
+          </div>
+        </footer>
+
+    </div>
+
+
+  <script src="https://jdotjdot.github.io/theme/js/libs/jquery-1.9.1.min.js"></script>
+  <script src="https://jdotjdot.github.io/theme/js/libs/gumby.min.js"></script>
+  <script src="https://jdotjdot.github.io/theme/js/plugins.js"></script>
+  <script src="https://jdotjdot.github.io/theme/js/jj-js.js"></script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>*JJ</title><link href="https://jdotjdot.github.io/" rel="alternate"></link><link href="https://jdotjdot.github.io/feeds/tag/python.atom.xml" rel="self"></link><id>https://jdotjdot.github.io/</id><updated>2014-04-22T00:00:00-04:00</updated><entry><title>Re-implementing Clojure’s comp</title><link href="https://jdotjdot.github.io/2014/04/re-implementing-clojures-comp/" rel="alternate"></link><updated>2014-04-22T00:00:00-04:00</updated><author><name>JJ</name></author><id>tag:https://jdotjdot.github.io,2014-04-22:2014/04/re-implementing-clojures-comp/</id><summary type="html">&lt;p&gt;While working through &lt;a href="http://www.braveclojure.com/functional-programming/"&gt;Clojure for the Brave and True&lt;/a&gt;, I came across an explanation of Clojure&amp;#8217;s &lt;code&gt;comp&lt;/code&gt; function and some basic implementations of versions of &lt;code&gt;comp&lt;/code&gt; that take only two arguments or three arguments.  The tutorial challenged me to try to completely re-implement &lt;code&gt;comp&lt;/code&gt; to accept an arbitrary number of function arguments, and that got me thinking that it would be a very good exercise to try in&amp;nbsp;Clojure.&lt;/p&gt;
+&lt;p&gt;The book had an implentation of the two-argument &lt;code&gt;comp&lt;/code&gt; that looked something like&amp;nbsp;this;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kd"&gt;defn &lt;/span&gt;&lt;span class="nv"&gt;two-comp&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nv"&gt;f&lt;/span&gt; &lt;span class="nv"&gt;g&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;fn &lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="nv"&gt;args&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+    &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;f&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;apply &lt;/span&gt;&lt;span class="nv"&gt;g&lt;/span&gt; &lt;span class="nv"&gt;args&lt;/span&gt;&lt;span class="p"&gt;))))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;I worked off of that as a base for a while, but kept running into trouble.  I kept running into rather complicated functions-of-functions that seemed to be returning functions that operated on the input functions, rather than the actual arguments, which was not what we were looking for.  It&amp;#8217;s a bit hard to wrap your head around this, since it&amp;#8217;s very meta and we&amp;#8217;re talking about a function that has functions as arguments and returns a function of functions as its&amp;nbsp;result.&lt;/p&gt;
+&lt;p&gt;I decided to take a stab at this in Python, my go-to&amp;nbsp;language.&lt;/p&gt;
+&lt;p&gt;What I came up with ended up looking like&amp;nbsp;this:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;clojure_comp&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;wrap_function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;to_wrap&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;wrapper&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;return_function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;inner_args&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+            &lt;span class="c"&gt;# Here is where we actually call the function&lt;/span&gt;
+            &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;wrapper&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;to_wrap&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;inner_args&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;return_function&lt;/span&gt;
+
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nb"&gt;reduce&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;wrap_function&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nb"&gt;reversed&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This ended up working out very nicely, using string maniuplation as a&amp;nbsp;test:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;clojure_comp&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;lambda&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;upper&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt; &lt;span class="k"&gt;lambda&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;strip&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt; &lt;span class="k"&gt;lambda&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;replace&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;b&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;))(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot; abcdefgh   &amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="s"&gt;&amp;#39;BBCDEFG&amp;#39;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;So I gave this another shot in&amp;nbsp;Clojure.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kd"&gt;defn &lt;/span&gt;&lt;span class="nv"&gt;mycomp&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="nv"&gt;args&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+  &lt;span class="s"&gt;&amp;quot;A function that takes an arbitrary number of functions and returns a function that &lt;/span&gt;
+&lt;span class="s"&gt;  applies each of those functions, last first, to the input arguments.&amp;quot;&lt;/span&gt;
+  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kd"&gt;defn &lt;/span&gt;&lt;span class="nv"&gt;wrapper-function&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nv"&gt;wrapped&lt;/span&gt; &lt;span class="nv"&gt;wrapper&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+    &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;fn &lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="nv"&gt;inner-args&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;wrapper&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;apply &lt;/span&gt;&lt;span class="nv"&gt;wrapped&lt;/span&gt; &lt;span class="nv"&gt;inner-args&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+    &lt;span class="p"&gt;)&lt;/span&gt;
+
+  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;reduce &lt;/span&gt;&lt;span class="nv"&gt;wrapper-function&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;reverse &lt;/span&gt;&lt;span class="nv"&gt;args&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+
+  &lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;And it does&amp;nbsp;work&amp;#8212;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;user=&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="nf"&gt;mycomp&lt;/span&gt; &lt;span class="nv"&gt;clojure.string/trim&lt;/span&gt; &lt;span class="nv"&gt;clojure.string/lower-case&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;   this IS a test   &amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="s"&gt;&amp;quot;this is a test&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;But ultimately, I think it might be a bit too Pythonic rather than right for Clojure.  I don&amp;#8217;t tend to see too many functions that declare another named function within themselves, and I also feel like this is the kind of function that might better use recursion or &lt;code&gt;loop&lt;/code&gt; than &lt;code&gt;reduce&lt;/code&gt;, which I feel like I&amp;#8217;m falling back on as a replacement for Python&amp;#8217;s convenient &lt;code&gt;for&lt;/code&gt; iteration.  &lt;/p&gt;
+&lt;p&gt;That being said, it could still be a valuable way of doing it.  I recently got complimented by a Javascript developer for my use of &lt;code&gt;reduce&lt;/code&gt; in some Javascript I was writing for the &lt;a href="http://www.sefaria.org"&gt;Sefaria&lt;/a&gt; project.  He said &lt;code&gt;reduce&lt;/code&gt; and &lt;code&gt;map&lt;/code&gt; were functional elements of &lt;span class="caps"&gt;JS&lt;/span&gt; that even most seasoned Javascript developers don&amp;#8217;t use, so he was surprised that I was&amp;#8212;but to me, languages like Clojure make it seem quite natural to use, and much more elegant in many cases than iteration and&amp;nbsp;mutation.&lt;/p&gt;</summary><category term="hackerschool"></category><category term="python"></category><category term="clojure"></category><category term="comp"></category></entry></feed>

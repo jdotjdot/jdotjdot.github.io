@@ -30,4 +30,169 @@
 &lt;p&gt;We&amp;#8217;d been working not even two minutes when we turned to the prompt and he saw the umbrella (☂) in the prompt and exclaimed, &amp;#8220;Oh no, is it raining? I didn&amp;#8217;t&amp;nbsp;realize!&amp;#8221;&lt;/p&gt;
 &lt;p&gt;&amp;#8230;and then he realized what had happened, and then I&amp;nbsp;grinned.&lt;/p&gt;
 &lt;h3&gt;And now, the&amp;nbsp;code&lt;/h3&gt;
-&lt;p&gt;The full script, with instructions, can be found at the &lt;a href="https://github.com/jdotjdot/BashWeather"&gt;Github repository&lt;/a&gt;.  It is currently fully functional, though still a work in&amp;nbsp;progress.&lt;/p&gt;</summary><category term="hackerschool"></category><category term="bash"></category><category term="weather"></category><category term="bashweather"></category></entry></feed>
+&lt;p&gt;The full script, with instructions, can be found at the &lt;a href="https://github.com/jdotjdot/BashWeather"&gt;Github repository&lt;/a&gt;.  It is currently fully functional, though still a work in&amp;nbsp;progress.&lt;/p&gt;</summary><category term="hackerschool"></category><category term="bash"></category><category term="weather"></category><category term="bashweather"></category></entry><entry><title>Automatically restarting your process or server on crash</title><link href="https://jdotjdot.github.io/2014/04/restarting-your-server-on-crash/" rel="alternate"></link><updated>2014-04-10T00:00:00-04:00</updated><author><name>JJ</name></author><id>tag:https://jdotjdot.github.io,2014-04-10:2014/04/restarting-your-server-on-crash/</id><summary type="html">&lt;p&gt;While working with &lt;a href="http://github.com/lord"&gt;Robert&lt;/a&gt; on the &lt;a href="http://github.com/lord/doorbot"&gt;Doorbot&lt;/a&gt; webserver as part of our project to hook up the front door of Hacker School to the web, we ran across a small problem with the Ruby server that he had set&amp;nbsp;up.&lt;/p&gt;
+&lt;p&gt;In the past, my sites have always been hosted places like Heroku or &lt;a href="http://www.webfaction.com?affiliate=thecampusrep"&gt;Webfaction&lt;/a&gt;, which take care of restarting the server in case of&amp;nbsp;shutdown.&lt;/p&gt;
+&lt;p&gt;However, we were hosting the Doorbot server on a Raspberry Pi that we were planning to lock in the network closet.   This meant that no one was going to be able to get in there to physically unplug and replug the Pi, which is the method we&amp;#8217;d been using to restart the server after we (with great difficulty) got the server launch script into Raspbian&amp;#8217;s &lt;code&gt;init.d&lt;/code&gt; to start on startup.  Another method we&amp;#8217;d also been using was to &lt;span class="caps"&gt;SSH&lt;/span&gt; into the Pi to manually restart the server, but this of course wasn&amp;#8217;t a sustainable long-term solution.  If the server shut down on its own, people weren&amp;#8217;t going to be able to get through the door until someone alerted us and we restarted the server manually.   &lt;strong&gt;We needed a better solution that would automatically and reliably restart the server upon shutdown without any human&amp;nbsp;intervention.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;I suggested a strategy that I presented at a &lt;a href="https://github.com/jdotjdot/Data-Scraping-Talk--PennApps-F2012-"&gt;lecture&lt;/a&gt; at &lt;a href="http://pennapps.com"&gt;PennApps&lt;/a&gt; Fall 2012.   I had previously used this strategy on some web scraping projects to get a running Python process to restart immediately upon shutdown.  For processes like that scraper or the Ruby server, if the process dies with an error, we actually don&amp;#8217;t generally care in this case why it shut down or what the error was&amp;#8212;just that it shut down and that we want it back up&amp;nbsp;immediately.  &lt;/p&gt;
+&lt;p&gt;The strategy is to &lt;strong&gt;wrap the server set-up process in a Bash script&lt;/strong&gt; within a &lt;code&gt;while&lt;/code&gt; or &lt;code&gt;until&lt;/code&gt; loop, as in the following example with my old Python&amp;nbsp;scraper:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;# Runs our scraper indefinitely&lt;/span&gt;
+&lt;span class="c"&gt;# will only stop upon a GRACEFUL exit--&lt;/span&gt;
+&lt;span class="c"&gt;#  but keep in mind a graceful exit only means that&lt;/span&gt;
+&lt;span class="c"&gt;#  no error is thrown, but that doesn&amp;#39;t mean that we&lt;/span&gt;
+&lt;span class="c"&gt;#  actually want the program to end!&lt;/span&gt;
+
+&lt;span class="k"&gt;until &lt;/span&gt;python scraper.py; &lt;span class="k"&gt;do&lt;/span&gt;
+&lt;span class="k"&gt;    &lt;/span&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Process crashed with exit code $?.  Respawning...&amp;quot;&lt;/span&gt; &amp;gt;&amp;amp;2
+    sleep 2
+&lt;span class="k"&gt;done&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;For a server, you would replace &lt;code&gt;python scraper.py&lt;/code&gt; with &lt;code&gt;python manage.py runserver&lt;/code&gt; for Django, or the equivalent command in Ruby or your preferred web&amp;nbsp;framework.&lt;/p&gt;
+&lt;p&gt;What happens here is the &lt;code&gt;until&lt;/code&gt; loop starts to test the &amp;#8220;condition,&amp;#8221; but the condition here is actually our intended process.  That process runs indefinitely, and ideally would never stop and we&amp;#8217;d never hit the &lt;code&gt;echo&lt;/code&gt;.  However, in the event that the server &lt;em&gt;does&lt;/em&gt; crash, we take advantage of a trick with Bash&amp;#8212;an exit upon failure will evalute &amp;#8220;false-y&amp;#8221; for the &lt;code&gt;until&lt;/code&gt; loop, and so on a crash, we will always enter and repeat the loop.  The only way to exit the loop is a successful server program exit, which will never happen, because we never intentionally shut down the&amp;nbsp;server!&lt;/p&gt;
+&lt;p&gt;After wrapping the Ruby server startup call in that tiny Bash script, the server now automatically restarts itself upon&amp;nbsp;failure.&lt;/p&gt;</summary><category term="hackerschool"></category><category term="bash"></category><category term="doorbot"></category><category term="doorduino"></category><category term="server"></category><category term="crash"></category><category term="restart"></category></entry><entry><title>How to use getopts inside a Bash function</title><link href="https://jdotjdot.github.io/2014/03/how-to-use-getopts-inside-a-bash-function/" rel="alternate"></link><updated>2014-03-18T00:00:00-04:00</updated><author><name>JJ</name></author><id>tag:https://jdotjdot.github.io,2014-03-18:2014/03/how-to-use-getopts-inside-a-bash-function/</id><summary type="html">&lt;p&gt;As part of my quest to finish packaging up my Bash function that gets the updated weather in your Bash prompt, I needed to better organize my code, and so started putting some code into functions.  Bash, however, is a fickle language, and the difficulty that quickly arose was using &lt;code&gt;getops&lt;/code&gt; within a Bash&amp;nbsp;function.&lt;/p&gt;
+&lt;p&gt;The reason that I wanted to do this is that Bash, in its infinite wisdom, doesn&amp;#8217;t have regular namespacing.  When you use &lt;code&gt;source&lt;/code&gt; or &lt;code&gt;.&lt;/code&gt; on a Bash script and it sets a variable, that variable is now set across your entire environment (e.g., that terminal window).  That&amp;#8217;s not great to begin with, but given that this script is going to be called every time the prompt is run (meaning, literally every time a command is run), I want to be sure not to clutter up users&amp;#8217; global&amp;nbsp;namespace.&lt;/p&gt;
+&lt;p&gt;Originally, it was working fine when placed straight in the shell&amp;nbsp;script:&lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt; 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;#!/bin/bash&lt;/span&gt;
+
+  &lt;span class="k"&gt;while &lt;/span&gt;&lt;span class="nb"&gt;getopts&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;:c:l:u:s:&amp;quot;&lt;/span&gt; opt ; &lt;span class="k"&gt;do&lt;/span&gt;
+&lt;span class="k"&gt;      case&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;$opt&amp;quot;&lt;/span&gt; in
+          c  &lt;span class="o"&gt;)&lt;/span&gt;   &lt;span class="c"&gt;# default character to display if no weather, leave empty for none&lt;/span&gt;
+              &lt;span class="nv"&gt;c&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;$OPTARG&amp;quot;&lt;/span&gt;
+              ;;
+          l  &lt;span class="o"&gt;)&lt;/span&gt;   &lt;span class="c"&gt;# supply city name instead of using internet&lt;/span&gt;
+              &lt;span class="nv"&gt;l&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;$OPTARG&amp;quot;&lt;/span&gt;
+              ;;
+          u  &lt;span class="o"&gt;)&lt;/span&gt;   &lt;span class="c"&gt;# how often to update weather in seconds&lt;/span&gt;
+              &lt;span class="nv"&gt;u&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;$OPTARG&amp;quot;&lt;/span&gt;
+              ;;
+          s  &lt;span class="o"&gt;)&lt;/span&gt;   &lt;span class="c"&gt;# weather update alert string to supply, if any&lt;/span&gt;
+              &lt;span class="nv"&gt;s&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;$OPTARG&amp;quot;&lt;/span&gt;
+              ;;
+          h  &lt;span class="o"&gt;)&lt;/span&gt;
+              &lt;span class="c"&gt;# echo the help file&lt;/span&gt;
+              ;;
+          &lt;span class="se"&gt;\?&lt;/span&gt; &lt;span class="o"&gt;)&lt;/span&gt;
+              &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Invalid option: -$OPTARG&amp;quot;&lt;/span&gt; &amp;gt;&amp;amp;2
+              ;;
+          :  &lt;span class="o"&gt;)&lt;/span&gt;
+              &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Option -$OPTARG requires an argument.&amp;quot;&lt;/span&gt; &amp;gt;&amp;amp;2
+              &lt;span class="nb"&gt;exit &lt;/span&gt;1
+              ;;
+      &lt;span class="k"&gt;esac&lt;/span&gt;
+&lt;span class="k"&gt;  done&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;p&gt;What this does is it allows you to call my shell script with various parameters,&amp;nbsp;e.g.:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;BashWeather&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;$&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;u&lt;/span&gt; &lt;span class="mi"&gt;30&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;My first thought to be able to stick it inside a function was to simply pass on the parameters to the function, but you can&amp;#8217;t really pass arguments to Bash functions, nor can you return values except for &lt;code&gt;0&lt;/code&gt; or &lt;code&gt;1&lt;/code&gt; as an exit status code.   In Python, you could just declare a function with arguments like &lt;code&gt;def myfunc(arg1):&lt;/code&gt;, but in Bash there&amp;#8217;s no equivalent to that, and &lt;code&gt;getopts&lt;/code&gt; itself is actually how you&amp;#8217;d likely parse any arguments passed&amp;nbsp;in.&lt;/p&gt;
+&lt;p&gt;Ultimately, that was what I ended up doing, but I had to do it the Bash way, passing it to the function as &lt;code&gt;"$@"&lt;/code&gt;, referencing the inputs that were passed in by the calling script.  I had a hard time figuring this out, so I thought it would be useful to post this&amp;nbsp;here.&lt;/p&gt;
+&lt;p&gt;Final&amp;nbsp;output:&lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt; 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;#!/bin/bash&lt;/span&gt;
+
+&lt;span class="k"&gt;function &lt;/span&gt;getOptsFunction &lt;span class="o"&gt;{&lt;/span&gt;
+  &lt;span class="nb"&gt;local &lt;/span&gt;OPTIND
+  &lt;span class="k"&gt;while &lt;/span&gt;&lt;span class="nb"&gt;getopts&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;:c:l:u:s:&amp;quot;&lt;/span&gt; opt ; &lt;span class="k"&gt;do&lt;/span&gt;
+&lt;span class="k"&gt;      case&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;$opt&amp;quot;&lt;/span&gt; in
+          c  &lt;span class="o"&gt;)&lt;/span&gt;   &lt;span class="c"&gt;# default character to display if no weather, leave empty for none&lt;/span&gt;
+              &lt;span class="nv"&gt;c&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;$OPTARG&amp;quot;&lt;/span&gt;
+              ;;
+          l  &lt;span class="o"&gt;)&lt;/span&gt;   &lt;span class="c"&gt;# supply city name instead of using internet&lt;/span&gt;
+              &lt;span class="nv"&gt;l&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;$OPTARG&amp;quot;&lt;/span&gt;
+              ;;
+          u  &lt;span class="o"&gt;)&lt;/span&gt;   &lt;span class="c"&gt;# how often to update weather in seconds&lt;/span&gt;
+              &lt;span class="nv"&gt;u&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;$OPTARG&amp;quot;&lt;/span&gt;
+              ;;
+          s  &lt;span class="o"&gt;)&lt;/span&gt;   &lt;span class="c"&gt;# weather update alert string to supply, if any&lt;/span&gt;
+              &lt;span class="nv"&gt;s&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;$OPTARG&amp;quot;&lt;/span&gt;
+              ;;
+          h  &lt;span class="o"&gt;)&lt;/span&gt;
+              &lt;span class="c"&gt;# echo the help file&lt;/span&gt;
+              ;;
+          &lt;span class="se"&gt;\?&lt;/span&gt; &lt;span class="o"&gt;)&lt;/span&gt;
+              &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Invalid option: -$OPTARG&amp;quot;&lt;/span&gt; &amp;gt;&amp;amp;2
+              ;;
+          :  &lt;span class="o"&gt;)&lt;/span&gt;
+              &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Option -$OPTARG requires an argument.&amp;quot;&lt;/span&gt; &amp;gt;&amp;amp;2
+              &lt;span class="nb"&gt;exit &lt;/span&gt;1
+              ;;
+      &lt;span class="k"&gt;esac&lt;/span&gt;
+&lt;span class="k"&gt;  done&lt;/span&gt;
+&lt;span class="k"&gt;  &lt;/span&gt;&lt;span class="nb"&gt;shift&lt;/span&gt; &lt;span class="k"&gt;$((&lt;/span&gt;OPTIND-1&lt;span class="k"&gt;))&lt;/span&gt;
+
+  &lt;span class="c"&gt;# set defaults if command not supplied&lt;/span&gt;
+  &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; -z &lt;span class="s2"&gt;&amp;quot;$u&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt; ; &lt;span class="k"&gt;then &lt;/span&gt;&lt;span class="nv"&gt;u&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;10800 ; &lt;span class="k"&gt;fi&lt;/span&gt;
+&lt;span class="k"&gt;  if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; -z &lt;span class="s2"&gt;&amp;quot;$c&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt; ; &lt;span class="k"&gt;then &lt;/span&gt;&lt;span class="nv"&gt;c&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;$&amp;quot;&lt;/span&gt; ; &lt;span class="k"&gt;fi&lt;/span&gt;
+&lt;span class="o"&gt;}&lt;/span&gt;
+
+getOptsFunction &lt;span class="s2"&gt;&amp;quot;$@&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</summary><category term="hackerschool"></category><category term="bash"></category><category term="getopts"></category></entry></feed>

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+        <title>Include the weather in your bash prompt!</title>
+        <meta charset="utf-8" />
+        <link href="https://jdotjdot.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="*JJ Full Atom Feed" />
+        <link href="https://jdotjdot.github.io/feeds/category/programming.atom.xml" type="application/atom+xml" rel="alternate" title="*JJ Categories Atom Feed" />
+
+
+        <!-- Mobile viewport optimized: j.mp/bplateviewport -->
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+
+
+            <link rel="stylesheet" type="text/css" href="https://jdotjdot.github.io/theme/gumby-custom.css?a6374bd9" />
+
+        <link rel="stylesheet" type="text/css" href="https://jdotjdot.github.io/theme/style.css" />
+        <link rel="stylesheet" type="text/css" href="https://jdotjdot.github.io/theme/pygment.css" />
+          <link rel="stylesheet" type="text/css" href="https://jdotjdot.github.io/theme/jj-custom.css?17d3d1cc" />
+
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+        <script src="https://jdotjdot.github.io/theme/js/libs/modernizr-2.6.2.min.js"></script>
+
+
+              <script>
+                (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+                ga('create', 'UA-47960248-1', 'blog.jdotjdot.com');
+                ga('require', 'displayfeatures');
+                ga('require', 'linkid', 'linkid.js');
+                ga('send', 'pageview');
+
+              </script>
+
+
+
+
+</head>
+
+<body id="index" class="home">
+
+
+    <div class="container">
+
+        <div class="row">
+
+
+            <div id="navigation" class="navbar row">
+              <a href="#" gumby-trigger="#navigation &gt; ul" class="toggle"><i class="icon-menu"></i></a>
+
+              <ul class="columns">
+                <!-- logo -->
+		<li><a class="logo-text" href="https://jdotjdot.github.io"><span>*JJ</span></a></li>
+
+
+
+                    <li><a href="/archives/">Archives</a></li>
+                    <li><a href="https://jdotjdot.github.io/pages/about.html">About</a></li>
+                    <li><a href="https://jdotjdot.github.io/pages/projects.html">Projects</a></li>
+              </ul>
+
+
+                <!-- RSS/Atom feed -->
+                <ul class="columns">
+                    <li><a class="rss-icon" href="https://jdotjdot.github.io/feeds/category/programming.atom.xml"><i class="fa fa-rss fa-2x"></i></a></li>
+                </ul>
+            </div>
+
+<section id="content" class="body">
+
+   <div class="row">
+        <div class="eleven columns">
+
+
+            <header>
+              <h2 class="entry-title">
+                <a href="https://jdotjdot.github.io/2014/05/include-the-weather-in-your-bash-prompt/" rel="bookmark"
+                   title="Permalink to Include the weather in your bash prompt!">Include the weather in your bash&nbsp;prompt!</a></h2>
+           
+            </header>
+
+            <footer class="post-info">
+                Published <span class="published" title="2014-05-22T23:16:55">Thu 22 May 2014</span> by
+                <a class="url fn author-name" href="https://jdotjdot.github.io/author/jj.html">JJ</a>
+                <br>
+                <span>Tagged in: </span>
+                        <a class="tag" href="https://jdotjdot.github.io/tags/hackerschool">hackerschool</a>,                        <a class="tag" href="https://jdotjdot.github.io/tags/bash">bash</a>,                        <a class="tag" href="https://jdotjdot.github.io/tags/weather">weather</a>,                        <a class="tag" href="https://jdotjdot.github.io/tags/bashweather">bashweather</a>                <hr>
+            </footer>
+
+
+            <div class="entry-content">
+              <p>About a third of the way into Hacker School, I got myself entrenched in a rather unusual project&#8212;trying to figure out how to get an automatically updated weather icon into my Bash prompt, doing it purely in Bash for practical (and aesthetic)&nbsp;reasons.</p>
+<p>I called it <a href="https://github.com/jdotjdot/BashWeather">BashWeather</a>.</p>
+<p><img alt="BashWeather screenshot" src="https://dl.dropboxusercontent.com/s/z4ut9ggm8y14izp/bashweather%20screenshot.png" />
+<em>Screenshot of sample terminal session with&nbsp;BashWeather</em></p>
+<p>The weather character palette includes the&nbsp;following:</p>
+<div class="highlight"><pre>☂☔︎☃☽☀︎
+</pre></div>
+
+
+<p>There are a number of configurable options, including the&nbsp;following:</p>
+<ul>
+<li>How often to wait between weather&nbsp;updates</li>
+<li>The default character to be supplied in the event that the weather isn&#8217;t&nbsp;available</li>
+<li>The method to use to determine where in the world the computer is located.  Options are to use <span class="caps">IP</span> address, to use the built-in Mac locator if available, or to supply the city and country in a string when calling the&nbsp;script.</li>
+</ul>
+<p>I learned quite a bit from this project about Bash functions, scoping, some of Bash&#8217;s oddities (behavior of brackets, blobbing, needing to quote variables, etc.), and some of the nitty-gritty details of Bash variables.  Since a lot of global variables were required by the script to keep track of state, like how long it&#8217;s been since the last check and whether or not internet is available, I was very careful to pollute the global namespace as little as possible, which was an interesting exercise given that Bash functions <a href="http://www.linuxjournal.com/content/return-values-bash-functions">can&#8217;t actually return values to the caller</a> in the way you&#8217;d traditionally think about&nbsp;it.</p>
+<h3>But&#8230;&nbsp;why?</h3>
+<p>I couldn&#8217;t think of anything to do at Hacker School for a bit, and I was about to head outside to get a cup of coffee to clear my head, and I noticed that it was raining and got very upset that I didn&#8217;t have an umbrella with me.  I almost always forget to bring my umbrella, and I used to use an <a href="http://www.ifttt.com"><span class="caps">IFTTT</span></a> recipe that sent me a Gchat whenever it started to rain.  Unfortunately, with the advent of Hangouts, it was eventually&nbsp;deprecated.</p>
+<p>I liked the Gchat recipe because it alerted me both on my computer and on my phone.  Considering how to replace it, I started thinking about what I look at more than anything else&#8212;and realized the one and only answer there was my Bash prompt.  I&#8217;m always looking at the command line, one way or another, or at least have it open&#8212;and the decision was&nbsp;made.</p>
+<p>From then on, I would know the&nbsp;weather.</p>
+<h3>But would you really ever look at the weather in your&nbsp;prompt?</h3>
+<p>When I started telling people about it at Hacker School I did encounter a bit of skepticism, usually along the lines&nbsp;of:</p>
+<blockquote>
+<p>Why would you ever need the weather in your&nbsp;prompt?</p>
+<p>Come on, you&#8217;re never actually going to use&nbsp;that.</p>
+<p>&#8230;etc.</p>
+</blockquote>
+<p>I got this reaction from one person in particular, and we then sat down to start pairing on a quick question that we were trying to resolve&#8212;I think possibly something to do with BashWeather&nbsp;itself.</p>
+<p>We&#8217;d been working not even two minutes when we turned to the prompt and he saw the umbrella (☂) in the prompt and exclaimed, &#8220;Oh no, is it raining? I didn&#8217;t&nbsp;realize!&#8221;</p>
+<p>&#8230;and then he realized what had happened, and then I&nbsp;grinned.</p>
+<h3>And now, the&nbsp;code</h3>
+<p>The full script, with instructions, can be found at the <a href="https://github.com/jdotjdot/BashWeather">Github repository</a>.  It is currently fully functional, though still a work in&nbsp;progress.</p>
+            </div><!-- /.entry-content -->
+
+
+        </div><!-- /.eleven.columns -->
+        
+
+<div class="three columns">
+
+    <nav class="widget">
+        <h4>Social</h4>
+        <ul class="social-link-list">
+               <li><a href="https://github.com/jdotjdot">
+                <i class="social-icon fa fa-2x fa-github"></i>
+    </a></li>
+               <li><a href="http://stackoverflow.com/users/1351335/jdotjdot">
+                <i class="social-icon fa fa-2x fa-stack-overflow"></i>
+    </a></li>
+               <li><a href="https://twitter.com/JdotJdotF">
+                <i class="social-icon fa fa-2x fa-twitter"></i>
+    </a></li>
+        </ul>
+    </nav>
+
+<h4>Pages</h4>
+
+ <ul>
+      <li><a href="/archives/">Archives</a></li>
+      <li><a href="https://jdotjdot.github.io/pages/about.html">About</a></li>
+      <li><a href="https://jdotjdot.github.io/pages/projects.html">Projects</a></li>
+  </ul>
+
+<h4>Categories</h4>
+<ul>
+		<li><a href="https://jdotjdot.github.io/category/programming">Programming</a></li>
+</ul>
+
+
+<h4>Tags</h4>
+	<ul>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/algorithms">algorithms</a></li>
+	    <li class="tag-4"><a href="https://jdotjdot.github.io/tags/android">android</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/arduino">arduino</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/async">async</a></li>
+	    <li class="tag-4"><a href="https://jdotjdot.github.io/tags/bash">bash</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/bashweather">bashweather</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/c">C</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/canvas">canvas</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/capture-the-flag">capture-the-flag</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/clojure">clojure</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/comp">comp</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/compression">compression</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/crash">crash</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/crypto">crypto</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/decorator">decorator</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/default-args">default-args</a></li>
+	    <li class="tag-4"><a href="https://jdotjdot.github.io/tags/dial-up-over-cell-phone">dial-up-over-cell-phone</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/distance">distance</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/doorbot">doorbot</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/doorduino">doorduino</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/dropbox">dropbox</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/error-correction">error-correction</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/framing">framing</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/freelance">freelance</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/getopts">getopts</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/getting-started">getting-started</a></li>
+	    <li class="tag-1"><a href="https://jdotjdot.github.io/tags/hackerschool">hackerschool</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/highlightjs">highlightjs</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/html5">html5</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/internet">internet</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/it-works">it-works</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/jabber">jabber</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/java">java</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/jekyll">jekyll</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/keyboards">keyboards</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/markdown">markdown</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/matasano">matasano</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/mel-chua">mel-chua</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/messages-app">messages-app</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/mutability">mutability</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/os-x">os-x</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/pacman">pacman</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/pelican">pelican</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/productively-lost">productively-lost</a></li>
+	    <li class="tag-4"><a href="https://jdotjdot.github.io/tags/python">python</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/quick-union">quick-union</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/restart">restart</a></li>
+	    <li class="tag-4"><a href="https://jdotjdot.github.io/tags/scriptogram">scriptogr.am</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/seminar">seminar</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/server">server</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/signal-processing">signal-processing</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/sort">sort</a></li>
+	    <li class="tag-4"><a href="https://jdotjdot.github.io/tags/static-site-generators">static-site-generators</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/syntax-highlighting">syntax-highlighting</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/tcp">tcp</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/travel">travel</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/ultrasonic">ultrasonic</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/wat">wat</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/weather">weather</a></li>
+	    <li class="tag-6"><a href="https://jdotjdot.github.io/tags/zapier">zapier</a></li>
+</ul>
+
+
+
+</div> </div><!-- /.row -->
+
+
+</section>
+
+       </div><!-- /.row -->
+    </div><!-- /.container -->
+
+
+       <div class="container.nopad bg">
+
+
+        <footer id="credits" class="row">
+          <div class="seven columns left-center">
+
+                   <address id="about" class="vcard body">
+                    Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                    which takes great advantage of <a href="http://python.org">Python</a>.
+                    <br />
+                    Based on the <a target="_blank" href="http://gumbyframework.com">Gumby Framework</a>
+                    </address>
+          </div>
+
+
+          <div class="seven columns">
+            <div class="row">
+              <ul class="socbtns">
+
+
+
+
+
+              </ul>
+            </div>
+          </div>
+        </footer>
+
+    </div>
+
+
+  <script src="https://jdotjdot.github.io/theme/js/libs/jquery-1.9.1.min.js"></script>
+  <script src="https://jdotjdot.github.io/theme/js/libs/gumby.min.js"></script>
+  <script src="https://jdotjdot.github.io/theme/js/plugins.js"></script>
+  <script src="https://jdotjdot.github.io/theme/js/jj-js.js"></script>
+</body>
+</html>

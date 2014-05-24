@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom"><title>*JJ</title><link href="https://jdotjdot.github.io/" rel="alternate"></link><link href="https://jdotjdot.github.io/feeds/all.atom.xml" rel="self"></link><id>https://jdotjdot.github.io/</id><updated>2014-05-22T23:16:55-04:00</updated><entry><title>Include the weather in your bash prompt!</title><link href="https://jdotjdot.github.io/2014/05/include-the-weather-in-your-bash-prompt/" rel="alternate"></link><updated>2014-05-22T23:16:55-04:00</updated><author><name>JJ</name></author><id>tag:https://jdotjdot.github.io,2014-05-22:2014/05/include-the-weather-in-your-bash-prompt/</id><summary type="html">&lt;p&gt;About a third of the way into Hacker School, I got myself entrenched in a rather unusual project&amp;#8212;trying to figure out how to get an automatically updated weather icon into my Bash prompt, doing it purely in Bash for practical (and aesthetic)&amp;nbsp;reasons.&lt;/p&gt;
 &lt;p&gt;I called it &lt;a href="https://github.com/jdotjdot/BashWeather"&gt;BashWeather&lt;/a&gt;.&amp;nbsp;updated&lt;/p&gt;
-&lt;p&gt;&lt;img alt="BashWeather screenshot" src="https://dl.dropboxusercontent.com/s/z4ut9ggm8y14izp/bashweather%20screenshot.png" /&gt;&lt;/p&gt;
-&lt;p&gt;-&amp;gt;&lt;em&gt;Screenshot of sample terminal session with BashWeather&lt;/em&gt;&amp;lt;-&lt;/p&gt;
+&lt;p&gt;&lt;img alt="BashWeather screenshot" src="https://dl.dropboxusercontent.com/s/z4ut9ggm8y14izp/bashweather%20screenshot.png" /&gt;&lt;br /&gt;
+&lt;em&gt;Screenshot of sample terminal session with&amp;nbsp;BashWeather&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;The weather character palette includes the&amp;nbsp;following:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;☂☔︎☃☽☀︎
 &lt;/pre&gt;&lt;/div&gt;

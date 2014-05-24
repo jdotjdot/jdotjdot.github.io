@@ -8,8 +8,10 @@
 
 &lt;div style="/* background-color: lightgray; */ padding: 10px 0; border-radius: 15px; text-align: center;border: 3px solid lightgray;margin: 0 10% 15px 10%;"&gt;
 
-    &lt;img src="https://dl.dropboxusercontent.com/s/z4ut9ggm8y14izp/bashweather%20screenshot.png" alt="BashWeather Screenshot"&gt;&lt;br&gt;
-    &lt;img src="https://dl.dropboxusercontent.com/s/fnlza39a2q1ubut/bashweather%20screenshot%202.png" alt="BashWeather Screenshot"&gt;&lt;br&gt;
+    &lt;div&gt;
+        &lt;img src="https://dl.dropboxusercontent.com/s/z4ut9ggm8y14izp/bashweather%20screenshot.png" alt="BashWeather Screenshot"&gt;&lt;br&gt;
+        &lt;img src="https://dl.dropboxusercontent.com/s/fnlza39a2q1ubut/bashweather%20screenshot%202.png" alt="BashWeather Screenshot"&gt;
+    &lt;/div&gt;
     &lt;div style="text-align: center; font-style: italic;"&gt;&lt;span class="caption"&gt;Screenshots of a sample terminal session with BashWeather&lt;/span&gt;&lt;/div&gt;&lt;br&gt;
 
     &lt;div style="font-size: 150%; text-align: center; /* margin-left: 5%; */"&gt;☂☃☽☀︎&lt;/div&gt;

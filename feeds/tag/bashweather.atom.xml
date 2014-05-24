@@ -4,9 +4,7 @@
 &lt;p&gt;&lt;img alt="BashWeather screenshot" src="https://dl.dropboxusercontent.com/s/z4ut9ggm8y14izp/bashweather%20screenshot.png" /&gt;&lt;br /&gt;
 &lt;em&gt;Screenshot of sample terminal session with&amp;nbsp;BashWeather&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;The weather character palette includes the&amp;nbsp;following:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;☂☔︎☃☽☀︎
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;div style="font-size: 150%; margin-left: 5%;"&gt;☂☔︎☃☽☀︎&lt;/div&gt;
 
 &lt;p&gt;There are a number of configurable options, including the&amp;nbsp;following:&lt;/p&gt;
 &lt;ul&gt;

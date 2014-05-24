@@ -3,11 +3,12 @@
 &lt;p&gt;I called it &lt;a href="https://github.com/jdotjdot/BashWeather"&gt;BashWeather&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;img alt="BashWeather screenshot" src="https://dl.dropboxusercontent.com/s/z4ut9ggm8y14izp/bashweather%20screenshot.png" /&gt;&lt;br /&gt;
 &lt;em&gt;Screenshot of sample terminal session with&amp;nbsp;BashWeather&lt;/em&gt;&lt;/p&gt;
-&lt;div&gt;
+&lt;div style="background-color: lightgray; padding: 10px; border-radius: 15px;"&gt;
 &lt;img src="https://dl.dropboxusercontent.com/s/z4ut9ggm8y14izp/bashweather%20screenshot.png" alt="BashWeather Screenshot" /&gt;&lt;br /&gt;
-&lt;div&gt;&lt;span class="caption"&gt;Screenshot of a sample terminal session with BashWeather&lt;/span&gt;&lt;/div&gt;
+&lt;div style="text-align: center; font-style: italic;"&gt;&lt;span class="caption"&gt;Screenshot of a sample terminal session with BashWeather&lt;/span&gt;&lt;/div&gt;&lt;br /&gt;
 
-&lt;p&gt;The weather character palette includes the&amp;nbsp;following:&lt;/p&gt;
+The weather character palette includes the following:
+
 &lt;div style="font-size: 150%; margin-left: 5%; margin-bottom: 10px;"&gt;☂☃☽☀︎&lt;/div&gt;
 
 &lt;/div&gt;

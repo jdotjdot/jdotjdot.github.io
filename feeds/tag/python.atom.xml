@@ -88,7 +88,7 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;It&amp;#8217;s a bit less &amp;#8220;Pythonic&amp;#8221;, but ultimately it still gets the job&amp;nbsp;done.&lt;/p&gt;
+&lt;p&gt;It&amp;#8217;s a bit less &amp;#8220;Pythonic,&amp;#8221; but ultimately it still gets the job&amp;nbsp;done.&lt;/p&gt;
 &lt;h3&gt;Within&amp;nbsp;classes&lt;/h3&gt;
 &lt;p&gt;This doesn&amp;#8217;t really work quite so well in classes and starts to become unwieldy.  As you&amp;#8217;ll see below, accessing the class instance&amp;#8217;s attributes don&amp;#8217;t work with &lt;code&gt;locals()&lt;/code&gt; because they&amp;#8217;re all actually attached to &lt;code&gt;self&lt;/code&gt; within the&amp;nbsp;methods.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Test&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;object&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;

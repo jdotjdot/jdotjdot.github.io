@@ -37,7 +37,6 @@
 
 &lt;p&gt;Clearly powerful, but could also be somewhat&amp;nbsp;dangerous.&lt;/p&gt;
 &lt;h2&gt;Python&lt;/h2&gt;
-&lt;h3&gt;The Python&amp;nbsp;way&lt;/h3&gt;
 &lt;p&gt;Python, with the philosophy &amp;#8220;explicit is better than implicit&amp;#8221;, does not have this string interpolation in quite the same way&amp;#8212;you need to pass in what you&amp;#8217;d like to interpolate&amp;nbsp;explicitly.&lt;/p&gt;
 &lt;p&gt;The old syntax for this (and still used by many today) is the&amp;nbsp;following:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;This is a string &lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s"&gt;, or a number: &lt;/span&gt;&lt;span class="si"&gt;%d&lt;/span&gt;&lt;span class="s"&gt;, or a number as a string: &lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; \

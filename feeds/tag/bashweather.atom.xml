@@ -25,8 +25,8 @@
 &lt;div style="padding: 10px 0; border-radius: 15px; text-align: center; border: 3px solid lightgray; margin: 0 10% 15px 10%;"&gt;&lt;!-- &lt;/div&gt;
 
 &lt;p&gt;&amp;#8212;&amp;gt;
-    &lt;img src="{filename}/images/bashweather%20screenshot.png" title=""BashWeather Screenshot"" alt=""BashWeather Screenshot""&gt;
-    &lt;img src="{filename}/images/bashweather%20screenshot%202.png" title=""BashWeather Screenshot"" alt=""BashWeather Screenshot""&gt; &lt;br&gt;
+    &lt;img src="{filename}/images/bashweather%20screenshot.png" alt=""BashWeather Screenshot"" title=""BashWeather Screenshot""&gt;
+    &lt;img src="{filename}/images/bashweather%20screenshot%202.png" alt=""BashWeather Screenshot"" title=""BashWeather Screenshot""&gt; &lt;br&gt;
     &lt;span class="caption"&gt;Screenshots of a sample terminal session with BashWeather&lt;/span&gt;&lt;br&gt;
     &lt;span style="font-size: 150%;"&gt;☂☃☽☀︎&lt;/span&gt;&lt;br&gt;
     &lt;span style="font-style: italic;"&gt;Weather character palette&lt;/span&gt;

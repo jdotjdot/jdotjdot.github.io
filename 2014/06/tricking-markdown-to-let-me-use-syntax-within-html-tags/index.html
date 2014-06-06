@@ -96,7 +96,7 @@
 <p>My particular use-case here was&nbsp;images.</p>
 <h3><span class="caps">TL</span>;<span class="caps">DR</span></h3>
 <p>Though normally Markdown doesn&#8217;t parse anything inside of <span class="caps">HTML</span> tags, you can use Markdown syntax inside of <span class="caps">HTML</span> tags in a Markdown file by tricking the Markdown using fake <span class="caps">HTML</span> closing tags within a comment.  Example below, using Markdown image syntax along with Pelican&#8217;s <a href="http://pelican.readthedocs.org/en/latest/content.html#linking-to-internal-content">internet content linking</a>&nbsp;syntax:</p>
-<div class="highlight"><pre><span class="nt">&lt;center&gt;</span><span class="c">&lt;!-- &lt;/center&gt; --&gt;</span>!<span class="cp">[</span><span class="nx">My</span> <span class="nb">Image</span><span class="o">!</span><span class="cp">]</span>({filename}/images/myimage.png)<span class="nt">&lt;/center&gt;</span>
+<div class="highlight"><pre><span class="nt">&lt;center&gt;</span><span class="c">&lt;!-- &lt;/center&gt; --&gt;</span>![My Image!]({filename}/images/myimage.png)<span class="nt">&lt;/center&gt;</span>
 </pre></div>
 
 
@@ -130,17 +130,17 @@
 
 
 <p>Unfortunately, the <code>{filename}/file/path</code> syntax only works within a Markdown-style image or link tag, and so I couldn&#8217;t use that syntax within an <code>&lt;img&gt;</code> tag.  However, if I wanted to center the image, I <em>needed</em> to have my image appear within manually-specified <code>&lt;center&gt;</code> tags or a <code>&lt;div&gt;</code>.  This posed an issue, as Markdown does not process anything within manually specified <span class="caps">HTML</span> tags, so you would run across the following&nbsp;issue:</p>
-<div class="highlight"><pre><span class="o">&lt;!--</span> <span class="n">Markdown</span><span class="o">:</span> <span class="o">--&gt;</span>
-<span class="o">&lt;</span><span class="n">center</span><span class="o">&gt;!</span><span class="p">[</span><span class="n">My</span> <span class="n">Image</span><span class="p">](</span><span class="n">http</span><span class="o">:</span><span class="c1">//image/path)&lt;/center&gt;</span>
+<div class="highlight"><pre><span class="c">&lt;!-- Markdown: --&gt;</span>
+<span class="nt">&lt;center&gt;</span>![My Image](http://image/path)<span class="nt">&lt;/center&gt;</span>
 
-<span class="o">&lt;!--</span> <span class="n">will</span> <span class="n">be</span> <span class="n">rendered</span> <span class="k">in</span> <span class="n">HTML</span> <span class="n">as</span><span class="o">:</span> <span class="o">--&gt;</span>
-<span class="o">&lt;</span><span class="n">center</span><span class="o">&gt;!</span><span class="p">[</span><span class="n">My</span> <span class="n">Image</span><span class="p">](</span><span class="n">http</span><span class="o">:</span><span class="c1">//image/path)&lt;/center&gt;</span>
+<span class="c">&lt;!-- will be rendered in HTML as: --&gt;</span>
+<span class="nt">&lt;center&gt;</span>![My Image](http://image/path)<span class="nt">&lt;/center&gt;</span>
 </pre></div>
 
 
 <h2>The Solution: Trick&nbsp;Markdown</h2>
 <p>I took a guess and figured that the Markdown parser was relatively lazy and didn&#8217;t take great care when refusing to parse anything within <span class="caps">HTML</span> tags&#8212;my bet was that when it encountered an opening <span class="caps">HTML</span> tag, it simply stopped parsing until it encountered the close of that tag.  If I was right, that meant I could trick the parser like&nbsp;so:</p>
-<div class="highlight"><pre><span class="nt">&lt;center&gt;</span><span class="c">&lt;!-- &lt;/center&gt; --&gt;</span>!<span class="cp">[</span><span class="nx">My</span> <span class="nb">Image</span><span class="o">!</span><span class="cp">]</span>({filename}/images/myimage.png)<span class="nt">&lt;/center&gt;</span>
+<div class="highlight"><pre><span class="nt">&lt;center&gt;</span><span class="c">&lt;!-- &lt;/center&gt; --&gt;</span>![My Image!]({filename}/images/myimage.png)<span class="nt">&lt;/center&gt;</span>
 </pre></div>
 
 
@@ -150,8 +150,12 @@
 
 
 <h2>A Better Solution for&nbsp;Pelican</h2>
-<p>If you&#8217;re using Pelican, the better solution ultimately is to use the <a href="https://github.com/getpelican/pelican-plugins/tree/master/liquid_tags">Liquid-style tags</a> plugin, which should not only let you specify the width and height but also let you stick it inside an <span class="caps">HTML</span>&nbsp;tag.</p>
-<p>However, what I&#8217;ve discovered above should remain useful to those using straight Markdown without access to plugins and who don&#8217;t want to have to get creative with their blog theme or&nbsp;Javascript.</p>
+<p>If you&#8217;re using Pelican, the better solution ultimately is to use the <a href="https://github.com/getpelican/pelican-plugins/tree/master/liquid_tags">Liquid-style tags</a> plugin, which should not only let you specify the width and height but also let you stick it inside an <span class="caps">HTML</span> tag.  You still get to use the relative filename Pelican syntax, as&nbsp;well:</p>
+<div class="highlight"><pre><span class="nt">&lt;center&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;{filename}/images/Screenshot_2014-02-20-17-51-27.png&quot;</span> <span class="na">width=</span><span class="s">&quot;361&quot;</span> <span class="na">alt=</span><span class="s">&quot;&quot;</span><span class="na">Example</span> <span class="na">image</span><span class="err">&quot;&quot;</span> <span class="na">title=</span><span class="s">&quot;&quot;</span><span class="na">Example</span> <span class="na">image</span><span class="err">&quot;&quot;</span> <span class="na">height=</span><span class="s">&quot;643&quot;</span><span class="nt">&gt;&lt;/center&gt;</span>
+</pre></div>
+
+
+<p>However, what I&#8217;ve discovered above should remain useful to those using straight Markdown without access to plugins and who don&#8217;t want to have to get creative with their blog theme or&nbsp;Javascript. </p>
             </div><!-- /.entry-content -->
 
 

@@ -6,18 +6,18 @@
 &lt;/blockquote&gt;
 &lt;h2&gt;Ruby&lt;/h2&gt;
 &lt;p&gt;Ruby implements string interpolation like&amp;nbsp;this:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="go"&gt;2.1.1 :001 &amp;gt; stringvar = &amp;quot;I&amp;#39;m a string&amp;quot;&lt;/span&gt;
-&lt;span class="go"&gt; =&amp;gt; &amp;quot;I&amp;#39;m a string&amp;quot;&lt;/span&gt;
-&lt;span class="go"&gt;2.1.1 :002 &amp;gt; numvar = 3&lt;/span&gt;
-&lt;span class="go"&gt; =&amp;gt; 3&lt;/span&gt;
-&lt;span class="go"&gt;2.1.1 :003 &amp;gt; &amp;quot;This is stringvar: #{stringvar}, and this is numvar: #{numvar}&amp;quot;&lt;/span&gt;
-&lt;span class="go"&gt;=&amp;gt; &amp;quot;This is stringvar: I&amp;#39;m a string, and this is numvar: 3&amp;quot;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mo"&gt;001&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;stringvar&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;I&amp;#39;m a string&amp;quot;&lt;/span&gt;
+ &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;I&amp;#39;m a string&amp;quot;&lt;/span&gt;
+&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mo"&gt;002&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;numvar&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;
+ &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;
+&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mo"&gt;003&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;This is stringvar: &lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;stringvar&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;, and this is numvar: &lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;numvar&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+&lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;This is stringvar: I&amp;#39;m a string, and this is numvar: 3&amp;quot;&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;Note that it only works with double-quotes (&lt;code&gt;"&lt;/code&gt;) which are &amp;#8220;weaker.&amp;#8221;  If you try it with single-quotes, you&amp;#8217;ll get the&amp;nbsp;following:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="go"&gt;2.1.1 :004 &amp;gt; puts &amp;#39;This is stringvar: #{stringvar}, and this is numvar: #{numvar}&amp;#39;&lt;/span&gt;
-&lt;span class="go"&gt;This is stringvar: #{stringvar}, and this is numvar: #{numvar}&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mo"&gt;004&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="nb"&gt;puts&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;This is stringvar: #{stringvar}, and this is numvar: #{numvar}&amp;#39;&lt;/span&gt;
+&lt;span class="no"&gt;This&lt;/span&gt; &lt;span class="n"&gt;is&lt;/span&gt; &lt;span class="ss"&gt;stringvar&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="c1"&gt;#{stringvar}, and this is numvar: #{numvar}&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 

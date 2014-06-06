@@ -99,18 +99,18 @@
 </blockquote>
 <h2>Ruby</h2>
 <p>Ruby implements string interpolation like&nbsp;this:</p>
-<div class="highlight"><pre><span class="go">2.1.1 :001 &gt; stringvar = &quot;I&#39;m a string&quot;</span>
-<span class="go"> =&gt; &quot;I&#39;m a string&quot;</span>
-<span class="go">2.1.1 :002 &gt; numvar = 3</span>
-<span class="go"> =&gt; 3</span>
-<span class="go">2.1.1 :003 &gt; &quot;This is stringvar: #{stringvar}, and this is numvar: #{numvar}&quot;</span>
-<span class="go">=&gt; &quot;This is stringvar: I&#39;m a string, and this is numvar: 3&quot;</span>
+<div class="highlight"><pre><span class="mi">2</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="mi">1</span> <span class="p">:</span><span class="mo">001</span> <span class="o">&gt;</span> <span class="n">stringvar</span> <span class="o">=</span> <span class="s2">&quot;I&#39;m a string&quot;</span>
+ <span class="o">=&gt;</span> <span class="s2">&quot;I&#39;m a string&quot;</span>
+<span class="mi">2</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="mi">1</span> <span class="p">:</span><span class="mo">002</span> <span class="o">&gt;</span> <span class="n">numvar</span> <span class="o">=</span> <span class="mi">3</span>
+ <span class="o">=&gt;</span> <span class="mi">3</span>
+<span class="mi">2</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="mi">1</span> <span class="p">:</span><span class="mo">003</span> <span class="o">&gt;</span> <span class="s2">&quot;This is stringvar: </span><span class="si">#{</span><span class="n">stringvar</span><span class="si">}</span><span class="s2">, and this is numvar: </span><span class="si">#{</span><span class="n">numvar</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="o">=&gt;</span> <span class="s2">&quot;This is stringvar: I&#39;m a string, and this is numvar: 3&quot;</span>
 </pre></div>
 
 
 <p>Note that it only works with double-quotes (<code>"</code>) which are &#8220;weaker.&#8221;  If you try it with single-quotes, you&#8217;ll get the&nbsp;following:</p>
-<div class="highlight"><pre><span class="go">2.1.1 :004 &gt; puts &#39;This is stringvar: #{stringvar}, and this is numvar: #{numvar}&#39;</span>
-<span class="go">This is stringvar: #{stringvar}, and this is numvar: #{numvar}</span>
+<div class="highlight"><pre><span class="mi">2</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="mi">1</span> <span class="p">:</span><span class="mo">004</span> <span class="o">&gt;</span> <span class="nb">puts</span> <span class="s1">&#39;This is stringvar: #{stringvar}, and this is numvar: #{numvar}&#39;</span>
+<span class="no">This</span> <span class="n">is</span> <span class="ss">stringvar</span><span class="p">:</span> <span class="c1">#{stringvar}, and this is numvar: #{numvar}</span>
 </pre></div>
 
 

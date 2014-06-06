@@ -11,8 +11,8 @@
     &lt;div style="max-width: 90%; margin: auto;"&gt;&lt;!-- &lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;&amp;#8212;&amp;gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src="{filename}/images/bashweather%20screenshot.png" title=""BashWeather Screenshot"" alt=""BashWeather Screenshot""&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src="{filename}/images/bashweather%20screenshot%202.png" title=""BashWeather Screenshot"" alt=""BashWeather Screenshot""&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="{filename}/images/bashweather%20screenshot.png" alt=""BashWeather Screenshot"" title=""BashWeather Screenshot""&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="{filename}/images/bashweather%20screenshot%202.png" alt=""BashWeather Screenshot"" title=""BashWeather Screenshot""&gt;&lt;/p&gt;
 &lt;p&gt;&lt;/div&gt;
 &lt;div style="text-align: center; font-style: italic;"&gt;&lt;span class="caption"&gt;Screenshots of a sample terminal session with BashWeather&lt;/span&gt;&lt;/div&gt;&lt;br&gt;&lt;/p&gt;
 &lt;div style="font-size: 150%; text-align: center; /* margin-left: 5%; */"&gt;☂☃☽☀︎&lt;/div&gt;

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 
-        <title>Ultrasonic distance detectors in Arduino</title>
+        <title>How to auto-deploy your static site from Dropbox to GitHub Pages</title>
         <meta charset="utf-8" />
         <link href="http://blog.jdotjdot.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="*JJ Full Atom Feed" />
         <link href="http://blog.jdotjdot.com/feeds/category/programming.atom.xml" type="application/atom+xml" rel="alternate" title="*JJ Categories Atom Feed" />
@@ -77,98 +77,22 @@
 
             <header>
               <h2 class="entry-title">
-                <a href="http://blog.jdotjdot.com/2014/03/ultrasonic-distance-detectors-in-arduino/" rel="bookmark"
-                   title="Permalink to Ultrasonic distance detectors in Arduino">Ultrasonic distance detectors in&nbsp;Arduino</a></h2>
+                <a href="http://blog.jdotjdot.com/2014/06/how-to-auto-deploy-your-static-site-from-dropbox-to-github-pages/" rel="bookmark"
+                   title="Permalink to How to auto-deploy your static site from Dropbox to GitHub Pages">How to auto-deploy your static site from Dropbox to GitHub&nbsp;Pages</a></h2>
            
             </header>
 
             <footer class="post-info">
-                Published <span class="published" title="2014-03-27T00:00:00">Thu 27 March 2014</span> by
+                Published <span class="published" title="2014-06-05T19:12:37">Thu 05 June 2014</span> by
                 <a class="url fn author-name" href="http://blog.jdotjdot.com/author/jj.html">JJ</a>
                 <br>
                 <span>Tagged in: </span>
-                        <a class="tag" href="http://blog.jdotjdot.com/tags/hackerschool">hackerschool</a>,                        <a class="tag" href="http://blog.jdotjdot.com/tags/arduino">arduino</a>,                        <a class="tag" href="http://blog.jdotjdot.com/tags/ultrasonic">ultrasonic</a>,                        <a class="tag" href="http://blog.jdotjdot.com/tags/distance">distance</a>                <hr>
+                        <a class="tag" href="http://blog.jdotjdot.com/tags/github-pages">github-pages</a>,                        <a class="tag" href="http://blog.jdotjdot.com/tags/auto-deploy">auto-deploy</a>,                        <a class="tag" href="http://blog.jdotjdot.com/tags/heroku">heroku</a>,                        <a class="tag" href="http://blog.jdotjdot.com/tags/fabric">fabric</a>,                        <a class="tag" href="http://blog.jdotjdot.com/tags/python">python</a>,                        <a class="tag" href="http://blog.jdotjdot.com/tags/pelican">pelican</a>,                        <a class="tag" href="http://blog.jdotjdot.com/tags/blogging">blogging</a>                <hr>
             </footer>
 
 
             <div class="entry-content">
-              <!-- 3/27/2014 -->
-
-<p>Matt at Hacker School has plans to go back home and hook up a Raspberry Pi or an Arduino to a motion sensor in order to detect when his cat jumps onto the table (which apparently happens too much)&#8212;and maybe scare him as well, making it make a loud noise every time he does&nbsp;it.</p>
-<p>Since I&#8217;ve worked quite a bit with Arduino at this point, between the <a href="https://github.com/jdotjdot/B_FURIOUS">wireless remote control car project</a> and the <a href="https://github.com/jdotjdot/doorduino">internet-enabled door opener</a>, Matt asked me to walk him through what the code would look like in C.  Up until now, he&#8217;s been working with Arduinos using a Ruby library (I think <a href="http://ruby-serialport.rubyforge.org/">this one</a>), but it&#8217;s fairly limited, and I also would imagine that being another step away from the C would make it harder to program the micro controller.  So we went over what the C code would look like for a very simple use&nbsp;case.</p>
-<p>We set up an Arduino to detect the closest item (linearly) using the ultrasonic distance detector, and then to dim a light depending on how far the item&nbsp;was.</p>
-<p>Here it is in&nbsp;action:</p>
-<p><center><iframe width='560' height='315' src='http://www.youtube.com/embed/n7D4ZiQezQI' frameborder='0' webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe></center></p>
-<h3>Schematic</h3>
-<!--<div class="center container"><img width="700px" align="center" alt="Schematic" src="http://blog.jdotjdot.com/images/Ultrasonic-distance-detector.png"></div>-->
-
-<!-- ![Schematic]({filename}/images/Ultrasonic-distance-detector.png) -->
-
-<p><center><img width="500" alt=""Schematic"" title=""Schematic"" src="http://blog.jdotjdot.com/images/Ultrasonic-distance-detector.png"></center></p>
-<p><strong>The basic setup:</strong>
-The ultrasonic distance detector, the big blue thing that isn&#8217;t the Arduino, is hooked up to the 5V Arduino output and to ground, and then the middle two pins are hooked up to Arduino digital pins&#8212;one to trigger an ultrasonic blast, and one to listen for the blast&#8217;s response.  The red <span class="caps">LED</span> hooked up to pin 13 flashes when nothing is detected in the vicinity, and then turns solid red when something is detected.  The yellow <span class="caps">LED</span> fades depending on the distance of the detected object&#8212;the closer it is, the dimmer the light, unless there are no objects within the specified maximum detection range, in which case the light is completely&nbsp;off.</p>
-<p><strong>How it works:</strong>
-The ultrasonic distance detector, when turned on by setting the pin hooked up to the trigger to <code>HIGH</code>,  sends out an ultrasonic blast forward.  We have the Arduino wait about 10 microseconds for the sound to emit using <code>delayMicroseconds(10);</code>, and then we use <code>pulseIn</code> to wait for the sound to return.  The longer it takes the sound to return, the farther away the object is.  To find the number of centimeters away the object is, we can take the response from <code>pulseIn</code> and divide it by <code>(2 * 29)</code> to get the distance in centimeters rather than&nbsp;milliseconds.</p>
-<p>In the case of this Arduino project, we then use that information to determine if the object is within the specified distance range (<code>iMaxDistance</code> in the code below), and if so, we turn the red light on and scale the output to a range of 0-255, which is the allowed analog output from the Arduino to the yellow <span class="caps">LED</span> using <code>analogWrite</code>.</p>
-<p>And that&#8217;s&nbsp;it!</p>
-<h3>The&nbsp;Code</h3>
-<div class="highlight"><pre><span class="c1">// Credit to JamesHappy for much of this tester code</span>
-
-<span class="c1">// Onboard LED should blink while searching for surface</span>
-<span class="c1">// Onboard LED should be solid when surface is within a specified distance</span>
-<span class="c1">// Rangefinder should only wait for echos under a calculated timeout</span>
-
-
-<span class="k">int</span> <span class="n">iTrigger</span>     <span class="o">=</span> <span class="mh">2</span><span class="p">;</span>  <span class="c1">// Digital Pin 2</span>
-<span class="k">int</span> <span class="n">iEcho</span>        <span class="o">=</span> <span class="mh">3</span><span class="p">;</span>  <span class="c1">// Digital Pin 3</span>
-<span class="k">int</span> <span class="n">iAlertLED</span>                  <span class="o">=</span> <span class="mh">13</span><span class="p">;</span> <span class="c1">// Digital Pin 13</span>
-<span class="k">int</span> <span class="n">iEchoTimeout</span> <span class="o">=</span> <span class="mh">0</span><span class="p">;</span>  <span class="c1">// In Microseconds</span>
-<span class="k">int</span> <span class="n">iMaxDistance</span> <span class="o">=</span> <span class="mh">30</span><span class="p">;</span> <span class="c1">// In Centimeters</span>
-
-<span class="k">int</span> <span class="n">iTriggerPullDown</span> <span class="o">=</span> <span class="mh">2</span><span class="p">;</span>  <span class="c1">// In Microseconds</span>
-<span class="k">int</span> <span class="n">iPingWidth</span>       <span class="o">=</span> <span class="mh">10</span><span class="p">;</span> <span class="c1">// In Microseconds</span>
-
-<span class="k">int</span> <span class="n">changingLed</span> <span class="o">=</span> <span class="mh">9</span><span class="p">;</span>
-
-<span class="k">void</span> <span class="n">setup</span><span class="p">()</span> <span class="p">{</span>
-  <span class="n">Serial</span><span class="p">.</span><span class="k">begin</span><span class="p">(</span><span class="mh">9600</span><span class="p">);</span>
-  <span class="n">pinMode</span><span class="p">(</span><span class="n">iTrigger</span><span class="p">,</span><span class="no">OUTPUT</span><span class="p">);</span>
-  <span class="n">pinMode</span><span class="p">(</span><span class="n">iEcho</span><span class="p">,</span><span class="no">INPUT</span><span class="p">);</span>
-  <span class="n">pinMode</span><span class="p">(</span><span class="n">iAlertLED</span><span class="p">,</span> <span class="no">OUTPUT</span><span class="p">);</span>
-  <span class="n">pinMode</span><span class="p">(</span><span class="n">changingLed</span><span class="p">,</span> <span class="no">OUTPUT</span><span class="p">);</span>
-  <span class="n">iEchoTimeout</span> <span class="o">=</span> <span class="n">iMaxDistance</span><span class="o">*</span><span class="mh">2</span><span class="o">*</span><span class="mh">29</span><span class="p">;</span>
-  <span class="n">digitalWrite</span><span class="p">(</span><span class="n">changingLed</span><span class="p">,</span> <span class="no">HIGH</span><span class="p">);</span>
-<span class="p">}</span>
-
-
-
-<span class="k">void</span> <span class="n">loop</span><span class="p">()</span> <span class="p">{</span>
-  <span class="n">digitalWrite</span><span class="p">(</span><span class="n">iTrigger</span><span class="p">,</span> <span class="no">LOW</span><span class="p">);</span>
-  <span class="n">delayMicroseconds</span><span class="p">(</span><span class="n">iTriggerPullDown</span><span class="p">);</span>
-  <span class="n">digitalWrite</span><span class="p">(</span><span class="n">iTrigger</span><span class="p">,</span> <span class="no">HIGH</span><span class="p">);</span>
-  <span class="n">delayMicroseconds</span><span class="p">(</span><span class="n">iPingWidth</span><span class="p">);</span>
-  <span class="n">digitalWrite</span><span class="p">(</span><span class="n">iTrigger</span><span class="p">,</span> <span class="no">LOW</span><span class="p">);</span>
-  <span class="k">unsigned</span> <span class="n">long</span> <span class="n">ulPing</span> <span class="o">=</span> <span class="n">pulseIn</span><span class="p">(</span><span class="n">iEcho</span><span class="p">,</span><span class="no">HIGH</span><span class="p">,</span><span class="n">iEchoTimeout</span><span class="p">);</span>
-  <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">((</span><span class="n">String</span><span class="p">)</span> <span class="p">(</span><span class="n">ulPing</span> <span class="o">/</span> <span class="mh">2</span> <span class="o">/</span> <span class="mh">29</span><span class="p">));</span>
-  <span class="k">if</span><span class="p">(</span><span class="n">ulPing</span><span class="p">)</span> <span class="p">{</span>
-    <span class="n">digitalWrite</span><span class="p">(</span><span class="n">iAlertLED</span><span class="p">,</span> <span class="no">HIGH</span><span class="p">);</span>
-<span class="c1">//    digitalWrite(changingLed, ((ulPing/2/29)/iEchoTimeout*255));</span>
-    <span class="n">analogWrite</span><span class="p">(</span><span class="n">changingLed</span><span class="p">,</span> <span class="n">map</span><span class="p">(</span><span class="n">ulPing</span><span class="p">,</span> <span class="mh">0</span><span class="p">,</span> <span class="n">iEchoTimeout</span><span class="p">,</span> <span class="mh">0</span><span class="p">,</span> <span class="mh">255</span><span class="p">));</span>
-    <span class="n">SimulateLoad</span><span class="p">(</span><span class="mh">250</span><span class="p">);</span>
-  <span class="p">}</span>
-  <span class="k">else</span> <span class="p">{</span>
-    <span class="n">digitalWrite</span><span class="p">(</span><span class="n">changingLed</span><span class="p">,</span> <span class="no">LOW</span><span class="p">);</span>
-    <span class="n">digitalWrite</span><span class="p">(</span><span class="n">iAlertLED</span><span class="p">,</span> <span class="no">HIGH</span><span class="p">);</span>
-    <span class="n">delay</span><span class="p">(</span><span class="mh">25</span><span class="p">);</span>
-    <span class="n">digitalWrite</span><span class="p">(</span><span class="n">iAlertLED</span><span class="p">,</span> <span class="no">LOW</span><span class="p">);</span>
-    <span class="n">SimulateLoad</span><span class="p">(</span><span class="mh">225</span><span class="p">);</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-
-<span class="k">void</span> <span class="n">SimulateLoad</span><span class="p">(</span><span class="k">int</span> <span class="n">iDutyCycle</span><span class="p">)</span> <span class="p">{</span>
-  <span class="n">delay</span><span class="p">(</span><span class="n">iDutyCycle</span><span class="p">);</span>
-<span class="p">}</span>
-</pre></div>
+              <p>As I referred to in&nbsp;my </p>
             </div><!-- /.entry-content -->
 
 

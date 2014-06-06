@@ -58,7 +58,7 @@
 
 &lt;h2&gt;A Better Solution for&amp;nbsp;Pelican&lt;/h2&gt;
 &lt;p&gt;If you&amp;#8217;re using Pelican, the better solution ultimately is to use the &lt;a href="https://github.com/getpelican/pelican-plugins/tree/master/liquid_tags"&gt;Liquid-style tags&lt;/a&gt; plugin, which should not only let you specify the width and height but also let you stick it inside an &lt;span class="caps"&gt;HTML&lt;/span&gt; tag.  You still get to use the relative filename Pelican syntax, as&amp;nbsp;well:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nt"&gt;&amp;lt;center&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;literal&lt;/span&gt; &lt;span class="nv"&gt;img&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;&lt;span class="nv"&gt;filename&lt;/span&gt;&lt;span class="o"&gt;}/&lt;/span&gt;&lt;span class="nv"&gt;images&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nv"&gt;Screenshot_2014-02-20-17-51-27.png&lt;/span&gt; &lt;span class="m"&gt;361&lt;/span&gt; &lt;span class="m"&gt;643&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Example image&amp;quot;&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;&lt;span class="nt"&gt;&amp;lt;/center&amp;gt;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nt"&gt;&amp;lt;center&amp;gt;&lt;/span&gt;{% &lt;span class="c"&gt;&amp;lt;!-- literal --&amp;gt;&lt;/span&gt; img {filename}/images/Screenshot_2014-02-20-17-51-27.png 361 643 &amp;quot;Example image&amp;quot; %}&lt;span class="nt"&gt;&amp;lt;/center&amp;gt;&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 

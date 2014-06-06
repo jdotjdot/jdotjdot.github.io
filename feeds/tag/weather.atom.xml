@@ -10,8 +10,9 @@
 
     &lt;div style="max-width: 90%; margin: auto;"&gt;&lt;!-- &lt;/div&gt; --&gt;
 
-        {% img {filename}/images/bashweather%20screenshot.png &amp;#8220;BashWeather Screenshot&amp;#8221; %}
-        {% img {filename}/images/bashweather%20screenshot%202.png &amp;#8220;BashWeather Screenshot&amp;#8221; %}
+{% img {filename}/images/bashweather%20screenshot.png &amp;#8220;BashWeather Screenshot&amp;#8221; %}
+
+{% img {filename}/images/bashweather%20screenshot%202.png &amp;#8220;BashWeather Screenshot&amp;#8221; %}
 
 &lt;/div&gt;
 

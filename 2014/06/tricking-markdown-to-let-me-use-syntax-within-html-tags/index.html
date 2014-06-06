@@ -151,7 +151,7 @@
 
 <h2>A Better Solution for&nbsp;Pelican</h2>
 <p>If you&#8217;re using Pelican, the better solution ultimately is to use the <a href="https://github.com/getpelican/pelican-plugins/tree/master/liquid_tags">Liquid-style tags</a> plugin, which should not only let you specify the width and height but also let you stick it inside an <span class="caps">HTML</span> tag.  You still get to use the relative filename Pelican syntax, as&nbsp;well:</p>
-<div class="highlight"><pre><span class="nt">&lt;center&gt;&lt;img</span> <span class="na">alt=</span><span class="s">&quot;&quot;</span><span class="na">Example</span> <span class="na">image</span><span class="err">&quot;&quot;</span> <span class="na">title=</span><span class="s">&quot;&quot;</span><span class="na">Example</span> <span class="na">image</span><span class="err">&quot;&quot;</span> <span class="na">src=</span><span class="s">&quot;{filename}/images/Screenshot_2014-02-20-17-51-27.png&quot;</span> <span class="na">height=</span><span class="s">&quot;643&quot;</span> <span class="na">width=</span><span class="s">&quot;361&quot;</span><span class="nt">&gt;&lt;/center&gt;</span>
+<div class="highlight"><pre><span class="nt">&lt;center&gt;</span><span class="cp">{%</span> <span class="k">literal</span> <span class="nv">img</span> <span class="o">{</span><span class="nv">filename</span><span class="o">}/</span><span class="nv">images</span><span class="o">/</span><span class="nv">Screenshot_2014-02-20-17-51-27.png</span> <span class="m">361</span> <span class="m">643</span> <span class="s2">&quot;Example image&quot;</span> <span class="cp">%}</span><span class="nt">&lt;/center&gt;</span>
 </pre></div>
 
 

@@ -1,5 +1,169 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>*JJ</title><link href="http://blog.jdotjdot.com/" rel="alternate"></link><link href="http://blog.jdotjdot.com/feeds/tag/python.atom.xml" rel="self"></link><id>http://blog.jdotjdot.com/</id><updated>2014-04-26T00:00:00-04:00</updated><entry><title>Killing a Python WAT: Forcing immutable default arguments</title><link href="http://blog.jdotjdot.com/2014/04/killing-a-python-wat-forcing-immutable-default-arguments/" rel="alternate"></link><updated>2014-04-26T00:00:00-04:00</updated><author><name>JJ</name></author><id>tag:blog.jdotjdot.com,2014-04-26:2014/04/killing-a-python-wat-forcing-immutable-default-arguments/</id><summary type="html">&lt;p&gt;Fellow Hacker Schooler &lt;a href="http://mathamy.com/author/amy-hanlon.html"&gt;Amy&lt;/a&gt; had a great post today on &lt;a href="http://mathamy.com/python-wats-mutable-default-arguments.html)"&gt;mutable default arguments in Python&lt;/a&gt;, a very typical Python &amp;#8220;&lt;span class="caps"&gt;WAT&lt;/span&gt;&amp;#8221;.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>*JJ</title><link href="http://blog.jdotjdot.com/" rel="alternate"></link><link href="http://blog.jdotjdot.com/feeds/tag/python.atom.xml" rel="self"></link><id>http://blog.jdotjdot.com/</id><updated>2014-06-01T19:11:00-04:00</updated><entry><title>Text-to-Columns in Google Docs Spreadsheets (with Python)</title><link href="http://blog.jdotjdot.com/2014/06/text-to-columns-in-google-docs/" rel="alternate"></link><updated>2014-06-01T19:11:00-04:00</updated><author><name>JJ</name></author><id>tag:blog.jdotjdot.com,2014-06-01:2014/06/text-to-columns-in-google-docs/</id><summary type="html">&lt;p&gt;Despite being an Excel power user, I&amp;#8217;m currently without Excel on my computer for the time being so for some data analysis I had to do I had to make do with Google Docs&amp;#8217; spreadsheets.  While decent, and impressive for a web application, unfortunately it&amp;#8217;s not great for dealing with large amounts of data.  Additionally, it lacks some glaring functionality, particularly a &amp;#8220;Text to Columns&amp;#8221; utility, which is useful for converting in-line a csv-like delimited string of data into individual cells.  While there are a couple of third-party-written add-ins for this, they don&amp;#8217;t work very&amp;nbsp;well.&lt;/p&gt;
+&lt;h3&gt;My&amp;nbsp;Fix&lt;/h3&gt;
+&lt;p&gt;The best way I found to deal with this involved a couple of manual steps, but saved me a lot of time overall.  The process was effectively the&amp;nbsp;following:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Copy cell with data from&amp;nbsp;spreadsheet&lt;/li&gt;
+&lt;li&gt;Paste into&amp;nbsp;Python&lt;/li&gt;
+&lt;li&gt;Process with Python, returning string ready to be copy/pasted back into Google&amp;nbsp;Docs&lt;/li&gt;
+&lt;li&gt;Paste into Google docs in appropriate&amp;nbsp;row&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The biggest challenge here was preparing a string to return that Google Docs would automatically paste into the corresponding columns as appropriate rather than a single cell.  I figured out the right formatting by analyzing exactly what the contents of my clipboard were when I copied multiple columns from the spreadsheet.  It turned out that the big secret was that the data was simply tab-delimited, so all I had to do was generate tab-delimited strings to paste back into Google&amp;nbsp;Docs.&lt;/p&gt;
+&lt;p&gt;I used Python specifically in order to take advantage of the excellent &lt;code&gt;csv&lt;/code&gt; built-in module, which is great at parsing all kinds of oddly formatted and delimited&amp;nbsp;files.&lt;/p&gt;
+&lt;p&gt;Code you can use would be somewhat as&amp;nbsp;follows:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;csv&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="nn"&gt;StringIO&lt;/span&gt;
+
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;text_to_columns&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;text&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="sd"&gt;&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
+&lt;span class="sd"&gt;    A function that takes in a single row of delimited data from a spreadsheet, and returns a tab-delimited string response meant to be copied and pasted back into the spreadsheet to be automatically resolved into the appropriate columns.  Note that you will likely have to `print` the return string in order to copy the tabs correctly.&lt;/span&gt;
+&lt;span class="sd"&gt;    &amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
+
+    &lt;span class="c"&gt;# We need to use StringIO here because csv.reader only reads buffers&lt;/span&gt;
+    &lt;span class="n"&gt;reader&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;csv&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;reader&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;StringIO&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;StringIO&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;text&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+    &lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;&lt;/span&gt;&lt;span class="se"&gt;\t&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;reader&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;next&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;I copied the appropriate cell from the spreadsheet, pasted into the console like&amp;nbsp;so:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;t&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;&amp;#39;&amp;#39;&amp;lt;paste&amp;gt;&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nx"&gt;enter&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Or for multiple lines, for convenience, like&amp;nbsp;so:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;t&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;&amp;#39;&amp;#39;&amp;lt;paste&amp;gt;&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+         &lt;span class="sd"&gt;&amp;#39;&amp;#39;&amp;#39;&amp;lt;paste&amp;gt;&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+         &lt;span class="o"&gt;...&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;And then I ran them all through the&amp;nbsp;function:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;item&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;t&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="n"&gt;text_to_columns&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;item&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;And then I copied the printed&amp;nbsp;result.&lt;/p&gt;
+&lt;p&gt;Note that I used &lt;code&gt;print&lt;/code&gt; rather than simply returning the result because I needed output that correctly rendered the tabs rather than rendering &lt;code&gt;\t&lt;/code&gt;, which is Python&amp;#8217;s in-language way of displaying tabs.  Google Docs would only correctly place the data into separate columns if I had copied actual&amp;nbsp;tabs.&lt;/p&gt;
+&lt;h3&gt;Extending this&amp;nbsp;solution&lt;/h3&gt;
+&lt;p&gt;The true best way of extending this would be to find something as good as Python&amp;#8217;s &lt;code&gt;csv.reader&lt;/code&gt; in Javascript and building a Google Apps Script with&amp;nbsp;it.&lt;/p&gt;
+&lt;p&gt;Otherwise, there is likely a way to have Python pull the contents of the clipboard and then place the results of the function in the clipboard.  If you know of how to do this, I&amp;#8217;d be interested to hear&amp;nbsp;how.&lt;/p&gt;
+&lt;h2&gt;Update&lt;/h2&gt;
+&lt;p&gt;I ran across &lt;a href="http://www.macdrifter.com/2011/12/python-and-the-mac-clipboard.html"&gt;this excellent blog post&lt;/a&gt; that describes some useful strategies and libraries for trying to access the clipboard from Python.  I haven&amp;#8217;t tried it yet, but it&amp;#8217;s worth looking into.  Note that if you use &lt;code&gt;pyobjc&lt;/code&gt; it takes a very long time to compile if you install using &lt;code&gt;pip&lt;/code&gt;.&lt;/p&gt;</summary><category term="text-to-columns"></category><category term="google-docs"></category><category term="spreadsheets"></category><category term="python"></category></entry><entry><title>Ruby-like string interpolation in Python</title><link href="http://blog.jdotjdot.com/2014/05/ruby-like-string-interpolation-in-python/" rel="alternate"></link><updated>2014-05-29T18:18:19-04:00</updated><author><name>JJ</name></author><id>tag:blog.jdotjdot.com,2014-05-29:2014/05/ruby-like-string-interpolation-in-python/</id><summary type="html">&lt;p&gt;I&amp;#8217;ve been experimenting with Rails a bit for the past couple weeks.  This has been pretty exciting for me, as I&amp;#8217;ve generally been much more of a Python developer and I&amp;#8217;d never touched Ruby before, so it was very interesting to see a completely different approach to programming and language&amp;nbsp;philosophy.&lt;/p&gt;
+&lt;p&gt;While the lack of parentheses and many conventions that you &amp;#8220;just have to learn&amp;#8221; sometimes frustrate me, at least from my first couple of weeks with the language, I&amp;#8217;ve seen quite a few features that I like and somewhat wish I had available to me in Python.   One of these is &lt;strong&gt;string interpolation&lt;/strong&gt;.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;String interpolation: To replace a variable with its value within a&amp;nbsp;string.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;Ruby&lt;/h2&gt;
+&lt;p&gt;Ruby implements string interpolation like&amp;nbsp;this:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="go"&gt;2.1.1 :001 &amp;gt; stringvar = &amp;quot;I&amp;#39;m a string&amp;quot;&lt;/span&gt;
+&lt;span class="go"&gt; =&amp;gt; &amp;quot;I&amp;#39;m a string&amp;quot;&lt;/span&gt;
+&lt;span class="go"&gt;2.1.1 :002 &amp;gt; numvar = 3&lt;/span&gt;
+&lt;span class="go"&gt; =&amp;gt; 3&lt;/span&gt;
+&lt;span class="go"&gt;2.1.1 :003 &amp;gt; &amp;quot;This is stringvar: #{stringvar}, and this is numvar: #{numvar}&amp;quot;&lt;/span&gt;
+&lt;span class="go"&gt;=&amp;gt; &amp;quot;This is stringvar: I&amp;#39;m a string, and this is numvar: 3&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Note that it only works with double-quotes (&lt;code&gt;"&lt;/code&gt;) which are &amp;#8220;weaker.&amp;#8221;  If you try it with single-quotes, you&amp;#8217;ll get the&amp;nbsp;following:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="go"&gt;2.1.1 :004 &amp;gt; puts &amp;#39;This is stringvar: #{stringvar}, and this is numvar: #{numvar}&amp;#39;&lt;/span&gt;
+&lt;span class="go"&gt;This is stringvar: #{stringvar}, and this is numvar: #{numvar}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;My understanding is that you can do this with anything accessible within the local scope, so that would include class or global variables (e.g., ones beginning with &lt;code&gt;@&lt;/code&gt;).  The flexibility of string interpolation goes even farther, though, as you can actually call methods and perform other arbitrary operations within the&amp;nbsp;interpolation:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mo"&gt;010&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Upper case: &lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;stringvar&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;upcase&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+ &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Upper case: I&amp;#39;M A STRING&amp;quot;&lt;/span&gt;
+&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mo"&gt;011&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Addition: &lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;numvar&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+ &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Addition: 7&amp;quot;&lt;/span&gt;
+&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mo"&gt;012&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;add10&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;num&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mo"&gt;013&lt;/span&gt;&lt;span class="o"&gt;?&amp;gt;&lt;/span&gt;   &lt;span class="n"&gt;num&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;
+&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mo"&gt;014&lt;/span&gt;&lt;span class="o"&gt;?&amp;gt;&lt;/span&gt; &lt;span class="k"&gt;end&lt;/span&gt;
+ &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="ss"&gt;:add10&lt;/span&gt;
+&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mo"&gt;015&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Method call: &lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;add10&lt;/span&gt; &lt;span class="n"&gt;numvar&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+ &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Method call: 13&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Clearly powerful, but could also be somewhat&amp;nbsp;dangerous.&lt;/p&gt;
+&lt;h2&gt;Python&lt;/h2&gt;
+&lt;p&gt;Python, with the philosophy &amp;#8220;explicit is better than implicit&amp;#8221;, does not have this string interpolation in quite the same way&amp;#8212;you need to pass in what you&amp;#8217;d like to interpolate&amp;nbsp;explicitly.&lt;/p&gt;
+&lt;p&gt;The old syntax for this (and still used by many today) is the&amp;nbsp;following:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;This is a string &lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s"&gt;, or a number: &lt;/span&gt;&lt;span class="si"&gt;%d&lt;/span&gt;&lt;span class="s"&gt;, or a number as a string: &lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; \
+&lt;span class="o"&gt;...&lt;/span&gt;    &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;arbitrary string&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;39&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="s"&gt;&amp;#39;This is a string arbitrary string, or a number: 3, or a number as a string: 39&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Example with formatting: &lt;/span&gt;&lt;span class="si"&gt;%.4f&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;
+&lt;span class="s"&gt;&amp;#39;Example with formatting: 3.0000&amp;#39;&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Named arguments: &lt;/span&gt;&lt;span class="si"&gt;%(hey)s&lt;/span&gt;&lt;span class="s"&gt;, &lt;/span&gt;&lt;span class="si"&gt;%(name)s&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;hey&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Hey&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;name&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Jason&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="s"&gt;&amp;#39;Named arguments: Hey, Jason&amp;#39;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The new style is a &lt;code&gt;.format&lt;/code&gt; method called directly on the&amp;nbsp;string:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Lots of {} to {verb} here, like binary conversion: {num:b}&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+        &lt;span class="s"&gt;&amp;#39;examples&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;verb&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;show&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;num&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;
+    &lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="s"&gt;&amp;#39;Lots of examples to show here, like binary conversion: 11&amp;#39;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;And you are also able to access objects&amp;#8217; attributes or items, like&amp;nbsp;so:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Item 1: {0[1]} | Dictionary &amp;#39;key&amp;#39;: {1[key]}&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;b&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;key&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;value&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;})&lt;/span&gt;
+&lt;span class="s"&gt;&amp;quot;Item 1: b | Dictionary &amp;#39;key&amp;#39;: value&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Note that above, we&amp;#8217;re calling the different arguments positionally, so &lt;code&gt;{0}&lt;/code&gt; refers to the first positional argument to &lt;code&gt;format&lt;/code&gt; and &lt;code&gt;{1}&lt;/code&gt; to the second (Python is 0-indexed!), and then we&amp;#8217;re accessing internals via&amp;nbsp;brackets.&lt;/p&gt;
+&lt;p&gt;You can&amp;#8217;t call&amp;nbsp;methods:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;add1&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;num&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;span class="o"&gt;...&lt;/span&gt;   &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;num&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
+&lt;span class="o"&gt;...&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Test: {add1(test)}&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;Traceback&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;most&lt;/span&gt; &lt;span class="n"&gt;recent&lt;/span&gt; &lt;span class="n"&gt;call&lt;/span&gt; &lt;span class="n"&gt;last&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+  &lt;span class="n"&gt;File&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;&amp;lt;stdin&amp;gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;line&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;module&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
+&lt;span class="ne"&gt;KeyError&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;add1(test)&amp;#39;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;There are lots of other good examples that can be found in the Python docs &lt;a href="https://docs.python.org/2/library/string.html#formatexamples"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;h3&gt;Accessing variables in the immediate&amp;nbsp;scope&lt;/h3&gt;
+&lt;p&gt;Unfortunately, you can&amp;#8217;t do what Ruby does in terms of accessing any variable or value in the string&amp;#8217;s scope.  This makes sense from an explicitness perspective (we know exactly what we&amp;#8217;re passing to the string at all times), but sometimes it is convenient to not have to worry about that and to be able to type&amp;nbsp;quickly.&lt;/p&gt;
+&lt;p&gt;The best way I found to do this in Python is to pass in the &lt;code&gt;locals()&lt;/code&gt; dictionary, which is a dictionary of the local&amp;nbsp;scope.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;hey&amp;quot;&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;This is a: {a} | This is b: {b}&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="nb"&gt;locals&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;
+&lt;span class="s"&gt;&amp;#39;This is a: 1 | This is b: hey&amp;#39;&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="nb"&gt;locals&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;b&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;hey&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;__builtins__&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;module&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;__builtin__&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;built&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="ow"&gt;in&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;__package__&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;__name__&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;__main__&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;__doc__&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;It&amp;#8217;s a bit less &amp;#8220;Pythonic,&amp;#8221; but ultimately it still gets the job&amp;nbsp;done.&lt;/p&gt;
+&lt;h3&gt;Within&amp;nbsp;classes&lt;/h3&gt;
+&lt;p&gt;This doesn&amp;#8217;t really work quite so well in classes and starts to become unwieldy.  As you&amp;#8217;ll see below, accessing the class instance&amp;#8217;s attributes don&amp;#8217;t work with &lt;code&gt;locals()&lt;/code&gt; because they&amp;#8217;re all actually attached to &lt;code&gt;self&lt;/code&gt; within the&amp;nbsp;methods.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Test&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;object&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;span class="o"&gt;...&lt;/span&gt;     &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;
+&lt;span class="o"&gt;...&lt;/span&gt;     &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;span class="o"&gt;...&lt;/span&gt;         &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;hey&amp;#39;&lt;/span&gt;
+&lt;span class="o"&gt;...&lt;/span&gt;         &lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="nb"&gt;locals&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;t&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Test&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;self&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;__main__&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Test&lt;/span&gt; &lt;span class="n"&gt;at&lt;/span&gt; &lt;span class="mh"&gt;0x10e978e50&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Ultimately, if we really wanted to, we could still access them within the string this&amp;nbsp;way:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Test&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;object&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt;     &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt;     &lt;span class="n"&gt;b&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;hey&amp;#39;&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt;     &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;stringinterp&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt;         &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;a: {0.a}, b: {0.b}&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;Test&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;stringintepr&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="s"&gt;&amp;#39;a: 3, b: hey&amp;#39;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;But at that point, I don&amp;#8217;t think it would be very convenient, and would effectively be defeating the purpose of string interpolation&amp;nbsp;anyway.        &lt;/p&gt;</summary><category term="python"></category><category term="ruby"></category><category term="string-interpolation"></category></entry><entry><title>Killing a Python WAT: Forcing immutable default arguments</title><link href="http://blog.jdotjdot.com/2014/04/killing-a-python-wat-forcing-immutable-default-arguments/" rel="alternate"></link><updated>2014-04-26T00:00:00-04:00</updated><author><name>JJ</name></author><id>tag:blog.jdotjdot.com,2014-04-26:2014/04/killing-a-python-wat-forcing-immutable-default-arguments/</id><summary type="html">&lt;p&gt;Fellow Hacker Schooler &lt;a href="http://mathamy.com/author/amy-hanlon.html"&gt;Amy&lt;/a&gt; had a great post today on &lt;a href="http://mathamy.com/python-wats-mutable-default-arguments.html)"&gt;mutable default arguments in Python&lt;/a&gt;, a very typical Python &amp;#8220;&lt;span class="caps"&gt;WAT&lt;/span&gt;&amp;#8221;.&lt;/p&gt;
 &lt;p&gt;(If you haven&amp;#8217;t seen the &lt;a href="https://www.destroyallsoftware.com/talks/wat"&gt;CodeMash 2012 &lt;span class="caps"&gt;WAT&lt;/span&gt; video&lt;/a&gt;, you&amp;nbsp;should.)&lt;/p&gt;
 &lt;p&gt;In this case, Amy wrote about how unintuitively in Python, when creating a function with default arguments, those arguments are actually &lt;strong&gt;mutable&lt;/strong&gt; and &lt;strong&gt;preserved&lt;/strong&gt;, meaning any mutations made to the default arguments remain that way for all future calls to that function.  We just often don&amp;#8217;t see this behavior because most of the time numbers and strings are used as default arguments, which &lt;em&gt;by implementation&lt;/em&gt; are immutable and so aren&amp;#8217;t given a chance to exhibit this&amp;nbsp;behavior.&lt;/p&gt;
 &lt;p&gt;The example she&amp;nbsp;used:&lt;/p&gt;

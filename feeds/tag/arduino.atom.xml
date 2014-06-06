@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>*JJ</title><link href="http://blog.jdotjdot.com/" rel="alternate"></link><link href="http://blog.jdotjdot.com/feeds/tag/arduino.atom.xml" rel="self"></link><id>http://blog.jdotjdot.com/</id><updated>2014-03-27T00:00:00-04:00</updated><entry><title>Ultrasonic distance detectors in Arduino</title><link href="http://blog.jdotjdot.com/2014/03/ultrasonic-distance-detectors-in-arduino/" rel="alternate"></link><updated>2014-03-27T00:00:00-04:00</updated><author><name>JJ</name></author><id>tag:blog.jdotjdot.com,2014-03-27:2014/03/ultrasonic-distance-detectors-in-arduino/</id><summary type="html">&lt;!-- 3/27/2014 --&gt;
+
+&lt;p&gt;Matt at Hacker School has plans to go back home and hook up a Raspberry Pi or an Arduino to a motion sensor in order to detect when his cat jumps onto the table (which apparently happens too much)&amp;#8212;and maybe scare him as well, making it make a loud noise every time he does&amp;nbsp;it.&lt;/p&gt;
+&lt;p&gt;Since I&amp;#8217;ve worked quite a bit with Arduino at this point, between the &lt;a href="https://github.com/jdotjdot/B_FURIOUS"&gt;wireless remote control car project&lt;/a&gt; and the &lt;a href="https://github.com/jdotjdot/doorduino"&gt;internet-enabled door opener&lt;/a&gt;, Matt asked me to walk him through what the code would look like in C.  Up until now, he&amp;#8217;s been working with Arduinos using a Ruby library (I think &lt;a href="http://ruby-serialport.rubyforge.org/"&gt;this one&lt;/a&gt;), but it&amp;#8217;s fairly limited, and I also would imagine that being another step away from the C would make it harder to program the micro controller.  So we went over what the C code would look like for a very simple use&amp;nbsp;case.&lt;/p&gt;
+&lt;p&gt;We set up an Arduino to detect the closest item (linearly) using the ultrasonic distance detector, and then to dim a light depending on how far the item&amp;nbsp;was.&lt;/p&gt;
+&lt;p&gt;Here it is in&amp;nbsp;action:&lt;/p&gt;
+&lt;p&gt;&lt;center&gt;&lt;iframe width='560' height='315' src='http://www.youtube.com/embed/n7D4ZiQezQI' frameborder='0' webkitAllowFullScreen mozallowfullscreen allowFullScreen&gt;&lt;/iframe&gt;&lt;/center&gt;&lt;/p&gt;
+&lt;h3&gt;Schematic&lt;/h3&gt;
+&lt;!--&lt;div class="center container"&gt;&lt;img width="700px" align="center" alt="Schematic" src="http://blog.jdotjdot.com/images/Ultrasonic-distance-detector.png"&gt;&lt;/div&gt;--&gt;
+
+&lt;!-- ![Schematic]({filename}/images/Ultrasonic-distance-detector.png) --&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img alt=""Schematic"" width="500" title=""Schematic"" src="http://blog.jdotjdot.com/images/Ultrasonic-distance-detector.png"&gt;&lt;/center&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The basic setup:&lt;/strong&gt;
+The ultrasonic distance detector, the big blue thing that isn&amp;#8217;t the Arduino, is hooked up to the 5V Arduino output and to ground, and then the middle two pins are hooked up to Arduino digital pins&amp;#8212;one to trigger an ultrasonic blast, and one to listen for the blast&amp;#8217;s response.  The red &lt;span class="caps"&gt;LED&lt;/span&gt; hooked up to pin 13 flashes when nothing is detected in the vicinity, and then turns solid red when something is detected.  The yellow &lt;span class="caps"&gt;LED&lt;/span&gt; fades depending on the distance of the detected object&amp;#8212;the closer it is, the dimmer the light, unless there are no objects within the specified maximum detection range, in which case the light is completely&amp;nbsp;off.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;How it works:&lt;/strong&gt;
+The ultrasonic distance detector, when turned on by setting the pin hooked up to the trigger to &lt;code&gt;HIGH&lt;/code&gt;,  sends out an ultrasonic blast forward.  We have the Arduino wait about 10 microseconds for the sound to emit using &lt;code&gt;delayMicroseconds(10);&lt;/code&gt;, and then we use &lt;code&gt;pulseIn&lt;/code&gt; to wait for the sound to return.  The longer it takes the sound to return, the farther away the object is.  To find the number of centimeters away the object is, we can take the response from &lt;code&gt;pulseIn&lt;/code&gt; and divide it by &lt;code&gt;(2 * 29)&lt;/code&gt; to get the distance in centimeters rather than&amp;nbsp;milliseconds.&lt;/p&gt;
+&lt;p&gt;In the case of this Arduino project, we then use that information to determine if the object is within the specified distance range (&lt;code&gt;iMaxDistance&lt;/code&gt; in the code below), and if so, we turn the red light on and scale the output to a range of 0-255, which is the allowed analog output from the Arduino to the yellow &lt;span class="caps"&gt;LED&lt;/span&gt; using &lt;code&gt;analogWrite&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;And that&amp;#8217;s&amp;nbsp;it!&lt;/p&gt;
+&lt;h3&gt;The&amp;nbsp;Code&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c1"&gt;// Credit to JamesHappy for much of this tester code&lt;/span&gt;
+
+&lt;span class="c1"&gt;// Onboard LED should blink while searching for surface&lt;/span&gt;
+&lt;span class="c1"&gt;// Onboard LED should be solid when surface is within a specified distance&lt;/span&gt;
+&lt;span class="c1"&gt;// Rangefinder should only wait for echos under a calculated timeout&lt;/span&gt;
+
+
+&lt;span class="k"&gt;int&lt;/span&gt; &lt;span class="n"&gt;iTrigger&lt;/span&gt;     &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mh"&gt;2&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  &lt;span class="c1"&gt;// Digital Pin 2&lt;/span&gt;
+&lt;span class="k"&gt;int&lt;/span&gt; &lt;span class="n"&gt;iEcho&lt;/span&gt;        &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mh"&gt;3&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  &lt;span class="c1"&gt;// Digital Pin 3&lt;/span&gt;
+&lt;span class="k"&gt;int&lt;/span&gt; &lt;span class="n"&gt;iAlertLED&lt;/span&gt;                  &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mh"&gt;13&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;// Digital Pin 13&lt;/span&gt;
+&lt;span class="k"&gt;int&lt;/span&gt; &lt;span class="n"&gt;iEchoTimeout&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mh"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  &lt;span class="c1"&gt;// In Microseconds&lt;/span&gt;
+&lt;span class="k"&gt;int&lt;/span&gt; &lt;span class="n"&gt;iMaxDistance&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mh"&gt;30&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;// In Centimeters&lt;/span&gt;
+
+&lt;span class="k"&gt;int&lt;/span&gt; &lt;span class="n"&gt;iTriggerPullDown&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mh"&gt;2&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  &lt;span class="c1"&gt;// In Microseconds&lt;/span&gt;
+&lt;span class="k"&gt;int&lt;/span&gt; &lt;span class="n"&gt;iPingWidth&lt;/span&gt;       &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mh"&gt;10&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;// In Microseconds&lt;/span&gt;
+
+&lt;span class="k"&gt;int&lt;/span&gt; &lt;span class="n"&gt;changingLed&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mh"&gt;9&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="k"&gt;void&lt;/span&gt; &lt;span class="n"&gt;setup&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="n"&gt;Serial&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="k"&gt;begin&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mh"&gt;9600&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="n"&gt;pinMode&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;iTrigger&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="no"&gt;OUTPUT&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="n"&gt;pinMode&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;iEcho&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="no"&gt;INPUT&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="n"&gt;pinMode&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;iAlertLED&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="no"&gt;OUTPUT&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="n"&gt;pinMode&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;changingLed&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="no"&gt;OUTPUT&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="n"&gt;iEchoTimeout&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;iMaxDistance&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="mh"&gt;2&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="mh"&gt;29&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="n"&gt;digitalWrite&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;changingLed&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="no"&gt;HIGH&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+
+
+&lt;span class="k"&gt;void&lt;/span&gt; &lt;span class="n"&gt;loop&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="n"&gt;digitalWrite&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;iTrigger&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="no"&gt;LOW&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="n"&gt;delayMicroseconds&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;iTriggerPullDown&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="n"&gt;digitalWrite&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;iTrigger&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="no"&gt;HIGH&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="n"&gt;delayMicroseconds&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;iPingWidth&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="n"&gt;digitalWrite&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;iTrigger&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="no"&gt;LOW&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="k"&gt;unsigned&lt;/span&gt; &lt;span class="n"&gt;long&lt;/span&gt; &lt;span class="n"&gt;ulPing&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pulseIn&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;iEcho&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="no"&gt;HIGH&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;iEchoTimeout&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="n"&gt;Serial&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;println&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;String&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ulPing&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="mh"&gt;2&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="mh"&gt;29&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt;
+  &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ulPing&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;digitalWrite&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;iAlertLED&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="no"&gt;HIGH&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="c1"&gt;//    digitalWrite(changingLed, ((ulPing/2/29)/iEchoTimeout*255));&lt;/span&gt;
+    &lt;span class="n"&gt;analogWrite&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;changingLed&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;map&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ulPing&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mh"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;iEchoTimeout&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mh"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mh"&gt;255&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt;
+    &lt;span class="n"&gt;SimulateLoad&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mh"&gt;250&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt;
+  &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;digitalWrite&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;changingLed&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="no"&gt;LOW&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;digitalWrite&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;iAlertLED&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="no"&gt;HIGH&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;delay&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mh"&gt;25&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;digitalWrite&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;iAlertLED&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="no"&gt;LOW&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;SimulateLoad&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mh"&gt;225&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="k"&gt;void&lt;/span&gt; &lt;span class="n"&gt;SimulateLoad&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;int&lt;/span&gt; &lt;span class="n"&gt;iDutyCycle&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="n"&gt;delay&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;iDutyCycle&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="hackerschool"></category><category term="arduino"></category><category term="ultrasonic"></category><category term="distance"></category></entry></feed>

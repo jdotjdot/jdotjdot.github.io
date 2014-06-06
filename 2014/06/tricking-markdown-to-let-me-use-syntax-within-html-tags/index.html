@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+        <title>Tricking Markdown to let me use ![]() syntax within HTML tags</title>
+        <meta charset="utf-8" />
+        <link href="http://blog.jdotjdot.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="*JJ Full Atom Feed" />
+        <link href="http://blog.jdotjdot.com/feeds/category/programming.atom.xml" type="application/atom+xml" rel="alternate" title="*JJ Categories Atom Feed" />
+
+
+        <!-- Mobile viewport optimized: j.mp/bplateviewport -->
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+
+
+            <link rel="stylesheet" type="text/css" href="http://blog.jdotjdot.com/theme/gumby-custom.css?a6374bd9" />
+
+        <link rel="stylesheet" type="text/css" href="http://blog.jdotjdot.com/theme/style.css" />
+        <link rel="stylesheet" type="text/css" href="http://blog.jdotjdot.com/theme/pygment.css" />
+          <link rel="stylesheet" type="text/css" href="http://blog.jdotjdot.com/theme/jj-custom.css?17d3d1cc" />
+
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+        <script src="http://blog.jdotjdot.com/theme/js/libs/modernizr-2.6.2.min.js"></script>
+
+
+              <script>
+                (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+                ga('create', 'UA-47960248-1', 'blog.jdotjdot.com');
+                ga('require', 'displayfeatures');
+                ga('require', 'linkid', 'linkid.js');
+                ga('send', 'pageview');
+
+              </script>
+
+
+
+
+</head>
+
+<body id="index" class="home">
+
+
+    <div class="container">
+
+        <div class="row">
+
+
+            <div id="navigation" class="navbar row">
+              <a href="#" gumby-trigger="#navigation &gt; ul" class="toggle"><i class="icon-menu"></i></a>
+
+              <ul class="columns">
+                <!-- logo -->
+		<li><a class="logo-text" href="http://blog.jdotjdot.com"><span>*JJ</span></a></li>
+
+
+
+                    <li><a href="/archives/">Archives</a></li>
+                    <li><a href="http://blog.jdotjdot.com/pages/about.html">About</a></li>
+                    <li><a href="http://blog.jdotjdot.com/pages/projects.html">Projects</a></li>
+              </ul>
+
+
+                <!-- RSS/Atom feed -->
+                <ul class="columns">
+                    <li><a class="rss-icon" href="http://blog.jdotjdot.com/feeds/category/programming.atom.xml"><i class="fa fa-rss fa-2x"></i></a></li>
+                </ul>
+            </div>
+
+<section id="content" class="body">
+
+   <div class="row">
+        <div class="eleven columns">
+
+
+            <header>
+              <h2 class="entry-title">
+                <a href="http://blog.jdotjdot.com/2014/06/tricking-markdown-to-let-me-use-syntax-within-html-tags/" rel="bookmark"
+                   title="Permalink to Tricking Markdown to let me use ![]() syntax within HTML tags">Tricking Markdown to let me use ![]() syntax within <span class="caps">HTML</span>&nbsp;tags</a></h2>
+           
+            </header>
+
+            <footer class="post-info">
+                Published <span class="published" title="2014-06-05T19:51:26">Thu 05 June 2014</span> by
+                <a class="url fn author-name" href="http://blog.jdotjdot.com/author/jj.html">JJ</a>
+                <br>
+                <span>Tagged in: </span>
+                        <a class="tag" href="http://blog.jdotjdot.com/tags/pelican">pelican</a>,                        <a class="tag" href="http://blog.jdotjdot.com/tags/markdown">markdown</a>,                        <a class="tag" href="http://blog.jdotjdot.com/tags/html">html</a>,                        <a class="tag" href="http://blog.jdotjdot.com/tags/images">images</a>                <hr>
+            </footer>
+
+
+            <div class="entry-content">
+              <p>This is a short post on a technique I discovered to trick Markdown (at least the brand of Markdown that I&#8217;ve been using that comes with Pelican) to let you stick Markdown-style syntax inside of <span class="caps">HTML</span> tags and have it still be&nbsp;parsed.</p>
+<p>My particular use-case here was&nbsp;images.</p>
+<h3><span class="caps">TL</span>;<span class="caps">DR</span></h3>
+<p>Though normally Markdown doesn&#8217;t parse anything inside of <span class="caps">HTML</span> tags, you can use Markdown syntax inside of <span class="caps">HTML</span> tags in a Markdown file by tricking the Markdown using fake <span class="caps">HTML</span> closing tags within a comment.  Example below, using Markdown image syntax along with Pelican&#8217;s <a href="http://pelican.readthedocs.org/en/latest/content.html#linking-to-internal-content">internal content linking</a>&nbsp;syntax:</p>
+<div class="highlight"><pre><span class="nt">&lt;center&gt;</span><span class="c">&lt;!-- &lt;/center&gt; --&gt;</span>![My Image!]({filename}/images/myimage.png)<span class="nt">&lt;/center&gt;</span>
+</pre></div>
+
+
+<p>This should render a centered image in the <span class="caps">HTML</span>, properly rendering the Markdown image syntax, like&nbsp;so:</p>
+<div class="highlight"><pre><span class="nt">&lt;center&gt;</span><span class="c">&lt;!-- &lt;/center&gt; --&gt;</span><span class="nt">&lt;img</span> <span class="na">alt=</span><span class="s">&quot;My Image!&quot;</span> <span class="na">src=</span><span class="s">&quot;https://myblogurl.com/images/myimage.png.&quot;</span><span class="nt">&gt;&lt;/center&gt;</span>
+</pre></div>
+
+
+<h2>Background</h2>
+<p>You can always stick arbitrary <span class="caps">HTML</span> inside a Markdown document, and it will pass through into the final rendered <span class="caps">HTML</span> document unchanged.  This is often done for images, because even though Markdown has an image&nbsp;syntax:</p>
+<div class="highlight"><pre><span class="o">!</span><span class="p">[</span><span class="n">Image</span><span class="o">-</span><span class="n">alt</span><span class="o">-</span><span class="n">text</span><span class="p">](</span><span class="n">http</span><span class="o">:</span><span class="c1">//image-URL/)</span>
+</pre></div>
+
+
+<p>Most flavors of Markdown don&#8217;t allow you to set the width and height, so people tend to use straight-up <span class="caps">HTML</span>&nbsp;instead.</p>
+<div class="highlight"><pre><span class="nt">&lt;img</span> <span class="na">alt=</span><span class="s">&quot;alt-text&quot;</span> <span class="na">src=</span><span class="s">&quot;http://image-URL&quot;</span> <span class="nt">/&gt;</span>
+</pre></div>
+
+
+<p>Because of difficulties with centering, as long as you&#8217;re using <span class="caps">HTML</span>, it&#8217;s also easy to center the image using <code>&lt;center&gt;</code> tags or by using styling, whether in-line styling or adding a class to your image.  Vertical styling can be a pain though, and what I tended to need to do was stick everything inside a <code>&lt;div&gt;</code> in order to center&nbsp;it:</p>
+<div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">style=</span><span class="s">&quot;text-align: center;&quot;</span><span class="nt">&gt;&lt;img</span> <span class="na">alt=</span><span class="s">&quot;&quot;</span> <span class="na">src=</span><span class="s">&quot;path/to/image&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
+<span class="c">&lt;!-- or --&gt;</span>
+<span class="nt">&lt;center&gt;&lt;img</span> <span class="na">alt=</span><span class="s">&quot;&quot;</span> <span class="na">src=</span><span class="s">&quot;/path/to/image&quot;</span><span class="nt">&gt;&lt;/center&gt;</span>
+</pre></div>
+
+
+<h2>The Problem: Relative URLs and other Markdown&nbsp;syntax</h2>
+<p>The problem that arose in my particular case was trying to center an image while using relative URLs in the Markdown to specify the image source.  In the Pelican docs, there&#8217;s a section on <a href="http://pelican.readthedocs.org/en/latest/content.html#linking-to-internal-content">linking to internal content</a> which specifies the following syntax for linking to any internal content within&nbsp;Markdown:</p>
+<div class="highlight"><pre><span class="o">!</span><span class="p">[</span><span class="n">My</span> <span class="n">Image</span><span class="p">]({</span><span class="n">filename</span><span class="p">}</span><span class="o">/</span><span class="n">images</span><span class="o">/</span><span class="n">myimage</span><span class="p">.</span><span class="n">png</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Unfortunately, the <code>{filename}/file/path</code> syntax only works within a Markdown-style image or link tag, and so I couldn&#8217;t use that syntax within an <code>&lt;img&gt;</code> tag.  However, if I wanted to center the image, I <em>needed</em> to have my image appear within manually-specified <code>&lt;center&gt;</code> tags or a <code>&lt;div&gt;</code>.  This posed an issue, as Markdown does not process anything within manually specified <span class="caps">HTML</span> tags, so you would run across the following&nbsp;issue:</p>
+<div class="highlight"><pre><span class="c">&lt;!-- Markdown: --&gt;</span>
+<span class="nt">&lt;center&gt;</span>![My Image](http://image/path)<span class="nt">&lt;/center&gt;</span>
+
+<span class="c">&lt;!-- will be rendered in HTML as: --&gt;</span>
+<span class="nt">&lt;center&gt;</span>![My Image](http://image/path)<span class="nt">&lt;/center&gt;</span>
+</pre></div>
+
+
+<h2>The Solution: Trick&nbsp;Markdown</h2>
+<p>I took a guess and figured that the Markdown parser was relatively lazy and didn&#8217;t take great care when refusing to parse anything within <span class="caps">HTML</span> tags&#8212;my bet was that when it encountered an opening <span class="caps">HTML</span> tag, it simply stopped parsing until it encountered the close of that tag.  If I was right, that meant I could trick the parser like&nbsp;so:</p>
+<div class="highlight"><pre><span class="nt">&lt;center&gt;</span><span class="c">&lt;!-- &lt;/center&gt; --&gt;</span>![My Image!]({filename}/images/myimage.png)<span class="nt">&lt;/center&gt;</span>
+</pre></div>
+
+
+<p>And sure enough, it works!  This creates a centered image in the <span class="caps">HTML</span>, properly rendering the Markdown image syntax, like&nbsp;so:</p>
+<div class="highlight"><pre><span class="nt">&lt;center&gt;</span><span class="c">&lt;!-- &lt;/center&gt; --&gt;</span><span class="nt">&lt;img</span> <span class="na">alt=</span><span class="s">&quot;My Image!&quot;</span> <span class="na">src=</span><span class="s">&quot;https://myblogurl.com/images/myimage.png.&quot;</span><span class="nt">&gt;&lt;/center&gt;</span>
+</pre></div>
+
+
+<h2>A Better Solution for&nbsp;Pelican</h2>
+<p>If you&#8217;re using Pelican, the better solution ultimately is to use the <a href="https://github.com/getpelican/pelican-plugins/tree/master/liquid_tags">Liquid-style tags</a> plugin, which should not only let you specify the width and height but also let you stick it inside an <span class="caps">HTML</span> tag.  You still get to use the relative filename Pelican syntax, as&nbsp;well:</p>
+<div class="highlight"><pre><span class="nt">&lt;center&gt;</span><span class="cp">{%</span> <span class="k">img</span> <span class="o">{</span><span class="nv">filename</span><span class="o">}/</span><span class="nv">images</span><span class="o">/</span><span class="nv">Screenshot_2014-02-20-17-51-27.png</span> <span class="m">361</span> <span class="m">643</span> <span class="s2">&quot;Example image&quot;</span> <span class="cp">%}</span><span class="nt">&lt;/center&gt;</span>
+</pre></div>
+
+
+<p>However, what I&#8217;ve discovered above should remain useful to those using straight Markdown without access to plugins and who don&#8217;t want to have to get creative with their blog theme or&nbsp;Javascript. </p>
+            </div><!-- /.entry-content -->
+
+
+        </div><!-- /.eleven.columns -->
+        
+
+<div class="three columns">
+
+    <nav class="widget">
+        <h4>Social</h4>
+        <ul class="social-link-list">
+               <li><a href="https://github.com/jdotjdot">
+                <i class="social-icon fa fa-2x fa-github"></i>
+    </a></li>
+               <li><a href="http://stackoverflow.com/users/1351335/jdotjdot">
+                <i class="social-icon fa fa-2x fa-stack-overflow"></i>
+    </a></li>
+               <li><a href="https://twitter.com/JdotJdotF">
+                <i class="social-icon fa fa-2x fa-twitter"></i>
+    </a></li>
+        </ul>
+    </nav>
+
+<h4>Pages</h4>
+
+ <ul>
+      <li><a href="/archives/">Archives</a></li>
+      <li><a href="http://blog.jdotjdot.com/pages/about.html">About</a></li>
+      <li><a href="http://blog.jdotjdot.com/pages/projects.html">Projects</a></li>
+  </ul>
+
+<h4>Categories</h4>
+<ul>
+		<li><a href="http://blog.jdotjdot.com/category/programming">Programming</a></li>
+</ul>
+
+
+<h4>Tags</h4>
+	<ul>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/algorithms">algorithms</a></li>
+	    <li class="tag-4"><a href="http://blog.jdotjdot.com/tags/android">android</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/arduino">arduino</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/async">async</a></li>
+	    <li class="tag-4"><a href="http://blog.jdotjdot.com/tags/bash">bash</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/bashweather">bashweather</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/c">C</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/canvas">canvas</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/capture-the-flag">capture-the-flag</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/clojure">clojure</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/comp">comp</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/compression">compression</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/crash">crash</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/crypto">crypto</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/decorator">decorator</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/default-args">default-args</a></li>
+	    <li class="tag-4"><a href="http://blog.jdotjdot.com/tags/dial-up-over-cell-phone">dial-up-over-cell-phone</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/distance">distance</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/doorbot">doorbot</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/doorduino">doorduino</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/dropbox">dropbox</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/error-correction">error-correction</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/framing">framing</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/freelance">freelance</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/getopts">getopts</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/getting-started">getting-started</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/google-docs">google-docs</a></li>
+	    <li class="tag-1"><a href="http://blog.jdotjdot.com/tags/hackerschool">hackerschool</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/highlightjs">highlightjs</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/html">html</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/html5">html5</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/images">images</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/internet">internet</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/it-works">it-works</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/jabber">jabber</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/java">java</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/jekyll">jekyll</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/keyboards">keyboards</a></li>
+	    <li class="tag-4"><a href="http://blog.jdotjdot.com/tags/markdown">markdown</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/matasano">matasano</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/mel-chua">mel-chua</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/messages-app">messages-app</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/mutability">mutability</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/os-x">os-x</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/pacman">pacman</a></li>
+	    <li class="tag-4"><a href="http://blog.jdotjdot.com/tags/pelican">pelican</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/productively-lost">productively-lost</a></li>
+	    <li class="tag-3"><a href="http://blog.jdotjdot.com/tags/python">python</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/quick-union">quick-union</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/restart">restart</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/ruby">ruby</a></li>
+	    <li class="tag-4"><a href="http://blog.jdotjdot.com/tags/scriptogram">scriptogr.am</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/seminar">seminar</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/server">server</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/signal-processing">signal-processing</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/sort">sort</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/spreadsheets">spreadsheets</a></li>
+	    <li class="tag-4"><a href="http://blog.jdotjdot.com/tags/static-site-generators">static-site-generators</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/string-interpolation">string-interpolation</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/syntax-highlighting">syntax-highlighting</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/tcp">tcp</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/text-to-columns">text-to-columns</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/travel">travel</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/ultrasonic">ultrasonic</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/wat">wat</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/weather">weather</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/zapier">zapier</a></li>
+</ul>
+
+
+
+</div> </div><!-- /.row -->
+
+
+</section>
+
+       </div><!-- /.row -->
+    </div><!-- /.container -->
+
+
+       <div class="container.nopad bg">
+
+
+        <footer id="credits" class="row">
+          <div class="seven columns left-center">
+
+                   <address id="about" class="vcard body">
+                    Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                    which takes great advantage of <a href="http://python.org">Python</a>.
+                    <br />
+                    Based on the <a target="_blank" href="http://gumbyframework.com">Gumby Framework</a>
+                    </address>
+          </div>
+
+
+          <div class="seven columns">
+            <div class="row">
+              <ul class="socbtns">
+
+
+
+
+
+              </ul>
+            </div>
+          </div>
+        </footer>
+
+    </div>
+
+
+  <script src="http://blog.jdotjdot.com/theme/js/libs/jquery-1.9.1.min.js"></script>
+  <script src="http://blog.jdotjdot.com/theme/js/libs/gumby.min.js"></script>
+  <script src="http://blog.jdotjdot.com/theme/js/plugins.js"></script>
+  <script src="http://blog.jdotjdot.com/theme/js/jj-js.js"></script>
+</body>
+</html>

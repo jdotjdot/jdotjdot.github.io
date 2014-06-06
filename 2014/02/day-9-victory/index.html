@@ -58,6 +58,8 @@
 
 
                     <li><a href="/archives/">Archives</a></li>
+                    <li><a href="http://blog.jdotjdot.com/pages/about.html">About</a></li>
+                    <li><a href="http://blog.jdotjdot.com/pages/projects.html">Projects</a></li>
               </ul>
 
 
@@ -96,11 +98,11 @@
 <p>I had one of those moments today, while working on an extremely basic android app to record a call, as part of my efforts on the Dial-Up Over Cell Phone project.  I knew absolutely no android before this and no Java, so it&#8217;s been a lot to pick up at once, especially because android development has turned out to be pretty confusing and not that well designed. I was following the official <a href="https://developer.android.com/training/basics/firstapp/index.html">&#8220;Building Your First App&#8221;</a> guide, but I was having quite a bit of trouble with&nbsp;it. </p>
 <p>After a while, I managed to get an extremely basic two page (or &#8220;activity&#8221;, in android parlance) app up on an emulator.  Eventually I actually put it on a phone, which felt pretty&nbsp;cool.</p>
 <p>First page of the app:
-<center><img height="643" title=""First page of my app"" width="361" alt=""First page of my app"" src="{filename}/images/Screenshot_2014-02-20-17-51-15.png"></center></p>
+<center><img alt=""First page of my app"" height="643" title=""First page of my app"" width="361" src="http://blog.jdotjdot.com/images/Screenshot_2014-02-20-17-51-15.png"></center></p>
 <p>And then, after you&#8217;ve written the message:
-<center><img height="643" title=""Writing the message"" width="361" alt=""Writing the message"" src="{filename}/images/Screenshot_2014-02-20-17-51-27.png"></center></p>
+<center><img alt=""Writing the message"" height="643" title=""Writing the message"" width="361" src="http://blog.jdotjdot.com/images/Screenshot_2014-02-20-17-51-27.png"></center></p>
 <p>Finally, send the message to the second page:
-<center><img height="643" title=""The message was sent!"" width="361" alt=""The message was sent!"" src="{filename}/images/Screenshot_2014-02-20-17-51-31.png"></center></p>
+<center><img alt=""The message was sent!"" height="643" title=""The message was sent!"" width="361" src="http://blog.jdotjdot.com/images/Screenshot_2014-02-20-17-51-31.png"></center></p>
 <p>So that was great, but ultimately, the goal of today was to get an app working where I could press a button to record a sound, and then press another button to play it back.  This is to help get me on my way towards an app where I can actually record the voice downlink of a call, which is the painful but necessary first step for my Dial-Up Over Cell Phone&nbsp;project.</p>
 <p>I was having trouble with this all day.  Recording is apparently pretty fraught with bugs in android, and playing back is too. I spent much of the data looking at scary errors like <code>media server died</code> or <code>incorrect format for writing</code> or completely useless errors like <code>prepare() failed!</code>  So I just kept trying different settings, different audio codecs like using <code>AAC</code> instead of the default <code>3GP</code>, looking at the saved audio file itself to see if maybe audio was getting written but the player just wasn&#8217;t working, and then I went back to <code>3GP</code> and noticed that the filename I was saving as didn&#8217;t match so fixed that from ending in <code>.aac</code> to <code>.3gp</code> and then all the&nbsp;sudden</p>
 <h3><center>It worked!</center></h3>
@@ -133,6 +135,8 @@
 
  <ul>
       <li><a href="/archives/">Archives</a></li>
+      <li><a href="http://blog.jdotjdot.com/pages/about.html">About</a></li>
+      <li><a href="http://blog.jdotjdot.com/pages/projects.html">Projects</a></li>
   </ul>
 
 <h4>Categories</h4>
@@ -144,9 +148,10 @@
 <h4>Tags</h4>
 	<ul>
 	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/algorithms">algorithms</a></li>
-	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/android">android</a></li>
+	    <li class="tag-4"><a href="http://blog.jdotjdot.com/tags/android">android</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/arduino">arduino</a></li>
 	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/async">async</a></li>
-	    <li class="tag-3"><a href="http://blog.jdotjdot.com/tags/bash">bash</a></li>
+	    <li class="tag-4"><a href="http://blog.jdotjdot.com/tags/bash">bash</a></li>
 	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/bashweather">bashweather</a></li>
 	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/c">C</a></li>
 	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/canvas">canvas</a></li>
@@ -159,40 +164,56 @@
 	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/decorator">decorator</a></li>
 	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/default-args">default-args</a></li>
 	    <li class="tag-4"><a href="http://blog.jdotjdot.com/tags/dial-up-over-cell-phone">dial-up-over-cell-phone</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/distance">distance</a></li>
 	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/doorbot">doorbot</a></li>
 	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/doorduino">doorduino</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/dropbox">dropbox</a></li>
 	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/error-correction">error-correction</a></li>
 	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/framing">framing</a></li>
 	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/freelance">freelance</a></li>
 	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/getopts">getopts</a></li>
 	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/getting-started">getting-started</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/google-docs">google-docs</a></li>
 	    <li class="tag-1"><a href="http://blog.jdotjdot.com/tags/hackerschool">hackerschool</a></li>
 	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/highlightjs">highlightjs</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/html">html</a></li>
 	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/html5">html5</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/images">images</a></li>
 	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/internet">internet</a></li>
 	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/it-works">it-works</a></li>
 	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/jabber">jabber</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/java">java</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/jekyll">jekyll</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/keyboards">keyboards</a></li>
+	    <li class="tag-4"><a href="http://blog.jdotjdot.com/tags/markdown">markdown</a></li>
 	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/matasano">matasano</a></li>
 	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/mel-chua">mel-chua</a></li>
 	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/messages-app">messages-app</a></li>
 	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/mutability">mutability</a></li>
 	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/os-x">os-x</a></li>
 	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/pacman">pacman</a></li>
+	    <li class="tag-4"><a href="http://blog.jdotjdot.com/tags/pelican">pelican</a></li>
 	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/productively-lost">productively-lost</a></li>
-	    <li class="tag-4"><a href="http://blog.jdotjdot.com/tags/python">python</a></li>
+	    <li class="tag-3"><a href="http://blog.jdotjdot.com/tags/python">python</a></li>
 	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/quick-union">quick-union</a></li>
 	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/restart">restart</a></li>
-	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/scriptogram">scriptogr.am</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/ruby">ruby</a></li>
+	    <li class="tag-4"><a href="http://blog.jdotjdot.com/tags/scriptogram">scriptogr.am</a></li>
 	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/seminar">seminar</a></li>
 	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/server">server</a></li>
 	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/signal-processing">signal-processing</a></li>
 	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/sort">sort</a></li>
-	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/static-site-generators">static-site-generators</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/spreadsheets">spreadsheets</a></li>
+	    <li class="tag-4"><a href="http://blog.jdotjdot.com/tags/static-site-generators">static-site-generators</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/string-interpolation">string-interpolation</a></li>
 	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/syntax-highlighting">syntax-highlighting</a></li>
 	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/tcp">tcp</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/text-to-columns">text-to-columns</a></li>
 	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/travel">travel</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/ultrasonic">ultrasonic</a></li>
 	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/wat">wat</a></li>
 	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/weather">weather</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/zapier">zapier</a></li>
 </ul>
 
 

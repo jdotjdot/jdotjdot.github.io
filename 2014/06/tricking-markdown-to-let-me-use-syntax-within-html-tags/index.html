@@ -95,7 +95,7 @@
               <p>This is a short post on a technique I discovered to trick Markdown (at least the brand of Markdown that I&#8217;ve been using that comes with Pelican) to let you stick Markdown-style syntax inside of <span class="caps">HTML</span> tags and have it still be&nbsp;parsed.</p>
 <p>My particular use-case here was&nbsp;images.</p>
 <h3><span class="caps">TL</span>;<span class="caps">DR</span></h3>
-<p>Though normally Markdown doesn&#8217;t parse anything inside of <span class="caps">HTML</span> tags, you can use Markdown syntax inside of <span class="caps">HTML</span> tags in a Markdown file by tricking the Markdown using fake <span class="caps">HTML</span> closing tags within a comment.  Example below, using Markdown image syntax along with Pelican&#8217;s <a href="http://pelican.readthedocs.org/en/latest/content.html#linking-to-internal-content">internet content linking</a>&nbsp;syntax:</p>
+<p>Though normally Markdown doesn&#8217;t parse anything inside of <span class="caps">HTML</span> tags, you can use Markdown syntax inside of <span class="caps">HTML</span> tags in a Markdown file by tricking the Markdown using fake <span class="caps">HTML</span> closing tags within a comment.  Example below, using Markdown image syntax along with Pelican&#8217;s <a href="http://pelican.readthedocs.org/en/latest/content.html#linking-to-internal-content">internal content linking</a>&nbsp;syntax:</p>
 <div class="highlight"><pre><span class="nt">&lt;center&gt;</span><span class="c">&lt;!-- &lt;/center&gt; --&gt;</span>![My Image!]({filename}/images/myimage.png)<span class="nt">&lt;/center&gt;</span>
 </pre></div>
 

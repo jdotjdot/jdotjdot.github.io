@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 
-        <title>How to use getopts inside a Bash function</title>
+        <title>Tricking Markdown to let me use ![]() syntax within HTML tags</title>
         <meta charset="utf-8" />
         <link href="https://jdotjdot.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="*JJ Full Atom Feed" />
         <link href="https://jdotjdot.github.io/feeds/category/programming.atom.xml" type="application/atom+xml" rel="alternate" title="*JJ Categories Atom Feed" />
@@ -77,167 +77,81 @@
 
             <header>
               <h2 class="entry-title">
-                <a href="https://jdotjdot.github.io/2014/03/how-to-use-getopts-inside-a-bash-function/" rel="bookmark"
-                   title="Permalink to How to use getopts inside a Bash function">How to use getopts inside a Bash&nbsp;function</a></h2>
+                <a href="https://jdotjdot.github.io/2014/06/tricking-markdown-to-let-me-use-syntax-within-html-tags/" rel="bookmark"
+                   title="Permalink to Tricking Markdown to let me use ![]() syntax within HTML tags">Tricking Markdown to let me use ![]() syntax within <span class="caps">HTML</span>&nbsp;tags</a></h2>
            
             </header>
 
             <footer class="post-info">
-                Published <span class="published" title="2014-03-18T00:00:00">Tue 18 March 2014</span> by
+                Published <span class="published" title="2014-06-05T19:51:26">Thu 05 June 2014</span> by
                 <a class="url fn author-name" href="https://jdotjdot.github.io/author/jj.html">JJ</a>
                 <br>
                 <span>Tagged in: </span>
-                        <a class="tag" href="https://jdotjdot.github.io/tags/hackerschool">hackerschool</a>,                        <a class="tag" href="https://jdotjdot.github.io/tags/bash">bash</a>,                        <a class="tag" href="https://jdotjdot.github.io/tags/getopts">getopts</a>                <hr>
+                        <a class="tag" href="https://jdotjdot.github.io/tags/pelican">pelican</a>,                        <a class="tag" href="https://jdotjdot.github.io/tags/markdown">markdown</a>,                        <a class="tag" href="https://jdotjdot.github.io/tags/html">html</a>,                        <a class="tag" href="https://jdotjdot.github.io/tags/images">images</a>                <hr>
             </footer>
 
 
             <div class="entry-content">
-              <p>As part of my quest to finish packaging up my Bash function that gets the updated weather in your Bash prompt, I needed to better organize my code, and so started putting some code into functions.  Bash, however, is a fickle language, and the difficulty that quickly arose was using <code>getops</code> within a Bash&nbsp;function.</p>
-<p>The reason that I wanted to do this is that Bash, in its infinite wisdom, doesn&#8217;t have regular namespacing.  When you use <code>source</code> or <code>.</code> on a Bash script and it sets a variable, that variable is now set across your entire environment (e.g., that terminal window).  That&#8217;s not great to begin with, but given that this script is going to be called every time the prompt is run (meaning, literally every time a command is run), I want to be sure not to clutter up users&#8217; global&nbsp;namespace.</p>
-<p>Originally, it was working fine when placed straight in the shell&nbsp;script:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28</pre></div></td><td class="code"><div class="highlight"><pre><span class="c">#!/bin/bash</span>
-
-  <span class="k">while </span><span class="nb">getopts</span> <span class="s2">&quot;:c:l:u:s:&quot;</span> opt ; <span class="k">do</span>
-<span class="k">      case</span> <span class="s2">&quot;$opt&quot;</span> in
-          c  <span class="o">)</span>   <span class="c"># default character to display if no weather, leave empty for none</span>
-              <span class="nv">c</span><span class="o">=</span><span class="s2">&quot;$OPTARG&quot;</span>
-              ;;
-          l  <span class="o">)</span>   <span class="c"># supply city name instead of using internet</span>
-              <span class="nv">l</span><span class="o">=</span><span class="s2">&quot;$OPTARG&quot;</span>
-              ;;
-          u  <span class="o">)</span>   <span class="c"># how often to update weather in seconds</span>
-              <span class="nv">u</span><span class="o">=</span><span class="s2">&quot;$OPTARG&quot;</span>
-              ;;
-          s  <span class="o">)</span>   <span class="c"># weather update alert string to supply, if any</span>
-              <span class="nv">s</span><span class="o">=</span><span class="s2">&quot;$OPTARG&quot;</span>
-              ;;
-          h  <span class="o">)</span>
-              <span class="c"># echo the help file</span>
-              ;;
-          <span class="se">\?</span> <span class="o">)</span>
-              <span class="nb">echo</span> <span class="s2">&quot;Invalid option: -$OPTARG&quot;</span> &gt;&amp;2
-              ;;
-          :  <span class="o">)</span>
-              <span class="nb">echo</span> <span class="s2">&quot;Option -$OPTARG requires an argument.&quot;</span> &gt;&amp;2
-              <span class="nb">exit </span>1
-              ;;
-      <span class="k">esac</span>
-<span class="k">  done</span>
-</pre></div>
-</td></tr></table>
-
-<p>What this does is it allows you to call my shell script with various parameters,&nbsp;e.g.:</p>
-<div class="highlight"><pre><span class="n">BashWeather</span> <span class="o">-</span><span class="n">c</span> <span class="s">&quot;$&quot;</span> <span class="o">-</span><span class="n">u</span> <span class="mi">30</span>
+              <p>This is a short post on a technique I discovered to trick Markdown (at least the brand of Markdown that I&#8217;ve been using that comes with Pelican) to let you stick Markdown-style syntax inside of <span class="caps">HTML</span> tags and have it still be&nbsp;parsed.</p>
+<p>My particular use-case here was&nbsp;images.</p>
+<h3><span class="caps">TL</span>;<span class="caps">DR</span></h3>
+<p>Though normally Markdown doesn&#8217;t parse anything inside of <span class="caps">HTML</span> tags, you can use Markdown syntax inside of <span class="caps">HTML</span> tags in a Markdown file by tricking the Markdown using fake <span class="caps">HTML</span> closing tags within a comment.  Example below, using Markdown image syntax along with Pelican&#8217;s <a href="http://pelican.readthedocs.org/en/latest/content.html#linking-to-internal-content">internet content linking</a>&nbsp;syntax:</p>
+<div class="highlight"><pre><span class="nt">&lt;center&gt;</span><span class="c">&lt;!-- &lt;/center&gt; --&gt;</span>!<span class="cp">[</span><span class="nx">My</span> <span class="nb">Image</span><span class="o">!</span><span class="cp">]</span>({filename}/images/myimage.png)<span class="nt">&lt;/center&gt;</span>
 </pre></div>
 
 
-<p>My first thought to be able to stick it inside a function was to simply pass on the parameters to the function, but you can&#8217;t really pass arguments to Bash functions, nor can you return values except for <code>0</code> or <code>1</code> as an exit status code.   In Python, you could just declare a function with arguments like <code>def myfunc(arg1):</code>, but in Bash there&#8217;s no equivalent to that, and <code>getopts</code> itself is actually how you&#8217;d likely parse any arguments passed&nbsp;in.</p>
-<p>Ultimately, that was what I ended up doing, but I had to do it the Bash way, passing it to the function as <code>"$@"</code>, referencing the inputs that were passed in by the calling script.  I had a hard time figuring this out, so I thought it would be useful to post this&nbsp;here.</p>
-<p>Final&nbsp;output:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38</pre></div></td><td class="code"><div class="highlight"><pre><span class="c">#!/bin/bash</span>
-
-<span class="k">function </span>getOptsFunction <span class="o">{</span>
-  <span class="nb">local </span>OPTIND
-  <span class="k">while </span><span class="nb">getopts</span> <span class="s2">&quot;:c:l:u:s:&quot;</span> opt ; <span class="k">do</span>
-<span class="k">      case</span> <span class="s2">&quot;$opt&quot;</span> in
-          c  <span class="o">)</span>   <span class="c"># default character to display if no weather, leave empty for none</span>
-              <span class="nv">c</span><span class="o">=</span><span class="s2">&quot;$OPTARG&quot;</span>
-              ;;
-          l  <span class="o">)</span>   <span class="c"># supply city name instead of using internet</span>
-              <span class="nv">l</span><span class="o">=</span><span class="s2">&quot;$OPTARG&quot;</span>
-              ;;
-          u  <span class="o">)</span>   <span class="c"># how often to update weather in seconds</span>
-              <span class="nv">u</span><span class="o">=</span><span class="s2">&quot;$OPTARG&quot;</span>
-              ;;
-          s  <span class="o">)</span>   <span class="c"># weather update alert string to supply, if any</span>
-              <span class="nv">s</span><span class="o">=</span><span class="s2">&quot;$OPTARG&quot;</span>
-              ;;
-          h  <span class="o">)</span>
-              <span class="c"># echo the help file</span>
-              ;;
-          <span class="se">\?</span> <span class="o">)</span>
-              <span class="nb">echo</span> <span class="s2">&quot;Invalid option: -$OPTARG&quot;</span> &gt;&amp;2
-              ;;
-          :  <span class="o">)</span>
-              <span class="nb">echo</span> <span class="s2">&quot;Option -$OPTARG requires an argument.&quot;</span> &gt;&amp;2
-              <span class="nb">exit </span>1
-              ;;
-      <span class="k">esac</span>
-<span class="k">  done</span>
-<span class="k">  </span><span class="nb">shift</span> <span class="k">$((</span>OPTIND-1<span class="k">))</span>
-
-  <span class="c"># set defaults if command not supplied</span>
-  <span class="k">if</span> <span class="o">[</span> -z <span class="s2">&quot;$u&quot;</span> <span class="o">]</span> ; <span class="k">then </span><span class="nv">u</span><span class="o">=</span>10800 ; <span class="k">fi</span>
-<span class="k">  if</span> <span class="o">[</span> -z <span class="s2">&quot;$c&quot;</span> <span class="o">]</span> ; <span class="k">then </span><span class="nv">c</span><span class="o">=</span><span class="s2">&quot;$&quot;</span> ; <span class="k">fi</span>
-<span class="o">}</span>
-
-getOptsFunction <span class="s2">&quot;$@&quot;</span>
+<p>This should render a centered image in the <span class="caps">HTML</span>, properly rendering the Markdown image syntax, like&nbsp;so:</p>
+<div class="highlight"><pre><span class="nt">&lt;center&gt;</span><span class="c">&lt;!-- &lt;/center&gt; --&gt;</span><span class="nt">&lt;img</span> <span class="na">alt=</span><span class="s">&quot;My Image!&quot;</span> <span class="na">src=</span><span class="s">&quot;https://myblogurl.com/images/myimage.png.&quot;</span><span class="nt">&gt;&lt;/center&gt;</span>
 </pre></div>
-</td></tr></table>
+
+
+<h2>Background</h2>
+<p>You can always stick arbitrary <span class="caps">HTML</span> inside a Markdown document, and it will pass through into the final rendered <span class="caps">HTML</span> document unchanged.  This is often done for images, because even though Markdown has an image&nbsp;syntax:</p>
+<div class="highlight"><pre><span class="o">!</span><span class="p">[</span><span class="n">Image</span><span class="o">-</span><span class="n">alt</span><span class="o">-</span><span class="n">text</span><span class="p">](</span><span class="n">http</span><span class="o">:</span><span class="c1">//image-URL/)</span>
+</pre></div>
+
+
+<p>Most flavors of Markdown don&#8217;t allow you to set the width and height, so people tend to use straight-up <span class="caps">HTML</span>&nbsp;instead.</p>
+<div class="highlight"><pre><span class="nt">&lt;img</span> <span class="na">alt=</span><span class="s">&quot;alt-text&quot;</span> <span class="na">src=</span><span class="s">&quot;http://image-URL&quot;</span> <span class="nt">/&gt;</span>
+</pre></div>
+
+
+<p>Because of difficulties with centering, as long as you&#8217;re using <span class="caps">HTML</span>, it&#8217;s also easy to center the image using <code>&lt;center&gt;</code> tags or by using styling, whether in-line styling or adding a class to your image.  Vertical styling can be a pain though, and what I tended to need to do was stick everything inside a <code>&lt;div&gt;</code> in order to center&nbsp;it:</p>
+<div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">style=</span><span class="s">&quot;text-align: center;&quot;</span><span class="nt">&gt;&lt;img</span> <span class="na">alt=</span><span class="s">&quot;&quot;</span> <span class="na">src=</span><span class="s">&quot;path/to/image&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
+<span class="c">&lt;!-- or --&gt;</span>
+<span class="nt">&lt;center&gt;&lt;img</span> <span class="na">alt=</span><span class="s">&quot;&quot;</span> <span class="na">src=</span><span class="s">&quot;/path/to/image&quot;</span><span class="nt">&gt;&lt;/center&gt;</span>
+</pre></div>
+
+
+<h2>The Problem: Relative URLs and other Markdown&nbsp;syntax</h2>
+<p>The problem that arose in my particular case was trying to center an image while using relative URLs in the Markdown to specify the image source.  In the Pelican docs, there&#8217;s a section on <a href="http://pelican.readthedocs.org/en/latest/content.html#linking-to-internal-content">linking to internal content</a> which specifies the following syntax for linking to any internal content within&nbsp;Markdown:</p>
+<div class="highlight"><pre><span class="o">!</span><span class="p">[</span><span class="n">My</span> <span class="n">Image</span><span class="p">]({</span><span class="n">filename</span><span class="p">}</span><span class="o">/</span><span class="n">images</span><span class="o">/</span><span class="n">myimage</span><span class="p">.</span><span class="n">png</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Unfortunately, the <code>{filename}/file/path</code> syntax only works within a Markdown-style image or link tag, and so I couldn&#8217;t use that syntax within an <code>&lt;img&gt;</code> tag.  However, if I wanted to center the image, I <em>needed</em> to have my image appear within manually-specified <code>&lt;center&gt;</code> tags or a <code>&lt;div&gt;</code>.  This posed an issue, as Markdown does not process anything within manually specified <span class="caps">HTML</span> tags, so you would run across the following&nbsp;issue:</p>
+<div class="highlight"><pre><span class="o">&lt;!--</span> <span class="n">Markdown</span><span class="o">:</span> <span class="o">--&gt;</span>
+<span class="o">&lt;</span><span class="n">center</span><span class="o">&gt;!</span><span class="p">[</span><span class="n">My</span> <span class="n">Image</span><span class="p">](</span><span class="n">http</span><span class="o">:</span><span class="c1">//image/path)&lt;/center&gt;</span>
+
+<span class="o">&lt;!--</span> <span class="n">will</span> <span class="n">be</span> <span class="n">rendered</span> <span class="k">in</span> <span class="n">HTML</span> <span class="n">as</span><span class="o">:</span> <span class="o">--&gt;</span>
+<span class="o">&lt;</span><span class="n">center</span><span class="o">&gt;!</span><span class="p">[</span><span class="n">My</span> <span class="n">Image</span><span class="p">](</span><span class="n">http</span><span class="o">:</span><span class="c1">//image/path)&lt;/center&gt;</span>
+</pre></div>
+
+
+<h2>The Solution: Trick&nbsp;Markdown</h2>
+<p>I took a guess and figured that the Markdown parser was relatively lazy and didn&#8217;t take great care when refusing to parse anything within <span class="caps">HTML</span> tags&#8212;my bet was that when it encountered an opening <span class="caps">HTML</span> tag, it simply stopped parsing until it encountered the close of that tag.  If I was right, that meant I could trick the parser like&nbsp;so:</p>
+<div class="highlight"><pre><span class="nt">&lt;center&gt;</span><span class="c">&lt;!-- &lt;/center&gt; --&gt;</span>!<span class="cp">[</span><span class="nx">My</span> <span class="nb">Image</span><span class="o">!</span><span class="cp">]</span>({filename}/images/myimage.png)<span class="nt">&lt;/center&gt;</span>
+</pre></div>
+
+
+<p>And sure enough, it works!  This creates a centered image in the <span class="caps">HTML</span>, properly rendering the Markdown image syntax, like&nbsp;so:</p>
+<div class="highlight"><pre><span class="nt">&lt;center&gt;</span><span class="c">&lt;!-- &lt;/center&gt; --&gt;</span><span class="nt">&lt;img</span> <span class="na">alt=</span><span class="s">&quot;My Image!&quot;</span> <span class="na">src=</span><span class="s">&quot;https://myblogurl.com/images/myimage.png.&quot;</span><span class="nt">&gt;&lt;/center&gt;</span>
+</pre></div>
+
+
+<h2>A Better Solution for&nbsp;Pelican</h2>
+<p>If you&#8217;re using Pelican, the better solution ultimately is to use the <a href="https://github.com/getpelican/pelican-plugins/tree/master/liquid_tags">Liquid-style tags</a> plugin, which should not only let you specify the width and height but also let you stick it inside an <span class="caps">HTML</span>&nbsp;tag.</p>
+<p>However, what I&#8217;ve discovered above should remain useful to those using straight Markdown without access to plugins and who don&#8217;t want to have to get creative with their blog theme or&nbsp;Javascript.</p>
             </div><!-- /.entry-content -->
 
 

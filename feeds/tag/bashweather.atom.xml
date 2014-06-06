@@ -6,23 +6,28 @@
 *Screenshot of sample terminal session with BashWeather*
 --&gt;
 
-&lt;div style="/* background-color: lightgray; */ padding: 10px 0; border-radius: 15px; text-align: center;border: 3px solid lightgray;margin: 0 10% 15px 10%;"&gt;
+&lt;!-- &lt;div style="/* background-color: lightgray; */ padding: 10px 0; border-radius: 15px; text-align: center;border: 3px solid lightgray;margin: 0 10% 15px 10%;"&gt;
 
     &lt;div style="max-width: 90%; margin: auto;"&gt;
 
-{% img {filename}/images/bashweather%20screenshot.png &amp;#8220;BashWeather Screenshot&amp;#8221; %}
+{% img {filename}/images/bashweather%20screenshot.png "BashWeather Screenshot" %}
 
-{% img {filename}/images/bashweather%20screenshot%202.png &amp;#8220;BashWeather Screenshot&amp;#8221; %}
+{% img {filename}/images/bashweather%20screenshot%202.png "BashWeather Screenshot" %}
 
 &lt;/div&gt;
+&lt;div style="text-align: center; font-style: italic;"&gt;&lt;span class="caption"&gt;Screenshots of a sample terminal session with BashWeather&lt;/span&gt;&lt;/div&gt;&lt;br&gt;
 
-&lt;div style="text-align: center; font-style: italic;"&gt;&lt;span class="caption"&gt;Screenshots of a sample terminal session with BashWeather&lt;/span&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;br&gt;&lt;/p&gt;
 &lt;div style="font-size: 150%; text-align: center; /* margin-left: 5%; */"&gt;☂☃☽☀︎&lt;/div&gt;
-
 &lt;div style="text-align: center; font-style: italic;"&gt;Weather character palette&lt;/div&gt;
 
+&lt;/div&gt; --&gt;
+
+&lt;div style="padding: 10px 0; border-radius: 15px; text-align: center; border: 3px solid lightgray; margin: 0 10% 15px 10%;"&gt;
+    {% img {filename}/images/bashweather%20screenshot.png &amp;#8220;BashWeather Screenshot&amp;#8221; %}
+    {% img {filename}/images/bashweather%20screenshot%202.png &amp;#8220;BashWeather Screenshot&amp;#8221; %}
+    &lt;span class="caption"&gt;Screenshots of a sample terminal session with BashWeather&lt;/span&gt;&lt;br&gt;
+    &lt;span style="font-size: 150%;"&gt;☂☃☽☀︎&lt;/span&gt;&lt;br&gt;
+    &lt;span style="font-style: italic;"&gt;Weather character palette&lt;/span&gt;
 &lt;/div&gt;
 
 &lt;p&gt;There are a number of configurable options, including the&amp;nbsp;following:&lt;/p&gt;

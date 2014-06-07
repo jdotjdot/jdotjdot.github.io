@@ -95,7 +95,28 @@
               <p>I <a href="http://python-history.blogspot.com/2013/11/story-of-none-true-false.html">discovered today</a> that Python&#8217;s <code>True</code> and <code>False</code> are actually constants&#8212;which means that their values can be changed.  While this has been disallowed in Python 3, it still allows you to wreak some havoc in your<span>&mdash;</span>or someone else&#8217;s<span>&mdash;</span>Python 2&nbsp;programs.</p>
 <h2>Definitely don&#8217;t do&nbsp;this</h2>
 <p>I wrote a tiny module that, when imported, will reverse your boolean values for the entirety of that Python instance<span>&mdash;</span>not just that&nbsp;namespace.</p>
-<script src="https://gist.github.com/jdotjdot/c88ce3ec61061124fbc0.js"></script>
+<div class="highlight"><pre><span class="c"># For some reason, in Python 2.x True and False are both constants--meaning that</span>
+<span class="c">#   they can have new values assigned to them.</span>
+<span class="c"># This malicious script exploits that.  Upon import, will reverse</span>
+<span class="c">#   True and False for all modules in the current Python environment.</span>
+<span class="c"># This obviously can have serious consequences.</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="c"># If we reverse them by still using the `bool` type, checking if type(False)==bool</span>
+<span class="c">#   won&#39;t help us catch this</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="s">&#39;__builtin__&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">True</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="s">&#39;__builtin__&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">False</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">__modules</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span>
+
+<span class="k">def</span> <span class="nf">faux_method</span><span class="p">():</span>
+    <span class="k">print</span> <span class="s">&quot;I did some nasty stuff on my way into your runtime &gt;:D&quot;</span>
+
+<span class="n">faux_method</span><span class="p">()</span>
+</pre></div>
+
 
 <p>This obviously could be maliciously hidden in a larger package meant to have other functionality in order to mess up your code.  I imagine that it would be difficult to notice in part due to Python&#8217;s otherwise very convenient truthiness and falsiness behavior.  This module does not affect <code>[]</code> and <code>{}</code>, for example, being false-y, nor does it prevent most objects from being truthy.  This would only affect explicit calls to <code>True</code> and <code>False</code>.</p>
 <p>This leads to some rather odd&nbsp;behavior:</p>

@@ -95,7 +95,9 @@
               <p>I <a href="http://python-history.blogspot.com/2013/11/story-of-none-true-false.html">discovered today</a> that Python&#8217;s <code>True</code> and <code>False</code> are actually constants&#8212;which means that their values can be changed.  While this has been disallowed in Python 3, it still allows you to wreak some havoc in your<span>&mdash;</span>or someone else&#8217;s<span>&mdash;</span>Python 2&nbsp;programs.</p>
 <h2>Definitely don&#8217;t do&nbsp;this</h2>
 <p>I wrote a tiny module that, when imported, will reverse your boolean values for the entirety of that Python instance<span>&mdash;</span>not just that&nbsp;namespace.</p>
-<div class="highlight"><pre><span class="c"># For some reason, in Python 2.x True and False are both constants--meaning that</span>
+<div class="highlight"><pre><span class="c"># destroybooleans.py</span>
+
+<span class="c"># For some reason, in Python 2.x True and False are both constants--meaning that</span>
 <span class="c">#   they can have new values assigned to them.</span>
 <span class="c"># This malicious script exploits that.  Upon import, will reverse</span>
 <span class="c">#   True and False for all modules in the current Python environment.</span>

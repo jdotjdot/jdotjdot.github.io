@@ -2,7 +2,9 @@
 <feed xmlns="http://www.w3.org/2005/Atom"><title>*JJ</title><link href="http://blog.jdotjdot.com/" rel="alternate"></link><link href="http://blog.jdotjdot.com/feeds/tag/python.atom.xml" rel="self"></link><id>http://blog.jdotjdot.com/</id><updated>2014-06-06T22:38:13-04:00</updated><entry><title>How to destroy your Python program</title><link href="http://blog.jdotjdot.com/2014/06/how-to-destroy-your-python-program/" rel="alternate"></link><updated>2014-06-06T22:38:13-04:00</updated><author><name>JJ</name></author><id>tag:blog.jdotjdot.com,2014-06-06:2014/06/how-to-destroy-your-python-program/</id><summary type="html">&lt;p&gt;I &lt;a href="http://python-history.blogspot.com/2013/11/story-of-none-true-false.html"&gt;discovered today&lt;/a&gt; that Python&amp;#8217;s &lt;code&gt;True&lt;/code&gt; and &lt;code&gt;False&lt;/code&gt; are actually constants&amp;#8212;which means that their values can be changed.  While this has been disallowed in Python 3, it still allows you to wreak some havoc in your&lt;span&gt;&amp;mdash;&lt;/span&gt;or someone else&amp;#8217;s&lt;span&gt;&amp;mdash;&lt;/span&gt;Python 2&amp;nbsp;programs.&lt;/p&gt;
 &lt;h2&gt;Definitely don&amp;#8217;t do&amp;nbsp;this&lt;/h2&gt;
 &lt;p&gt;I wrote a tiny module that, when imported, will reverse your boolean values for the entirety of that Python instance&lt;span&gt;&amp;mdash;&lt;/span&gt;not just that&amp;nbsp;namespace.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;# For some reason, in Python 2.x True and False are both constants--meaning that&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;# destroybooleans.py&lt;/span&gt;
+
+&lt;span class="c"&gt;# For some reason, in Python 2.x True and False are both constants--meaning that&lt;/span&gt;
 &lt;span class="c"&gt;#   they can have new values assigned to them.&lt;/span&gt;
 &lt;span class="c"&gt;# This malicious script exploits that.  Upon import, will reverse&lt;/span&gt;
 &lt;span class="c"&gt;#   True and False for all modules in the current Python environment.&lt;/span&gt;

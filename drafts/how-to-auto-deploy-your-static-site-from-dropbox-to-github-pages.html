@@ -92,7 +92,23 @@
 
 
             <div class="entry-content">
-              <p>As I referred to in&nbsp;my </p>
+              <p>As I referred to in my earlier post on <a href="{filename}/Hacker School/static-site-generators-and-choices.md">static site generators</a>, I moved this blog from <a href="http://notsureyet.com">Ghost</a> to <a href="http://blog.getpelican.com/">Pelican</a>, with the intention of setting up a deployment system such that I could simply drop a Markdown file in a pre-specified Dropbox folder, and then the site would grab the new content, regenerate, and deploy to Github Pages.  This is very similar to what Calepin.io and Scriptogr.am do, but they offer limited flexibility in the way of customization, and I also really liked the idea of setting it up&nbsp;myself.</p>
+<p>This post will show you how to do this for yourself as&nbsp;well.</p>
+<h1>Tools and&nbsp;software</h1>
+<p>Here are the tools we&#8217;ll be&nbsp;using:</p>
+<ul>
+<li>Python (this tutorial is geared towards&nbsp;2.7)</li>
+<li>Dropbox, for storage and&nbsp;webhooks</li>
+<li>Heroku</li>
+<li>GitHub</li>
+<li>A GitHub repo to use with GitHub&nbsp;Pages</li>
+</ul>
+<p>So, let&#8217;s get&nbsp;started!</p>
+<h1>Creating our&nbsp;blog</h1>
+<p>The very first thing you have to do here is actually make your blog!  This means deciding how it&#8217;ll be set up, styling it, and everything&nbsp;else.</p>
+<p>If you haven&#8217;t already, you should install Pelican with <code>pip install pelican</code> and any other dependencies you might&nbsp;need.  </p>
+<p>To start our blog, we go to command line to the directory where we&#8217;d like to store the folder with our blog files, and then run <code>pelican startproject myblog</code>.  <strong><span class="caps">NOTE</span>: <span class="caps">IS</span> <span class="caps">THIS</span> <span class="caps">TRUE</span>?</strong></p>
+<p>Pelican comes with a default theme, but I highly recommend downloading the <a href="https://github.com/getpelican/pelican-themes">master repo</a> that provides a wide variety of pre-built theme options for&nbsp;you.  </p>
             </div><!-- /.entry-content -->
 
 

@@ -98,13 +98,19 @@
 <p>Since I&#8217;ve worked quite a bit with Arduino at this point, between the <a href="https://github.com/jdotjdot/B_FURIOUS">wireless remote control car project</a> and the <a href="https://github.com/jdotjdot/doorduino">internet-enabled door opener</a>, Matt asked me to walk him through what the code would look like in C.  Up until now, he&#8217;s been working with Arduinos using a Ruby library (I think <a href="http://ruby-serialport.rubyforge.org/">this one</a>), but it&#8217;s fairly limited, and I also would imagine that being another step away from the C would make it harder to program the micro controller.  So we went over what the C code would look like for a very simple use&nbsp;case.</p>
 <p>We set up an Arduino to detect the closest item (linearly) using the ultrasonic distance detector, and then to dim a light depending on how far the item&nbsp;was.</p>
 <p>Here it is in&nbsp;action:</p>
-<p><center><iframe width='560' height='315' src='http://www.youtube.com/embed/n7D4ZiQezQI' frameborder='0' webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe></center></p>
+<p><center><div class="videobox">
+                <iframe width="560" height="315"
+                        src='http://www.youtube.com/v/n7D4ZiQezQI'
+                        frameborder='0'
+                        webkitAllowFullScreen mozallowfullscreen allowFullScreen>
+                </iframe>
+            </div></center></p>
 <h3>Schematic</h3>
 <!--<div class="center container"><img width="700px" align="center" alt="Schematic" src="http://blog.jdotjdot.com/images/Ultrasonic-distance-detector.png"></div>-->
 
 <!-- ![Schematic]({filename}/images/Ultrasonic-distance-detector.png) -->
 
-<p><center><img width="500" src="http://blog.jdotjdot.com/images/Ultrasonic-distance-detector.png" title=""Schematic"" alt=""Schematic""></center></p>
+<p><center><img src="http://blog.jdotjdot.com/images/Ultrasonic-distance-detector.png" width="500" title=""Schematic"" alt=""Schematic""></center></p>
 <p><strong>The basic setup:</strong>
 The ultrasonic distance detector, the big blue thing that isn&#8217;t the Arduino, is hooked up to the 5V Arduino output and to ground, and then the middle two pins are hooked up to Arduino digital pins&#8212;one to trigger an ultrasonic blast, and one to listen for the blast&#8217;s response.  The red <span class="caps">LED</span> hooked up to pin 13 flashes when nothing is detected in the vicinity, and then turns solid red when something is detected.  The yellow <span class="caps">LED</span> fades depending on the distance of the detected object&#8212;the closer it is, the dimmer the light, unless there are no objects within the specified maximum detection range, in which case the light is completely&nbsp;off.</p>
 <p><strong>How it works:</strong>

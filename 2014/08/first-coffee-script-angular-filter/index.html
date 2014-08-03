@@ -119,15 +119,19 @@
     <span class="p">.</span><span class="nx">filter</span> <span class="s">&#39;idsToObjects&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;majors&#39;</span><span class="p">,</span> <span class="nf">(majors) -&gt;</span>
         <span class="nf">(items, returnAttr) -&gt;</span>
 
+            <span class="nv">filtered = </span><span class="p">[]</span>
+
             <span class="nv">getMajor = </span><span class="nf">(major) -&gt;</span>
               <span class="nx">majors</span><span class="p">.</span><span class="nx">get</span> <span class="p">{</span><span class="nv">majorId: </span><span class="nx">major</span><span class="p">},</span>
                 <span class="nf">(res) -&gt;</span> <span class="nx">filtered</span><span class="p">.</span><span class="nx">push</span> <span class="nx">res</span><span class="p">,</span>
                 <span class="nf">(res) -&gt;</span> <span class="c1">#TODO: handle error</span>
 
+            <span class="nx">getMajor</span><span class="p">(</span><span class="nx">item</span><span class="p">)</span> <span class="k">for</span> <span class="nx">item</span> <span class="k">in</span> <span class="nx">items</span>
+
             <span class="k">if</span> <span class="nx">returnAttr</span><span class="o">?</span>
-              <span class="nv">filtered = </span><span class="p">[</span><span class="nx">getMajor</span><span class="p">(</span><span class="nx">item</span><span class="p">)[</span><span class="nx">returnAttr</span><span class="p">]</span> <span class="k">for</span> <span class="nx">item</span> <span class="k">in</span> <span class="nx">items</span><span class="p">]</span>
+              <span class="p">[</span><span class="nx">item</span><span class="p">[</span><span class="nx">returnAttr</span><span class="p">]</span> <span class="k">for</span> <span class="nx">item</span> <span class="k">in</span> <span class="nx">items</span><span class="p">]</span>
             <span class="k">else</span>
-              <span class="nv">filtered = </span><span class="p">[</span><span class="nx">getMajor</span><span class="p">(</span><span class="nx">item</span><span class="p">)</span> <span class="k">for</span> <span class="nx">item</span> <span class="k">in</span> <span class="nx">items</span><span class="p">]</span>
+              <span class="nx">filtered</span>
 
     <span class="p">]</span>
 </pre></div>

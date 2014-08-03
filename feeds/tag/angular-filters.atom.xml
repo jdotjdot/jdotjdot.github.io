@@ -26,15 +26,19 @@
     &lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;filter&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;idsToObjects&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;majors&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nf"&gt;(majors) -&amp;gt;&lt;/span&gt;
         &lt;span class="nf"&gt;(items, returnAttr) -&amp;gt;&lt;/span&gt;
 
+            &lt;span class="nv"&gt;filtered = &lt;/span&gt;&lt;span class="p"&gt;[]&lt;/span&gt;
+
             &lt;span class="nv"&gt;getMajor = &lt;/span&gt;&lt;span class="nf"&gt;(major) -&amp;gt;&lt;/span&gt;
               &lt;span class="nx"&gt;majors&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;get&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="nv"&gt;majorId: &lt;/span&gt;&lt;span class="nx"&gt;major&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt;
                 &lt;span class="nf"&gt;(res) -&amp;gt;&lt;/span&gt; &lt;span class="nx"&gt;filtered&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;push&lt;/span&gt; &lt;span class="nx"&gt;res&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
                 &lt;span class="nf"&gt;(res) -&amp;gt;&lt;/span&gt; &lt;span class="c1"&gt;#TODO: handle error&lt;/span&gt;
 
+            &lt;span class="nx"&gt;getMajor&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;item&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="nx"&gt;item&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="nx"&gt;items&lt;/span&gt;
+
             &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="nx"&gt;returnAttr&lt;/span&gt;&lt;span class="o"&gt;?&lt;/span&gt;
-              &lt;span class="nv"&gt;filtered = &lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;getMajor&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;item&lt;/span&gt;&lt;span class="p"&gt;)[&lt;/span&gt;&lt;span class="nx"&gt;returnAttr&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="nx"&gt;item&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="nx"&gt;items&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+              &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;item&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;returnAttr&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="nx"&gt;item&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="nx"&gt;items&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
             &lt;span class="k"&gt;else&lt;/span&gt;
-              &lt;span class="nv"&gt;filtered = &lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;getMajor&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;item&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="nx"&gt;item&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="nx"&gt;items&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+              &lt;span class="nx"&gt;filtered&lt;/span&gt;
 
     &lt;span class="p"&gt;]&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;

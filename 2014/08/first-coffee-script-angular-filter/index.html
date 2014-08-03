@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+        <title>My first CoffeeScript: An angular filter</title>
+        <meta charset="utf-8" />
+        <link href="http://blog.jdotjdot.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="*JJ Full Atom Feed" />
+        <link href="http://blog.jdotjdot.com/feeds/category/programming.atom.xml" type="application/atom+xml" rel="alternate" title="*JJ Categories Atom Feed" />
+
+
+        <!-- Mobile viewport optimized: j.mp/bplateviewport -->
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+
+
+            <link rel="stylesheet" type="text/css" href="http://blog.jdotjdot.com/theme/gumby-custom.css?a6374bd9" />
+
+        <link rel="stylesheet" type="text/css" href="http://blog.jdotjdot.com/theme/style.css" />
+        <link rel="stylesheet" type="text/css" href="http://blog.jdotjdot.com/theme/pygment.css" />
+          <link rel="stylesheet" type="text/css" href="http://blog.jdotjdot.com/theme/jj-custom.css?17d3d1cc" />
+
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+        <script src="http://blog.jdotjdot.com/theme/js/libs/modernizr-2.6.2.min.js"></script>
+
+
+              <script>
+                (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+                ga('create', 'UA-47960248-1', 'blog.jdotjdot.com');
+                ga('require', 'displayfeatures');
+                ga('require', 'linkid', 'linkid.js');
+                ga('send', 'pageview');
+
+              </script>
+
+
+
+
+</head>
+
+<body id="index" class="home">
+
+
+    <div class="container">
+
+        <div class="row">
+
+
+            <div id="navigation" class="navbar row">
+              <a href="#" gumby-trigger="#navigation &gt; ul" class="toggle"><i class="icon-menu"></i></a>
+
+              <ul class="columns">
+                <!-- logo -->
+		<li><a class="logo-text" href="http://blog.jdotjdot.com"><span>*JJ</span></a></li>
+
+
+
+                    <li><a href="/archives/">Archives</a></li>
+                    <li><a href="http://blog.jdotjdot.com/pages/about.html">About</a></li>
+                    <li><a href="http://blog.jdotjdot.com/pages/projects.html">Projects</a></li>
+              </ul>
+
+
+                <!-- RSS/Atom feed -->
+                <ul class="columns">
+                    <li><a class="rss-icon" href="http://blog.jdotjdot.com/feeds/category/programming.atom.xml"><i class="fa fa-rss fa-2x"></i></a></li>
+                </ul>
+            </div>
+
+<section id="content" class="body">
+
+   <div class="row">
+        <div class="eleven columns">
+
+
+            <header>
+              <h2 class="entry-title">
+                <a href="http://blog.jdotjdot.com/2014/08/first-coffee-script-angular-filter/" rel="bookmark"
+                   title="Permalink to My first CoffeeScript: An angular filter">My first CoffeeScript: An angular&nbsp;filter</a></h2>
+           
+            </header>
+
+            <footer class="post-info">
+                Published <span class="published" title="2014-08-03T02:06:07">Sun 03 August 2014</span> by
+                <a class="url fn author-name" href="http://blog.jdotjdot.com/author/jj.html">JJ</a>
+                <br>
+                <span>Tagged in: </span>
+                        <a class="tag" href="http://blog.jdotjdot.com/tags/javascript">javascript</a>,                        <a class="tag" href="http://blog.jdotjdot.com/tags/coffeescript">coffeescript</a>,                        <a class="tag" href="http://blog.jdotjdot.com/tags/angularjs">angularjs</a>,                        <a class="tag" href="http://blog.jdotjdot.com/tags/angular-filters">angular-filters</a>                <hr>
+            </footer>
+
+
+            <div class="entry-content">
+              <p>I finally started writing my first CoffeeScript today.  I&#8217;m working on a very complicated AngularJS app, so this is probably the worst time to be trying something new, but since Angular directives, filters, etc. are all of a very similar boilerplate format, this actually seemed like a good time to me to give it a shot.  Since I know what the output should look like, I was hoping that I&#8217;d have an easier time writing my input in the&nbsp;beginning.</p>
+<p>I started by writing a very simple filter that takes advantage of Javascript&#8217;s <code>join</code> method:</p>
+<div class="highlight"><pre><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s">&#39;campusJobApp&#39;</span><span class="p">).</span><span class="nx">filter</span> <span class="s">&#39;joinBy&#39;</span><span class="p">,</span> <span class="nf">-&gt;</span>
+  <span class="nf">(input, delimiter) -&gt;</span> <span class="p">(</span><span class="nx">input</span> <span class="o">||</span> <span class="p">[]).</span><span class="nx">join</span> <span class="nx">delimiter</span> <span class="o">||</span> <span class="s">&#39;,&#39;</span>
+</pre></div>
+
+
+<p>And sure enough, this actually came out as a very reasonable-looking Angular filter in&nbsp;Javascript:</p>
+<div class="highlight"><pre><span class="c1">// Generated by CoffeeScript 1.7.1</span>
+<span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s1">&#39;campusJobApp&#39;</span><span class="p">).</span><span class="nx">filter</span><span class="p">(</span><span class="s1">&#39;joinBy&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">input</span><span class="p">,</span> <span class="nx">delimiter</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="p">(</span><span class="nx">input</span> <span class="o">||</span> <span class="p">[]).</span><span class="nx">join</span><span class="p">(</span><span class="nx">delimiter</span> <span class="o">||</span> <span class="s1">&#39;,&#39;</span><span class="p">);</span>
+    <span class="p">};</span>
+  <span class="p">});</span>
+
+<span class="p">}).</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+
+<span class="c1">//# sourceMappingURL=joinBy.map</span>
+</pre></div>
+
+
+<p>With this success, I gave it a shot with something more&nbsp;complicated:</p>
+<div class="highlight"><pre><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s">&#39;campusJobApp&#39;</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">filter</span> <span class="s">&#39;idsToObjects&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;majors&#39;</span><span class="p">,</span> <span class="nf">(majors) -&gt;</span>
+        <span class="nf">(items, returnAttr) -&gt;</span>
+
+            <span class="nv">getMajor = </span><span class="nf">(major) -&gt;</span>
+              <span class="nx">majors</span><span class="p">.</span><span class="nx">get</span> <span class="p">{</span><span class="nv">majorId: </span><span class="nx">major</span><span class="p">},</span>
+                <span class="nf">(res) -&gt;</span> <span class="nx">filtered</span><span class="p">.</span><span class="nx">push</span> <span class="nx">res</span><span class="p">,</span>
+                <span class="nf">(res) -&gt;</span> <span class="c1">#TODO: handle error</span>
+
+            <span class="k">if</span> <span class="nx">returnAttr</span><span class="o">?</span>
+              <span class="nv">filtered = </span><span class="p">[</span><span class="nx">getMajor</span><span class="p">(</span><span class="nx">item</span><span class="p">)[</span><span class="nx">returnAttr</span><span class="p">]</span> <span class="k">for</span> <span class="nx">item</span> <span class="k">in</span> <span class="nx">items</span><span class="p">]</span>
+            <span class="k">else</span>
+              <span class="nv">filtered = </span><span class="p">[</span><span class="nx">getMajor</span><span class="p">(</span><span class="nx">item</span><span class="p">)</span> <span class="k">for</span> <span class="nx">item</span> <span class="k">in</span> <span class="nx">items</span><span class="p">]</span>
+
+    <span class="p">]</span>
+</pre></div>
+
+
+<p>I like the feel of CoffeeScript, though I am much more used to just regular Javascript, and I&#8217;m concerned that I might get myself into trouble by misunderstanding or misusing CoffeeScript&#8217;s syntax (particularly the optionality of parentheses).  This would be a much more egregious sin in Javascript, given the notorious type coercion and other silent &#8216;features&#8217; that I could accidentally introduce into my code if I don&#8217;t know what I&#8217;m&nbsp;doing.</p>
+<p>The other thing that I&#8217;m uncertain about is the mixing of CoffeeScript and Javascript.  Most of my project is written in Javascript.  The reason I&#8217;m able to get away with practicing CoffeeScript is that I&#8217;m using PyCharm, which watches and automatically compiles languages like CoffeeScript and <span class="caps">SASS</span> down to <span class="caps">JS</span> and <span class="caps">CSS</span> as I write them, so from the deployment perspective I don&#8217;t have to add the compilers to the asset filter.  That being said, it will likely make it harder for other developers to edit my code if they (a) aren&#8217;t familiar with the language or (b) will have to pre-compile their changed code on their own, since I haven&#8217;t included the compilers as part of the asset&nbsp;pipeline.</p>
+            </div><!-- /.entry-content -->
+
+
+        </div><!-- /.eleven.columns -->
+        
+
+<div class="three columns">
+
+    <nav class="widget">
+        <h4>Social</h4>
+        <ul class="social-link-list">
+               <li><a href="https://github.com/jdotjdot">
+                <i class="social-icon fa fa-2x fa-github"></i>
+    </a></li>
+               <li><a href="http://stackoverflow.com/users/1351335/jdotjdot">
+                <i class="social-icon fa fa-2x fa-stack-overflow"></i>
+    </a></li>
+               <li><a href="https://twitter.com/JdotJdotF">
+                <i class="social-icon fa fa-2x fa-twitter"></i>
+    </a></li>
+        </ul>
+    </nav>
+
+<h4>Pages</h4>
+
+ <ul>
+      <li><a href="/archives/">Archives</a></li>
+      <li><a href="http://blog.jdotjdot.com/pages/about.html">About</a></li>
+      <li><a href="http://blog.jdotjdot.com/pages/projects.html">Projects</a></li>
+  </ul>
+
+<h4>Categories</h4>
+<ul>
+		<li><a href="http://blog.jdotjdot.com/category/programming">Programming</a></li>
+</ul>
+
+
+<h4>Tags</h4>
+	<ul>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/algorithms">algorithms</a></li>
+	    <li class="tag-4"><a href="http://blog.jdotjdot.com/tags/android">android</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/angular-filters">angular-filters</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/angularjs">angularjs</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/arduino">arduino</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/async">async</a></li>
+	    <li class="tag-4"><a href="http://blog.jdotjdot.com/tags/bash">bash</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/bashweather">bashweather</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/c">C</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/canvas">canvas</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/capture-the-flag">capture-the-flag</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/clojure">clojure</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/coffeescript">coffeescript</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/comp">comp</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/compression">compression</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/crash">crash</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/crypto">crypto</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/decorator">decorator</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/decorators">decorators</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/default-args">default-args</a></li>
+	    <li class="tag-4"><a href="http://blog.jdotjdot.com/tags/dial-up-over-cell-phone">dial-up-over-cell-phone</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/distance">distance</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/django">django</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/doorbot">doorbot</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/doorduino">doorduino</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/down-the-rabbit-hole">down-the-rabbit-hole</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/dropbox">dropbox</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/error-correction">error-correction</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/framing">framing</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/freelance">freelance</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/getopts">getopts</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/getting-started">getting-started</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/google-docs">google-docs</a></li>
+	    <li class="tag-1"><a href="http://blog.jdotjdot.com/tags/hackerschool">hackerschool</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/highlightjs">highlightjs</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/html">html</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/html5">html5</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/images">images</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/internet">internet</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/it-works">it-works</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/jabber">jabber</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/java">java</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/javascript">javascript</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/jekyll">jekyll</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/keyboards">keyboards</a></li>
+	    <li class="tag-4"><a href="http://blog.jdotjdot.com/tags/markdown">markdown</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/matasano">matasano</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/mel-chua">mel-chua</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/messages-app">messages-app</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/meta">meta</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/mutability">mutability</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/os-x">os-x</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/pacman">pacman</a></li>
+	    <li class="tag-4"><a href="http://blog.jdotjdot.com/tags/pelican">pelican</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/productively-lost">productively-lost</a></li>
+	    <li class="tag-2"><a href="http://blog.jdotjdot.com/tags/python">python</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/quick-union">quick-union</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/restart">restart</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/ruby">ruby</a></li>
+	    <li class="tag-4"><a href="http://blog.jdotjdot.com/tags/scriptogram">scriptogr.am</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/seminar">seminar</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/server">server</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/signal-processing">signal-processing</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/sort">sort</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/spreadsheets">spreadsheets</a></li>
+	    <li class="tag-4"><a href="http://blog.jdotjdot.com/tags/static-site-generators">static-site-generators</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/string-interpolation">string-interpolation</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/syntax-highlighting">syntax-highlighting</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/tcp">tcp</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/text-to-columns">text-to-columns</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/travel">travel</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/ultrasonic">ultrasonic</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/wat">wat</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/weather">weather</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/zapier">zapier</a></li>
+</ul>
+
+
+
+</div> </div><!-- /.row -->
+
+
+</section>
+
+       </div><!-- /.row -->
+    </div><!-- /.container -->
+
+
+       <div class="container.nopad bg">
+
+
+        <footer id="credits" class="row">
+          <div class="seven columns left-center">
+
+                   <address id="about" class="vcard body">
+                    Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                    which takes great advantage of <a href="http://python.org">Python</a>.
+                    <br />
+                    Based on the <a target="_blank" href="http://gumbyframework.com">Gumby Framework</a>
+                    </address>
+          </div>
+
+
+          <div class="seven columns">
+            <div class="row">
+              <ul class="socbtns">
+
+
+
+
+
+              </ul>
+            </div>
+          </div>
+        </footer>
+
+    </div>
+
+
+  <script src="http://blog.jdotjdot.com/theme/js/libs/jquery-1.9.1.min.js"></script>
+  <script src="http://blog.jdotjdot.com/theme/js/libs/gumby.min.js"></script>
+  <script src="http://blog.jdotjdot.com/theme/js/plugins.js"></script>
+  <script src="http://blog.jdotjdot.com/theme/js/jj-js.js"></script>
+</body>
+</html>

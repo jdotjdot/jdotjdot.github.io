@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>*JJ</title><link href="http://blog.jdotjdot.com/" rel="alternate"></link><link href="http://blog.jdotjdot.com/feeds/tag/callbacks.atom.xml" rel="self"></link><id>http://blog.jdotjdot.com/</id><updated>2014-10-09T10:40:02-04:00</updated><entry><title>Promises to call(you)back: turning javascript callbacks into promises</title><link href="http://blog.jdotjdot.com/2014/10/javascript-callbacks-to-promises/" rel="alternate"></link><updated>2014-10-09T10:40:02-04:00</updated><author><name>JJ</name></author><id>tag:blog.jdotjdot.com,2014-10-09:2014/10/javascript-callbacks-to-promises/</id><summary type="html">&lt;p&gt;This is a very short tutorial on how to turn a Javascript, Node-style callback function into an Angular promise. For me, this came up when I was trying to integrate Stripe Checkout into an Angular app. Soon, I&amp;#8217;ll be writing a longer tutorial on all of the steps required to properly integrate Checkout into an Angular app, but this particular tidbit is relevant to broader use&amp;nbsp;cases.&lt;/p&gt;
+&lt;p&gt;Stripe.js&amp;#8217;s &lt;code&gt;createToken&lt;/code&gt; function is used in the following&amp;nbsp;way:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nx"&gt;Stripe&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;card&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;createToken&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;card&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;status&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;response&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="cm"&gt;/* &amp;quot;card&amp;quot; is an object containing the card info */&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;response&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;error&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="c1"&gt;// do error stuff&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="c1"&gt;// do non-error stuff&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;});&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Here, we&amp;#8217;ve used an anonymous function as the callback, but we could have defined it earlier like Stripe does in their &lt;a href="https://stripe.com/docs/stripe.js"&gt;&lt;code&gt;stripe.js&lt;/code&gt; tutorial&lt;/a&gt;, where they define &lt;code&gt;stripeResponseHandler&lt;/code&gt; ahead of its&amp;nbsp;use.&lt;/p&gt;
+&lt;p&gt;Angular&amp;#8217;s &lt;a href="https://docs.angularjs.org/api/ng/service/$q"&gt;documentation&lt;/a&gt; on promises and &lt;code&gt;$q&lt;/code&gt; is a bit confusing. Ultimately, to create a promise in general, we should do the following bare minimum of&amp;nbsp;work:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Create a &amp;#8220;deferred&amp;#8221; using &lt;code&gt;$q.defer()&lt;/code&gt;. This serves as the object that will create and manage the&amp;nbsp;promise.&lt;/li&gt;
+&lt;li&gt;We return the promise from our&amp;nbsp;function.&lt;/li&gt;
+&lt;li&gt;At some point in our function, we need to either &amp;#8220;reject&amp;#8221; or &amp;#8220;resolve&amp;#8221; the promise, optionally with arguments. This simply means we let the promise know if it has succeeded or failed, since it won&amp;#8217;t know on its&amp;nbsp;own.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;While this may seem out of order, it&amp;#8217;s important to remember that the whole point of promises is that this is happening &lt;strong&gt;asynchronously&lt;/strong&gt;. When we&amp;#8217;re returning the original promise from our function, we&amp;#8217;re not returning a result but rather a promise that the next function will eventually get a&amp;nbsp;result.&lt;/p&gt;
+&lt;p&gt;Here is what the converted function looks like, again using Stripe.js as an&amp;nbsp;example:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;getToken&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;card&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="c1"&gt;// Create the deferred that will generate the promise&lt;/span&gt;
+    &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;deferred&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;$q&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;defer&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+
+    &lt;span class="c1"&gt;// Include the original callback function&lt;/span&gt;
+    &lt;span class="nx"&gt;Stripe&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;card&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;createToken&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;card&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;status&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;response&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;        
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;response&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;error&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="c1"&gt;// If the function fails, reject the promise&lt;/span&gt;
+            &lt;span class="nx"&gt;deferred&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;reject&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;response&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;error&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;                
+        &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="c1"&gt;// If the function succeeds, resolve the promise&lt;/span&gt;
+            &lt;span class="nx"&gt;deferred&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;resolve&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;response&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="p"&gt;});&lt;/span&gt;
+
+    &lt;span class="c1"&gt;// Return the promise&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;deferred&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;promise&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;};&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;With this, we can then easily integrate this function into any normal promises flow in an Angular&amp;nbsp;app:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nx"&gt;getToken&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;card&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nx"&gt;then&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;response&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="nx"&gt;sendTokenToServer&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;response&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="p"&gt;}).&lt;/span&gt;&lt;span class="k"&gt;catch&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;error&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="nx"&gt;console&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;error&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;There&amp;#39;s been an error!&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="p"&gt;});&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="javascript"></category><category term="callbacks"></category><category term="promises"></category></entry></feed>

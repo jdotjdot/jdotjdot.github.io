@@ -17,7 +17,7 @@
 
 &lt;!-- ![Schematic]({filename}/images/Ultrasonic-distance-detector.png) --&gt;
 
-&lt;p&gt;&lt;center&gt;&lt;img alt=""Schematic"" width="500" title=""Schematic"" src="http://blog.jdotjdot.com/images/Ultrasonic-distance-detector.png"&gt;&lt;/center&gt;&lt;/p&gt;
+&lt;p&gt;&lt;center&gt;&lt;img title=""Schematic"" alt=""Schematic"" src="http://blog.jdotjdot.com/images/Ultrasonic-distance-detector.png" width="500"&gt;&lt;/center&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;The basic setup:&lt;/strong&gt;
 The ultrasonic distance detector, the big blue thing that isn&amp;#8217;t the Arduino, is hooked up to the 5V Arduino output and to ground, and then the middle two pins are hooked up to Arduino digital pins&amp;#8212;one to trigger an ultrasonic blast, and one to listen for the blast&amp;#8217;s response.  The red &lt;span class="caps"&gt;LED&lt;/span&gt; hooked up to pin 13 flashes when nothing is detected in the vicinity, and then turns solid red when something is detected.  The yellow &lt;span class="caps"&gt;LED&lt;/span&gt; fades depending on the distance of the detected object&amp;#8212;the closer it is, the dimmer the light, unless there are no objects within the specified maximum detection range, in which case the light is completely&amp;nbsp;off.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;How it works:&lt;/strong&gt;

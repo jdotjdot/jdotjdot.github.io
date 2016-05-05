@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+        <title>Ruby-like string interpolation in Python</title>
+        <meta charset="utf-8" />
+        <link href="http://blog.jdotjdot.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="*JJ Full Atom Feed" />
+        <link href="http://blog.jdotjdot.com/feeds/category/programming.atom.xml" type="application/atom+xml" rel="alternate" title="*JJ Categories Atom Feed" />
+
+	
+	<meta name="google-site-verification" content="25sWMxDoE28xLxWWdZHn2Vvcf_5jo540MwyxsguA-ss" />
+	
+        <!-- Mobile viewport optimized: j.mp/bplateviewport -->
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+
+
+            <link rel="stylesheet" type="text/css" href="http://blog.jdotjdot.com/theme/gumby-custom.css?a6374bd9" />
+
+        <link rel="stylesheet" type="text/css" href="http://blog.jdotjdot.com/theme/style.css" />
+        <link rel="stylesheet" type="text/css" href="http://blog.jdotjdot.com/theme/pygment.css" />
+          <link rel="stylesheet" type="text/css" href="http://blog.jdotjdot.com/theme/jj-custom.css?17d3d1cc" />
+
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+        <script src="http://blog.jdotjdot.com/theme/js/libs/modernizr-2.6.2.min.js"></script>
+
+
+              <script>
+                (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+                ga('create', 'UA-47960248-1', 'blog.jdotjdot.com');
+                ga('require', 'displayfeatures');
+                ga('require', 'linkid', 'linkid.js');
+                ga('send', 'pageview');
+
+              </script>
+
+
+
+
+</head>
+
+<body id="index" class="home">
+
+
+    <div class="container">
+
+        <div class="row">
+
+
+            <div id="navigation" class="navbar row">
+              <a href="#" gumby-trigger="#navigation &gt; ul" class="toggle"><i class="icon-menu"></i></a>
+
+              <ul class="columns">
+                <!-- logo -->
+		<li><a class="logo-text" href="http://blog.jdotjdot.com"><span>*JJ</span></a></li>
+
+
+
+                    <li><a href="/archives/">Archives</a></li>
+                    <li><a href="http://blog.jdotjdot.com/pages/about.html">About</a></li>
+                    <li><a href="http://blog.jdotjdot.com/pages/projects.html">Projects</a></li>
+              </ul>
+
+
+                <!-- RSS/Atom feed -->
+                <ul class="columns">
+                    <li><a class="rss-icon" href="http://blog.jdotjdot.com/feeds/category/programming.atom.xml"><i class="fa fa-rss fa-2x"></i></a></li>
+                </ul>
+            </div>
+
+<section id="content" class="body">
+
+   <div class="row">
+        <div class="eleven columns">
+
+
+            <header>
+              <h2 class="entry-title">
+                <a href="http://blog.jdotjdot.com/2014/05/ruby-like-string-interpolation-in-python/" rel="bookmark"
+                   title="Permalink to Ruby-like string interpolation in Python">Ruby-like string interpolation in&nbsp;Python</a></h2>
+           
+            </header>
+
+            <footer class="post-info">
+                Published <span class="published" title="2014-05-29T18:18:19">Thu 29 May 2014</span> by
+                <a class="url fn author-name" href="http://blog.jdotjdot.com/author/jj.html">JJ</a>
+                <br>
+                <span>Tagged in: </span>
+                        <a class="tag" href="http://blog.jdotjdot.com/tags/python">python</a>,                        <a class="tag" href="http://blog.jdotjdot.com/tags/ruby">ruby</a>,                        <a class="tag" href="http://blog.jdotjdot.com/tags/string-interpolation">string-interpolation</a>                <hr>
+            </footer>
+
+
+            <div class="entry-content">
+              <p>I&#8217;ve been experimenting with Rails a bit for the past couple weeks.  This has been pretty exciting for me, as I&#8217;ve generally been much more of a Python developer and I&#8217;d never touched Ruby before, so it was very interesting to see a completely different approach to programming and language&nbsp;philosophy.</p>
+<p>While the lack of parentheses and many conventions that you &#8220;just have to learn&#8221; sometimes frustrate me, at least from my first couple of weeks with the language, I&#8217;ve seen quite a few features that I like and somewhat wish I had available to me in Python.   One of these is <strong>string interpolation</strong>.</p>
+<blockquote>
+<p>String interpolation: To replace a variable with its value within a&nbsp;string.</p>
+</blockquote>
+<h2>Ruby</h2>
+<p>Ruby implements string interpolation like&nbsp;this:</p>
+<div class="highlight"><pre><span class="mi">2</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="mi">1</span> <span class="p">:</span><span class="mo">001</span> <span class="o">&gt;</span> <span class="n">stringvar</span> <span class="o">=</span> <span class="s2">&quot;I&#39;m a string&quot;</span>
+ <span class="o">=&gt;</span> <span class="s2">&quot;I&#39;m a string&quot;</span>
+<span class="mi">2</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="mi">1</span> <span class="p">:</span><span class="mo">002</span> <span class="o">&gt;</span> <span class="n">numvar</span> <span class="o">=</span> <span class="mi">3</span>
+ <span class="o">=&gt;</span> <span class="mi">3</span>
+<span class="mi">2</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="mi">1</span> <span class="p">:</span><span class="mo">003</span> <span class="o">&gt;</span> <span class="s2">&quot;This is stringvar: </span><span class="si">#{</span><span class="n">stringvar</span><span class="si">}</span><span class="s2">, and this is numvar: </span><span class="si">#{</span><span class="n">numvar</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="o">=&gt;</span> <span class="s2">&quot;This is stringvar: I&#39;m a string, and this is numvar: 3&quot;</span>
+</pre></div>
+
+
+<p>Note that it only works with double-quotes (<code>"</code>) which are &#8220;weaker.&#8221;  If you try it with single-quotes, you&#8217;ll get the&nbsp;following:</p>
+<div class="highlight"><pre><span class="mi">2</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="mi">1</span> <span class="p">:</span><span class="mo">004</span> <span class="o">&gt;</span> <span class="nb">puts</span> <span class="s1">&#39;This is stringvar: #{stringvar}, and this is numvar: #{numvar}&#39;</span>
+<span class="no">This</span> <span class="n">is</span> <span class="ss">stringvar</span><span class="p">:</span> <span class="c1">#{stringvar}, and this is numvar: #{numvar}</span>
+</pre></div>
+
+
+<p>My understanding is that you can do this with anything accessible within the local scope, so that would include class or global variables (e.g., ones beginning with <code>@</code>).  The flexibility of string interpolation goes even farther, though, as you can actually call methods and perform other arbitrary operations within the&nbsp;interpolation:</p>
+<div class="highlight"><pre><span class="mi">2</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="mi">1</span> <span class="p">:</span><span class="mo">010</span> <span class="o">&gt;</span> <span class="s2">&quot;Upper case: </span><span class="si">#{</span><span class="n">stringvar</span><span class="o">.</span><span class="n">upcase</span><span class="si">}</span><span class="s2">&quot;</span>
+ <span class="o">=&gt;</span> <span class="s2">&quot;Upper case: I&#39;M A STRING&quot;</span>
+<span class="mi">2</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="mi">1</span> <span class="p">:</span><span class="mo">011</span> <span class="o">&gt;</span> <span class="s2">&quot;Addition: </span><span class="si">#{</span><span class="n">numvar</span> <span class="o">+</span> <span class="mi">4</span><span class="si">}</span><span class="s2">&quot;</span>
+ <span class="o">=&gt;</span> <span class="s2">&quot;Addition: 7&quot;</span>
+<span class="mi">2</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="mi">1</span> <span class="p">:</span><span class="mo">012</span> <span class="o">&gt;</span> <span class="k">def</span> <span class="nf">add10</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
+<span class="mi">2</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="mi">1</span> <span class="p">:</span><span class="mo">013</span><span class="o">?&gt;</span>   <span class="n">num</span> <span class="o">+</span> <span class="mi">10</span>
+<span class="mi">2</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="mi">1</span> <span class="p">:</span><span class="mo">014</span><span class="o">?&gt;</span> <span class="k">end</span>
+ <span class="o">=&gt;</span> <span class="ss">:add10</span>
+<span class="mi">2</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="mi">1</span> <span class="p">:</span><span class="mo">015</span> <span class="o">&gt;</span> <span class="s2">&quot;Method call: </span><span class="si">#{</span><span class="n">add10</span> <span class="n">numvar</span><span class="si">}</span><span class="s2">&quot;</span>
+ <span class="o">=&gt;</span> <span class="s2">&quot;Method call: 13&quot;</span>
+</pre></div>
+
+
+<p>Clearly powerful, but could also be somewhat&nbsp;dangerous.</p>
+<h2>Python</h2>
+<p>Python, with the philosophy &#8220;explicit is better than implicit&#8221;, does not have this string interpolation in quite the same way&#8212;you need to pass in what you&#8217;d like to interpolate&nbsp;explicitly.</p>
+<p>The old syntax for this (and still used by many today) is the&nbsp;following:</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="s">&quot;This is a string </span><span class="si">%s</span><span class="s">, or a number: </span><span class="si">%d</span><span class="s">, or a number as a string: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> \
+<span class="o">...</span>    <span class="p">(</span><span class="s">&#39;arbitrary string&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">39</span><span class="p">)</span>
+<span class="s">&#39;This is a string arbitrary string, or a number: 3, or a number as a string: 39</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="s">&quot;Example with formatting: </span><span class="si">%.4f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="mi">3</span>
+<span class="s">&#39;Example with formatting: 3.0000&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="s">&quot;Named arguments: </span><span class="si">%(hey)s</span><span class="s">, </span><span class="si">%(name)s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">{</span><span class="s">&#39;hey&#39;</span><span class="p">:</span> <span class="s">&#39;Hey&#39;</span><span class="p">,</span> <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;Jason&#39;</span><span class="p">}</span>
+<span class="s">&#39;Named arguments: Hey, Jason&#39;</span>
+</pre></div>
+
+
+<p>The new style is a <code>.format</code> method called directly on the&nbsp;string:</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="s">&quot;Lots of {} to {verb} here, like binary conversion: {num:b}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="s">&#39;examples&#39;</span><span class="p">,</span> <span class="n">verb</span><span class="o">=</span><span class="s">&#39;show&#39;</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">3</span>
+    <span class="p">)</span>
+<span class="s">&#39;Lots of examples to show here, like binary conversion: 11&#39;</span>
+</pre></div>
+
+
+<p>And you are also able to access objects&#8217; attributes or items, like&nbsp;so:</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="s">&quot;Item 1: {0[1]} | Dictionary &#39;key&#39;: {1[key]}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">([</span><span class="s">&#39;a&#39;</span><span class="p">,</span> <span class="s">&#39;b&#39;</span><span class="p">],</span> <span class="p">{</span><span class="s">&#39;key&#39;</span><span class="p">:</span> <span class="s">&#39;value&#39;</span><span class="p">})</span>
+<span class="s">&quot;Item 1: b | Dictionary &#39;key&#39;: value&quot;</span>
+</pre></div>
+
+
+<p>Note that above, we&#8217;re calling the different arguments positionally, so <code>{0}</code> refers to the first positional argument to <code>format</code> and <code>{1}</code> to the second (Python is 0-indexed!), and then we&#8217;re accessing internals via&nbsp;brackets.</p>
+<p>You can&#8217;t call&nbsp;methods:</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">add1</span><span class="p">(</span><span class="n">num</span><span class="p">):</span>
+<span class="o">...</span>   <span class="k">return</span> <span class="n">num</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="s">&quot;Test: {add1(test)}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">test</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="n">File</span> <span class="s">&quot;&lt;stdin&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="ne">KeyError</span><span class="p">:</span> <span class="s">&#39;add1(test)&#39;</span>
+</pre></div>
+
+
+<p>There are lots of other good examples that can be found in the Python docs <a href="https://docs.python.org/2/library/string.html#formatexamples">here</a>.</p>
+<h3>Accessing variables in the immediate&nbsp;scope</h3>
+<p>Unfortunately, you can&#8217;t do what Ruby does in terms of accessing any variable or value in the string&#8217;s scope.  This makes sense from an explicitness perspective (we know exactly what we&#8217;re passing to the string at all times), but sometimes it is convenient to not have to worry about that and to be able to type&nbsp;quickly.</p>
+<p>The best way I found to do this in Python is to pass in the <code>locals()</code> dictionary, which is a dictionary of the local&nbsp;scope.</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">b</span> <span class="o">=</span> <span class="s">&quot;hey&quot;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="s">&quot;This is a: {a} | This is b: {b}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="nb">locals</span><span class="p">())</span>
+<span class="s">&#39;This is a: 1 | This is b: hey&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">locals</span><span class="p">()</span>
+<span class="p">{</span><span class="s">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#39;b&#39;</span><span class="p">:</span> <span class="s">&#39;hey&#39;</span><span class="p">,</span> <span class="s">&#39;__builtins__&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">module</span> <span class="s">&#39;__builtin__&#39;</span> <span class="p">(</span><span class="n">built</span><span class="o">-</span><span class="ow">in</span><span class="p">)</span><span class="o">&gt;</span><span class="p">,</span> <span class="s">&#39;__package__&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span> <span class="s">&#39;__name__&#39;</span><span class="p">:</span> <span class="s">&#39;__main__&#39;</span><span class="p">,</span> <span class="s">&#39;__doc__&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">}</span>
+</pre></div>
+
+
+<p>It&#8217;s a bit less &#8220;Pythonic,&#8221; but ultimately it still gets the job&nbsp;done.</p>
+<h3>Within&nbsp;classes</h3>
+<p>This doesn&#8217;t really work quite so well in classes and starts to become unwieldy.  As you&#8217;ll see below, accessing the class instance&#8217;s attributes don&#8217;t work with <code>locals()</code> because they&#8217;re all actually attached to <code>self</code> within the&nbsp;methods.</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">Test</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="o">...</span>     <span class="n">a</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="o">...</span>     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="o">...</span>         <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="s">&#39;hey&#39;</span>
+<span class="o">...</span>         <span class="k">print</span> <span class="nb">locals</span><span class="p">()</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">t</span> <span class="o">=</span> <span class="n">Test</span><span class="p">()</span>
+<span class="p">{</span><span class="s">&#39;self&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">__main__</span><span class="o">.</span><span class="n">Test</span> <span class="n">at</span> <span class="mh">0x10e978e50</span><span class="o">&gt;</span><span class="p">}</span>
+</pre></div>
+
+
+<p>Ultimately, if we really wanted to, we could still access them within the string this&nbsp;way:</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">Test</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="o">&gt;&gt;&gt;</span>     <span class="n">a</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="o">&gt;&gt;&gt;</span>     <span class="n">b</span> <span class="o">=</span> <span class="s">&#39;hey&#39;</span>
+<span class="o">&gt;&gt;&gt;</span>     <span class="k">def</span> <span class="nf">stringinterp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="o">&gt;&gt;&gt;</span>         <span class="k">return</span> <span class="s">&quot;a: {0.a}, b: {0.b}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Test</span><span class="p">()</span><span class="o">.</span><span class="n">stringintepr</span><span class="p">()</span>
+<span class="s">&#39;a: 3, b: hey&#39;</span>
+</pre></div>
+
+
+<p>But at that point, I don&#8217;t think it would be very convenient, and would effectively be defeating the purpose of string interpolation&nbsp;anyway.        </p>
+            </div><!-- /.entry-content -->
+
+
+        </div><!-- /.eleven.columns -->
+        
+
+<div class="three columns">
+
+    <nav class="widget">
+        <h4>Social</h4>
+        <ul class="social-link-list">
+               <li><a href="https://github.com/jdotjdot">
+                <i class="social-icon fa fa-2x fa-github"></i>
+    </a></li>
+               <li><a href="http://stackoverflow.com/users/1351335/jdotjdot">
+                <i class="social-icon fa fa-2x fa-stack-overflow"></i>
+    </a></li>
+               <li><a href="https://twitter.com/JdotJdotF">
+                <i class="social-icon fa fa-2x fa-twitter"></i>
+    </a></li>
+        </ul>
+    </nav>
+
+<h4>Pages</h4>
+
+ <ul>
+      <li><a href="/archives/">Archives</a></li>
+      <li><a href="http://blog.jdotjdot.com/pages/about.html">About</a></li>
+      <li><a href="http://blog.jdotjdot.com/pages/projects.html">Projects</a></li>
+  </ul>
+
+<h4>Categories</h4>
+<ul>
+		<li><a href="http://blog.jdotjdot.com/category/programming">Programming</a></li>
+</ul>
+
+
+<h4>Tags</h4>
+	<ul>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/algorithms">algorithms</a></li>
+	    <li class="tag-4"><a href="http://blog.jdotjdot.com/tags/android">android</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/angular-filters">angular-filters</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/angularjs">angularjs</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/arduino">arduino</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/async">async</a></li>
+	    <li class="tag-4"><a href="http://blog.jdotjdot.com/tags/bash">bash</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/bashweather">bashweather</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/c">C</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/callbacks">callbacks</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/canvas">canvas</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/capture-the-flag">capture-the-flag</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/clojure">clojure</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/coffeescript">coffeescript</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/comp">comp</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/compression">compression</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/crash">crash</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/crypto">crypto</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/decorator">decorator</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/decorators">decorators</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/default-args">default-args</a></li>
+	    <li class="tag-4"><a href="http://blog.jdotjdot.com/tags/dial-up-over-cell-phone">dial-up-over-cell-phone</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/distance">distance</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/django">django</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/doorbot">doorbot</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/doorduino">doorduino</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/down-the-rabbit-hole">down-the-rabbit-hole</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/dropbox">dropbox</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/error-correction">error-correction</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/framing">framing</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/freelance">freelance</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/getopts">getopts</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/getting-started">getting-started</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/google-docs">google-docs</a></li>
+	    <li class="tag-1"><a href="http://blog.jdotjdot.com/tags/hackerschool">hackerschool</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/highlightjs">highlightjs</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/html">html</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/html5">html5</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/images">images</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/internet">internet</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/it-works">it-works</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/jabber">jabber</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/java">java</a></li>
+	    <li class="tag-4"><a href="http://blog.jdotjdot.com/tags/javascript">javascript</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/jekyll">jekyll</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/keyboards">keyboards</a></li>
+	    <li class="tag-4"><a href="http://blog.jdotjdot.com/tags/markdown">markdown</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/matasano">matasano</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/mel-chua">mel-chua</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/messages-app">messages-app</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/meta">meta</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/mutability">mutability</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/os-x">os-x</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/pacman">pacman</a></li>
+	    <li class="tag-4"><a href="http://blog.jdotjdot.com/tags/pelican">pelican</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/productively-lost">productively-lost</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/promises">promises</a></li>
+	    <li class="tag-2"><a href="http://blog.jdotjdot.com/tags/python">python</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/quick-union">quick-union</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/restart">restart</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/ruby">ruby</a></li>
+	    <li class="tag-4"><a href="http://blog.jdotjdot.com/tags/scriptogram">scriptogr.am</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/seminar">seminar</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/server">server</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/signal-processing">signal-processing</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/sort">sort</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/spreadsheets">spreadsheets</a></li>
+	    <li class="tag-4"><a href="http://blog.jdotjdot.com/tags/static-site-generators">static-site-generators</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/string-interpolation">string-interpolation</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/syntax-highlighting">syntax-highlighting</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/tcp">tcp</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/text-to-columns">text-to-columns</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/travel">travel</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/ultrasonic">ultrasonic</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/wat">wat</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/weather">weather</a></li>
+	    <li class="tag-6"><a href="http://blog.jdotjdot.com/tags/zapier">zapier</a></li>
+</ul>
+
+
+
+</div> </div><!-- /.row -->
+
+
+</section>
+
+       </div><!-- /.row -->
+    </div><!-- /.container -->
+
+
+       <div class="container.nopad bg">
+
+
+        <footer id="credits" class="row">
+          <div class="seven columns left-center">
+
+                   <address id="about" class="vcard body">
+                    Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                    which takes great advantage of <a href="http://python.org">Python</a>.
+                    <br />
+                    Based on the <a target="_blank" href="http://gumbyframework.com">Gumby Framework</a>
+                    </address>
+          </div>
+
+
+          <div class="seven columns">
+            <div class="row">
+              <ul class="socbtns">
+
+
+
+
+
+              </ul>
+            </div>
+          </div>
+        </footer>
+
+    </div>
+
+
+  <script src="http://blog.jdotjdot.com/theme/js/libs/jquery-1.9.1.min.js"></script>
+  <script src="http://blog.jdotjdot.com/theme/js/libs/gumby.min.js"></script>
+  <script src="http://blog.jdotjdot.com/theme/js/plugins.js"></script>
+  <script src="http://blog.jdotjdot.com/theme/js/jj-js.js"></script>
+</body>
+</html>
